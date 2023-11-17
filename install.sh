@@ -19,11 +19,11 @@ install_dmenu() {
 }
 
 # List of packages for Arch Linux
-arch_packages="alacritty gvfs xorg-drivers lib32-vulkan-intel vulkan-intel lib32-mesa mesa mesa-ati xf86-video-intel dconf dconf-editor fontconfig git xorg xorg-apps imagemagick ksuperkey mpd mpc ncmpcpp nano neovim qtile viewnior thunar thunar-volman xfce4-power-manager zip unzip tar xz lz4 xdotool rsync starship qt5ct qt6ct dunst udiskie feh python python3 fish xsettingsd networkmanager nwg-look gtk3 gtk4 pavucontrol pipewire pulseaudio pipewire-alsa pipewire-jack pipewire-pulse gst-plugin-pipewire libpulse wireplumber exa flameshot xorg-minimal xorg-server xorg-xinit xautolock"
+arch_packages="alacritty gvfs xorg-drivers lib32-vulkan-intel vulkan-intel lib32-mesa mesa mesa-ati xf86-video-intel dconf dconf-editor fontconfig git xorg imagemagick ksuperkey mpd mpc ncmpcpp nano neovim qtile viewnior thunar thunar-volman xfce4-power-manager zip unzip tar xz lz4 xdotool rsync starship qt5ct qt6ct dunst udiskie feh python python3 fish xsettingsd networkmanager nwg-look gtk3 gtk4 pavucontrol pipewire pulseaudio pipewire-alsa pipewire-jack pipewire-pulse gst-plugin-pipewire libpulse wireplumber exa flameshot xorg-minimal xorg-server xorg-xinit brightnessctl xautolock"
 
 
 # List of packages for Void Linux
-void_packages="alacritty gvfs xorg-drivers lib32-vulkan-intel vulkan-intel lib32-mesa mesa mesa-ati xf86-video-intel dconf dconf-editor fontconfig git xorg xorg-apps ImageMagick ksuperkey mpd mpc ncmpcpp nano neovim qtile viewnior thunar thunar-volman xfce4-power-manager zip unzip tar xz lz4 xdotool rsync starship qt5ct qt6ct dunst udisk2 feh python3 fish-shell xsettingsd NetworkManager nwg-look gtk+3 gtk4 pavucontrol pipewire pulseaudio pipewire-alsa pipewire-jack pipewire-pulse gst-plugin-pipewire libpulse wireplumber exa flameshot xorg-minimal xorg-server xorg-xinit xautolock elogind"
+void_packages="alacritty gvfs xorg-drivers lib32-vulkan-intel vulkan-intel lib32-mesa mesa mesa-ati xf86-video-intel dconf dconf-editor fontconfig git xorg xorg-apps ImageMagick ksuperkey mpd mpc ncmpcpp nano neovim qtile viewnior thunar thunar-volman xfce4-power-manager zip unzip tar xz lz4 xdotool rsync starship qt5ct qt6ct dunst udisk2 feh python3 fish-shell xsettingsd NetworkManager nwg-look gtk+3 gtk4 pavucontrol pipewire pulseaudio pipewire-alsa pipewire-jack pipewire-pulse gst-plugin-pipewire libpulse wireplumber exa flameshot xorg-minimal xorg-server xorg-xinit brightnessctl xautolock elogind"
 
 # Check the Linux distribution and call the appropriate function
 if [ -f "/etc/arch-release" ]; then
