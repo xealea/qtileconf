@@ -4,6 +4,31 @@ if status is-interactive; and test -z "$DISPLAY" -a "$XDG_VTNR" = 1; exec startx
 # Remove greeting
 set fish_greeting
 
+# Set default colors
+set -g fish_color_normal black '#1b2125'
+set -g fish_color_normal red '#7D8882'
+set -g fish_color_normal green '#87918B'
+set -g fish_color_normal yellow '#86918A'
+set -g fish_color_normal blue '#89938C'
+set -g fish_color_normal magenta '#89948D'
+set -g fish_color_normal cyan '#8B958F'
+set -g fish_color_normal white '#bdc2be'
+
+# Set bright colors
+set -g fish_color_command $fish_color_normal
+set -g fish_color_quote $fish_color_normal
+set -g fish_color_error red
+
+# Set background and foreground colors
+set -g fish_color_normal -b black --bold $fish_color_normal
+set -g fish_color_command -b black --bold $fish_color_command
+set -g fish_color_quote -b black --bold $fish_color_quote
+set -g fish_color_error -b black --bold $fish_color_error
+set -g fish_color_escape $fish_color_normal
+
+# Set cursor color
+set -g fish_color_cursor $fish_color_normal
+
 # Starship prompt
 starship init fish | source
 
