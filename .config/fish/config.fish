@@ -33,7 +33,7 @@ set -g fish_color_cursor $fish_color_normal
 starship init fish | source
 
 # Environment variables
-set -x QT_QPA_PLATFORMTHEME "qt5ct"
+set -x QT_QPA_PLATFORMTHEME "gtk3"
 set -x VISUAL "nano" 
 set -x EDITOR "nano" 
 set -x TERM "alacritty" 
@@ -123,13 +123,15 @@ alias addall 'git add .'
 alias branch 'git branch'
 alias checkout 'git checkout'
 alias clone 'git clone'
-alias commit 'git commit -m'
+alias cdepth 'git clone --depth=1'
+alias addco 'git add . && git commit -s'
 alias fetch 'git fetch'
 alias pull 'git pull origin'
 alias push 'git push origin'
 alias stat 'git status'
 alias tag 'git tag'
 alias newtag 'git tag -a'
+alias seturl 'git remote set-url origin'
 
 # Get error messages from journalctl
 alias jctl "journalctl -p 3 -xb"
