@@ -12,9 +12,6 @@ from time import sleep
 # Define some variables
 mod = "mod4" # Use the Super key as the main modifier
 terminal = "alacritty" # Use the default terminal emulator
-browser = "firefox" # Use Firefox as the default browser
-editor = "nano" # Use Nano as the default editor
-music = "spotify" # Use Spotify as the default music player
 
 # Key bindings
 keys = [
@@ -134,12 +131,12 @@ screens = [
                     foreground="#89938C",
                     active="bdc2be"
                 ),
-                # widget.Sep(
-                #     padding=10,
-                #     linewidth=5,
-                #     size_percent=50,
-                #     foreground="#1b2125"
-                # ),
+#               widget.Sep(
+#                   padding=10,
+#                   linewidth=5,
+#                   size_percent=50,
+#                   foreground="#1b2125"
+#               ),
                 widget.WindowName(
                     fontsize=14,
                     foreground="#89938C"
@@ -251,7 +248,7 @@ screens = [
                     padding=10
                  ),
             ],
-            40,  # Set height of the bar
+            43,  # Set height of the bar
             background="#1b2125",  # Set the background color
             margin=[15, 15, 0, 15],  # Set the left, top, right, and bottom margins
         ),
@@ -264,28 +261,6 @@ mouse = [
     Drag([mod], "Button3", lazy.window.set_size_floating(), start=lazy.window.get_size()),
     Click([mod], "Button2", lazy.window.bring_to_front()),
 ]
-
-# Startup applications
-@hook.subscribe.startup_once
-def autostart():
-    subprocess.run([os.path.expanduser("~/.config/qtile/autostart.sh")])
-    subprocess.call(["xsetroot", "-cursor_name", "left_ptr"])
-
-@hook.subscribe.client_new
-def set_floating(window):
-    if window.window.get_wm_transient_for() or window.window.get_wm_type() in ["notification", "toolbar", "splash", "dialog"]:
-        window.floating = True
-
-# Configuration
-auto_fullscreen = True
-focus_on_window_activation = "smart"
-reconfigure_screens = True
-auto_minimize = True
-wl_input_rules = None
-wmname = "LG3D"
-follow_mouse_focus = True
-bring_front_click = False
-cursor_warp = False
 
 floating_layout = layout.Floating(
     float_rules=[
@@ -312,3 +287,27 @@ floating_layout = layout.Floating(
     fullscreen_border_width=0,
     border_width=0
 )
+
+# Startup applications
+@hook.subscribe.startup_once
+def autostart():
+    subprocess.run([os.path.expanduser("~/.config/qtile/autostart.sh")])
+    subprocess.call(["xsetroot", "-cursor_name", "left_ptr"])
+
+@hook.subscribe.client_new
+def set_floating(window):
+    if window.window.get_wm_transient_for() or window.window.get_wm_type() in ["notification", "toolbar", "splash", "dialog"]:
+        window.floating = True
+
+# Configuration
+focus_on_window_activation = "smart"
+reconfigure_screens = True
+dgroups_key_binder = None
+follow_mouse_focus = True
+bring_front_click = False
+dgroups_app_rules = [] 
+auto_fullscreen = True
+wl_input_rules = None
+auto_minimize = True
+cursor_warp = False
+wmname = "LG3D"
