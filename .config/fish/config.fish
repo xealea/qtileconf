@@ -171,3 +171,6 @@ function cdown
         set N (math $N - 1)
     end
 end
+
+# ssh
+eval (ssh-agent -c) > /dev/null 2>&1 &

@@ -1,14 +1,6 @@
 #!/bin/bash
 # Email: xealea@proton.me
 
-# List of processes to be killed
-processes=("dunst" "xfce4-power-manager")
-
-# Kill specified processes
-for process in "${processes[@]}"; do
-    pkill "$process"
-done
-
 # Run processes
 ~/.fehbg &
 xfce4-power-manager &
