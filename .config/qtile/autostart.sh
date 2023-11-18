@@ -12,4 +12,5 @@ exec /usr/lib/xfce-polkit/xfce-polkit &
 exec dunst -config ~/.config/dunst/dunstrc &
 
 # X lock
+exec xscreensaver &
 exec xautolock -time 5 -locker "xscreensaver-command -lock" -detectsleep &
