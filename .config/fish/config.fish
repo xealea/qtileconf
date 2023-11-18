@@ -74,6 +74,42 @@ alias ll 'exa -l --color=always --group-directories-first'
 alias lt 'exa -aT --color=always --group-directories-first'
 alias l. 'exa -a | egrep "^\."'
 
+# Clear vkpurge alias
+function clrk
+    sudo vkpurge rm all
+end
+
+# XBPS
+alias vu 'sudo xbps-install -Suv'
+alias vp 'sudo xbps-install'
+alias vr 'sudo xbps-remove -Rcon'
+alias vfr 'sudo xbps-remove -Rcon -F'
+alias vq 'xbps-query -l'
+alias vf 'vq | grep'
+alias vs 'xbps-query -Rs'
+alias vd 'xbps-query -x'
+
+# Flatpak
+alias fu 'flatpak update'
+alias fi 'flatpak install'
+alias ff 'flatpak repair'
+alias fs 'flatpak search'
+alias fl 'flatpak list'
+alias fr 'flatpak uninstall --delete-data'
+alias fc 'flatpak uninstall --unused'
+
+# Nix
+alias nu 'nix-env -u'
+alias nf 'nix-env --query'
+alias na 'nix-env --query "*"'
+alias ni 'nix-env -i'
+alias nr 'nix-env -e'
+alias ns 'nix search'
+alias no 'nix-env --rollback'
+alias ncl 'nix-channel --list'
+alias nca 'nix-channel --add'
+alias ncu 'nix-channel --update'
+
 # Arch & Paru
 alias pacs 'sudo pacman -Syu'
 alias paci 'sudo pacman -S'

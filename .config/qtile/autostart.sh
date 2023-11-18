@@ -14,6 +14,7 @@ done
 # Run processes
 bash ~/.fehbg
 xfce4-power-manager &
+# dbus-run-session pipewire &
 # Uncomment the line below if needed
 # /usr/lib/xfce-polkit/xfce-polkit &
 
