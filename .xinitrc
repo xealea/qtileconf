@@ -23,4 +23,4 @@ else
 fi
 
 # run without login manager
-exec qtile start
+exec dbus-launch --exit-with-session qtile start
