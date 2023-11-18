@@ -2,10 +2,9 @@
 # Email: xealea@proton.me
 
 # Run processes
-~/.fehbg &
+bash ~/.fehbg &
 xfce4-power-manager &
-# Uncomment the line below if needed
-# /usr/lib/xfce-polkit/xfce-polkit &
+/usr/lib/xfce-polkit/xfce-polkit &
 
 # Start dunst
 dunst -config ~/.config/dunst/dunstrc &

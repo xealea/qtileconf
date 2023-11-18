@@ -3,20 +3,10 @@
 # This script was modified by Lea based on archcraft script
 # Email: xealea@proton.me
 
-# List of processes to be killed
-processes=("dunst" "xfce4-power-manager")
-
-# Kill specified processes
-for process in "${processes[@]}"; do
-    pkill "$process"
-done
-
 # Run processes
 bash ~/.fehbg
 xfce4-power-manager &
-# dbus-run-session pipewire &
-# Uncomment the line below if needed
-# /usr/lib/xfce-polkit/xfce-polkit &
+/usr/lib/xfce-polkit/xfce-polkit &
 
 # Start dunst
 dunst -config ~/.config/dunst/dunstrc &
