@@ -44,6 +44,12 @@ set -x XDG_CONFIG_HOME "$HOME/.config"
 set -x XDG_DATA_HOME "$HOME/.local/share"
 set -x XDG_CACHE_HOME "$HOME/.cache"
 
+# Xdeb for voidlinux
+set -x XDEB_OPT_DEPS "true"
+set -x XDEB_OPT_SYNC "true"
+set -x XDEB_OPT_WARN_CONFLICT "true"
+set -x XDEB_OPT_FIX_CONFLICT "true"
+
 # Change title terminal
 switch $TERM
     case "xterm*" "rxvt*" "Eterm*" "aterm" "kterm" "gnome*" "alacritty" "st" "konsole*"; set -x PROMPT_COMMAND 'echo -ne "\033]0;($USER@$HOSTNAME:r):($PWD:r)\007"'
@@ -82,6 +88,7 @@ end
 # XBPS
 alias vu 'sudo xbps-install -Suv'
 alias vp 'sudo xbps-install'
+alias vpy 'sudo xbps-install -Sy'
 alias vr 'sudo xbps-remove -Rcon'
 alias vfr 'sudo xbps-remove -Rcon -F'
 alias vq 'xbps-query -l'
