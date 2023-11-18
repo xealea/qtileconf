@@ -86,9 +86,8 @@ function clrk
 end
 
 # XBPS
-alias vu 'sudo xbps-install -Suv'
-alias vp 'sudo xbps-install'
-alias vpy 'sudo xbps-install -Sy'
+alias vu 'sudo xbps-install -Syuv'
+alias vp 'sudo xbps-install -Sy'
 alias vr 'sudo xbps-remove -Rcon'
 alias vfr 'sudo xbps-remove -Rcon -F'
 alias vq 'xbps-query -l'

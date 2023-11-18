@@ -9,6 +9,9 @@ exec /usr/lib/xfce-polkit/xfce-polkit &
 # Start dunst
 exec dunst -config ~/.config/dunst/dunstrc &
 
+# Start picom
+exec picom --config  ~/.config/picom.conf --daemon &
+
 # X lock
 exec xscreensaver -no-splash &
 exec xautolock -time 5 -locker "xscreensaver-command -lock" -detectsleep &
