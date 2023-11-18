@@ -50,6 +50,16 @@ set -x XDEB_OPT_SYNC "true"
 set -x XDEB_OPT_WARN_CONFLICT "true"
 set -x XDEB_OPT_FIX_CONFLICT "true"
 
+# Xdg user dirs
+set -x XDG_DESKTOP_DIR="$HOME/Desktop"
+set -x XDG_DOWNLOAD_DIR="$HOME/Downloads"
+set -x XDG_TEMPLATES_DIR="$HOME/Templates"
+set -x XDG_PUBLICSHARE_DIR="$HOME/Public"
+set -x XDG_DOCUMENTS_DIR="$HOME/Documents"
+set -x XDG_MUSIC_DIR="$HOME/Music"
+set -x XDG_PICTURES_DIR="$HOME/Pictures"
+set -x XDG_VIDEOS_DIR="$HOME/Videos"
+
 # Change title terminal
 switch $TERM
     case "xterm*" "rxvt*" "Eterm*" "aterm" "kterm" "gnome*" "alacritty" "st" "konsole*"; set -x PROMPT_COMMAND 'echo -ne "\033]0;($USER@$HOSTNAME:r):($PWD:r)\007"'
