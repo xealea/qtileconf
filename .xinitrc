@@ -6,6 +6,7 @@ exec ~/.fehbg &
 exec xfce4-power-manager &
 exec xdg-user-dirs-update &
 exec xdg-user-dirs-gtk-update &
+exec dbus-run-session pipewire &
 exec /usr/lib/xfce-polkit/xfce-polkit &
 
 # Start dunst
