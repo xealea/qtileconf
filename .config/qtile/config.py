@@ -243,6 +243,7 @@ screens = [
                  ),
 		 widget.TextBox(
                     text=f" {powermenu_icon} ",
+		    padding=10,
                     fontsize=14,
                     foreground="#89938C",
 		    mouse_callbacks={'Button1': lambda: qtile.cmd_spawn("powermenu")}
