@@ -4,7 +4,8 @@
 # Email: xealea@proton.me
 
 # Run processes
-exec ~/.fehbg
+exec ~/.fehbg &
+exec startxfce4 &
 exec xfce4-power-manager &
 exec xdg-user-dirs-update &
 exec xdg-user-dirs-gtk-update &
