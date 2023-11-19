@@ -21,4 +21,4 @@ exec xscreensaver -no-splash &
 exec xautolock -time 5 -locker "xscreensaver-command -lock" -detectsleep &
 
 # run without login manager
-exec dbus-launch --exit-with-session qtile start
+exec dbus-run-session qtile start
