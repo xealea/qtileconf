@@ -51,7 +51,7 @@ set -x XDEB_OPT_WARN_CONFLICT "true"
 set -x XDEB_OPT_FIX_CONFLICT "true"
 
 # Path my script
-set -x PATH "$PATH:/$HOME/.local/bin"
+set -x PATH "$PATH:$HOME/.local/bin"
 
 # Change title terminal
 switch $TERM
