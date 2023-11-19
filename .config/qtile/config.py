@@ -61,7 +61,7 @@ keys = [
     Key([], "XF86MonBrightnessDown", lazy.spawn("brightnessctl s 10%-"), desc='Brightness Down'),
     Key([mod], "e", lazy.spawn("thunar"), desc='File manager'),
     Key([mod], "h", lazy.spawn("xclip"), desc='Clipboard'),
-    Key([mod], "s", lazy.spawn("flameshot gui"), desc='Screenshot'),
+    Key([mod], "s", lazy.spawn(f"{screenshot}"), desc='Screenshot'),
 ]
 
 # Groups
