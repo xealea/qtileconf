@@ -241,11 +241,11 @@ screens = [
 		    fontsize=10,
                     foreground="#89938C"
                  ),
-		 widget.QuickExit(
+		 widget.TextBox(
                     foreground="#89938C",
                     default_text=f" {powermenu_icon} ",
-                    countdown_format='[{}]',
                     padding=10
+                    mouse_callbacks={'Button1': lambda: qtile.cmd_spawn("powermenu")},
                  ),
             ],
             43,  # Set height of the bar

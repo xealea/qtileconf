@@ -1,0 +1,20 @@
+#!/bin/bash
+
+options=("Poweroff" "Reboot" "Sleep")
+
+selected_option=$(printf '%s\n' "${options[@]}" | dmenu -i -c -l 3)
+
+case $selected_option in
+    "Poweroff")
+        loginctl poweroff
+        ;;
+    "Reboot")
+        loginctl reboot
+        ;;
+    "Sleep")
+        loginctl suspend
+        ;;
+    *)
+        echo "Invalid option"
+        ;;
+esac
