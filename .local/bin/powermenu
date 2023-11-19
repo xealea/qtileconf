@@ -1,8 +1,10 @@
 #!/bin/bash
 
+SCRIPT_NAME="powermenu"
+
 options=("Poweroff" "Reboot" "Sleep")
 
-selected_option=$(printf '%s\n' "${options[@]}" | dmenu -i -c -l 3)
+selected_option=$(printf '%s\n' "${options[@]}" | dmenu -i -c -l 3 -p "$SCRIPT_NAME")
 
 case $selected_option in
     "Poweroff")
