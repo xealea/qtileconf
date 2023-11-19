@@ -118,7 +118,7 @@ screens = [
                     fontsize=14,
                     padding=5,
                     foreground="#89938C",
-                    mouse_callbacks={'Button1': lambda: qtile.cmd_spawn("dmenu_run -l 15 -c -g 3")},
+                    mouse_callbacks={'Button1': lambda: qtile.cmd_spawn("dmenu_run -l 15 -c -g 3")}
                 ),
                 widget.CurrentLayout(
                     fontsize=14,
@@ -146,7 +146,7 @@ screens = [
                         "launch": ("#ff0000", "#ffffff"),
                     },
                     name_transform=lambda name: name.upper(),
-                    foreground="#89938C",
+                    foreground="#89938C"
                 ),
                 widget.TextBox(
                     text=f" {cpu_icon} ",
@@ -160,7 +160,7 @@ screens = [
                 widget.TextBox(
                     text=f" {memory_icon} ",
                     fontsize=14,
-                    foreground="#89938C",
+                    foreground="#89938C"
                 ),
                 widget.Memory(
                     fontsize=14,
@@ -169,7 +169,7 @@ screens = [
                 widget.TextBox(
                     text=f" {thermal_icon} ",
                     fontsize=14,
-                    foreground="#89938C",
+                    foreground="#89938C"
                 ),
                 widget.ThermalSensor(
                     fontsize=14,
@@ -222,7 +222,7 @@ screens = [
                 widget.TextBox(
                     text=f" {clock_icon} ",
                     fontsize=14,
-                    foreground="#89938C",
+                    foreground="#89938C"
                 ),
                 widget.Clock(
                     format="%I:%M %p",
@@ -242,11 +242,11 @@ screens = [
                     foreground="#89938C"
                  ),
 		 widget.TextBox(
+                    text=f" {powermenu_icon} ",
+                    fontsize=14,
                     foreground="#89938C",
-                    default_text=f" {powermenu_icon} ",
-                    padding=10
-                    mouse_callbacks={'Button1': lambda: qtile.cmd_spawn("powermenu")},
-                 ),
+		    mouse_callbacks={'Button1': lambda: qtile.cmd_spawn("powermenu")}
+                ),
             ],
             43,  # Set height of the bar
             background="#1b2125",  # Set the background color
