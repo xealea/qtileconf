@@ -14,11 +14,15 @@ mod = "mod4" # Use the Super key as the main modifier
 terminal = "alacritty" # Use the default terminal emulator
 
 # Script path
+screenshot = "screenshot"
 powermenu = "powermenu"
 volume = "volume"
+
+# Command scripts
 vup = "-i"
 vdown = "-d"
 vmute = "-m"
+# ---
 
 # Key bindings
 keys = [
