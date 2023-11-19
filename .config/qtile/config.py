@@ -13,6 +13,13 @@ from time import sleep
 mod = "mod4" # Use the Super key as the main modifier
 terminal = "alacritty" # Use the default terminal emulator
 
+# Script path
+powermenu = "powermenu"
+volume = "volume"
+vup = "-i"
+vdown = "-d"
+vmute = "-m"
+
 # Key bindings
 keys = [
     # Default bindings
@@ -40,9 +47,9 @@ keys = [
     Key([mod], "r", lazy.spawn("dmenu_run -l 15 -c -g 3"), desc="Spawn a command using a prompt widget"),
     
     # Custom bindings
-    Key([], "XF86AudioRaiseVolume", lazy.spawn("pactl set-sink-volume 0 +5%"), desc='Volume Up'),
-    Key([], "XF86AudioLowerVolume", lazy.spawn("pactl set-sink-volume 0 -5%"), desc='Volume Down'),
-    Key([], "XF86AudioMute", lazy.spawn("pulsemixer --toggle-mute"), desc='Volume Mute'),
+    Key([], "XF86AudioRaiseVolume", lazy.spawn(f"{volume} {vup}"), desc='Volume Up'),
+    Key([], "XF86AudioLowerVolume", lazy.spawn(f"{volume} {vdown}"), desc='Volume Down'),
+    Key([], "XF86AudioMute", lazy.spawn(f"{volume} {vmute}"), desc='Volume Mute'),
     Key([], "XF86AudioPlay", lazy.spawn("playerctl play-pause"), desc='playerctl'),
     Key([], "XF86AudioPrev", lazy.spawn("playerctl previous"), desc='playerctl'),
     Key([], "XF86AudioNext", lazy.spawn("playerctl next"), desc='playerctl'),
