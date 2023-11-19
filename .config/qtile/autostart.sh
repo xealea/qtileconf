@@ -1,6 +1,4 @@
 #!/bin/bash
-
-# This script was modified by Lea based on archcraft script
 # Email: xealea@proton.me
 
 # Run processes
