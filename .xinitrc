@@ -20,7 +20,7 @@ export XDEB_OPT_WARN_CONFLICT="true"
 export XDEB_OPT_FIX_CONFLICT="true"
 
 # Path my script
-export PATH="$PATH:$HOME/.local/bin"
+export PATH="$PATH:$HOME/.local/bin:$PATH"
 
 # Run processes
 exec ~/.fehbg &
