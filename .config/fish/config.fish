@@ -50,6 +50,9 @@ set -x XDEB_OPT_SYNC "true"
 set -x XDEB_OPT_WARN_CONFLICT "true"
 set -x XDEB_OPT_FIX_CONFLICT "true"
 
+# Path my script
+set -x PATH "$PATH:/$HOME/.local/bin"
+
 # Change title terminal
 switch $TERM
     case "xterm*" "rxvt*" "Eterm*" "aterm" "kterm" "gnome*" "alacritty" "st" "konsole*"; set -x PROMPT_COMMAND 'echo -ne "\033]0;($USER@$HOSTNAME:r):($PWD:r)\007"'
@@ -70,8 +73,8 @@ function up
     if not cd "$d"; echo "Couldn't go up $limit dirs."; end
 end
 
-# Vim and Emacs
-alias vim="nvim"
+# Vim
+alias vim 'neovim'
 
 # Changing "ls" to "exa"
 alias ls 'exa -al --color=always --group-directories-first'
@@ -214,5 +217,15 @@ function cdown
     end
 end
 
-# ssh
+# Ssh
 eval (ssh-agent -c) > /dev/null 2>&1 &
+
+# Simple power
+alias soff 'systemctl poweroff'
+alias sboot 'systemctl reboot'
+alias spend 'systemctl suspend'
+alias ssleep 'systenctl sleep'
+alias loff 'loginctl poweroff'
+alias lboot 'loginctl reboot'
+alias lpend 'loginctl suspend'
+alias lsleep 'loginctl sleep'
