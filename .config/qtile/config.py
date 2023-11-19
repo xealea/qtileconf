@@ -37,7 +37,7 @@ keys = [
     Key([mod], "c", lazy.window.kill(), desc="Kill focused window"),
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
-    Key([mod], "r", lazy.spawn("dmenu_run -fn 'JetBrainsMono Nerd Font:size=10' -nb '#1B2125' -sf '#FFFFFF' -sb '#404C51' -nf '#FFFFFF' -l 20 -c -g 3"), desc="Spawn a command using a prompt widget"),
+    Key([mod], "r", lazy.spawn("dmenu_run -l 15 -c -g 3"), desc="Spawn a command using a prompt widget"),
     
     # Custom bindings
     Key([], "XF86AudioRaiseVolume", lazy.spawn("pactl set-sink-volume 0 +5%"), desc='Volume Up'),
@@ -118,7 +118,7 @@ screens = [
                     fontsize=14,
                     padding=5,
                     foreground="#89938C",
-                    mouse_callbacks={'Button1': lambda: qtile.cmd_spawn("dmenu_run -fn 'JetBrainsMono Nerd Font:size=10' -nb '#1B2125' -sf '#FFFFFF' -sb '#404C51' -nf '#FFFFFF' -l 20 -c -g 3")},
+                    mouse_callbacks={'Button1': lambda: qtile.cmd_spawn("dmenu_run -l 15 -c -g 3")},
                 ),
                 widget.CurrentLayout(
                     fontsize=14,
