@@ -7,19 +7,23 @@ show_notification() {
 
 # Function to get current volume level
 get_volume() {
-    pactl list sinks | grep 'Volume: 0' | awk '{print $5}' | sed 's/%//'
+    pactl list sinks | awk '/^[[:space:]]*Volume:/ {print $5; exit}' | tr -d '%'
+}
+
+# Function to adjust volume
+adjust_volume() {
+    pactl set-sink-volume @DEFAULT_SINK@ "$1"
+    show_notification "Volume Adjusted to $(get_volume)%"
 }
 
 # Function to increase volume
 increase_volume() {
-    pactl set-sink-volume @DEFAULT_SINK@ +5%
-    show_notification "Volume Increased to $(get_volume)%"
+    adjust_volume +5%
 }
 
 # Function to decrease volume
 decrease_volume() {
-    pactl set-sink-volume @DEFAULT_SINK@ -5%
-    show_notification "Volume Decreased to $(get_volume)%"
+    adjust_volume -5%
 }
 
 # Function to mute/unmute volume
@@ -39,4 +43,3 @@ case "$1" in
     "-m") toggle_mute ;;
     *) echo "Invalid argument. Usage: $0 {-i|-d|-m}" ;;
 esac
-  
