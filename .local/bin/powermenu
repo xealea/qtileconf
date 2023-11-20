@@ -3,20 +3,57 @@
 SCRIPT_NAME="powermenu"
 
 options=("Poweroff" "Reboot" "Sleep")
+power_commands=("systemctl poweroff" "loginctl poweroff")
+reboot_commands=("systemctl reboot" "loginctl reboot")
+sleep_commands=("systemctl suspend" "loginctl suspend")
+
+# Function to check if a command is available
+command_exists() {
+  command -v "$1" >/dev/null 2>&1
+}
+
+# Determine which command to use based on availability
+if command_exists systemctl; then
+    power_command=${power_commands[0]}
+    reboot_command=${reboot_commands[0]}
+    sleep_command=${sleep_commands[0]}
+else
+    power_command=${power_commands[1]}
+    reboot_command=${reboot_commands[1]}
+    sleep_command=${sleep_commands[1]}
+fi
 
 selected_option=$(printf '%s\n' "${options[@]}" | dmenu -i -c -l 3 -p "$SCRIPT_NAME")
 
 case $selected_option in
     "Poweroff")
-        loginctl poweroff
+        confirm_option=$(echo -e "Yes\nNo" | dmenu -i -p "Are you sure you want to power off?" -c -l 2)
+        if [ "$confirm_option" = "Yes" ]; then
+            dunstify "Powering off..."
+            $power_command
+        else
+            dunstify "Power off canceled"
+        fi
         ;;
     "Reboot")
-        loginctl reboot
+        confirm_option=$(echo -e "Yes\nNo" | dmenu -i -p "Are you sure you want to reboot?" -c -l 2)
+        if [ "$confirm_option" = "Yes" ]; then
+            dunstify "Rebooting..."
+            $reboot_command
+        else
+            dunstify "Reboot canceled"
+        fi
         ;;
     "Sleep")
-        loginctl suspend
+        confirm_option=$(echo -e "Yes\nNo" | dmenu -i -p "Are you sure you want to sleep?" -c -l 2)
+        if [ "$confirm_option" = "Yes" ]; then
+            dunstify "Putting system to sleep..."
+            $sleep_command
+        else
+            dunstify "Sleep canceled"
+        fi
         ;;
     *)
-        echo "Invalid option"
+        dunstify "Invalid option"
         ;;
 esac
