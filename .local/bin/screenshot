@@ -39,32 +39,51 @@ timestamp=$(date +%Y-%m-%d-%H-%M-%S)
 geometry=$(xrandr --current | awk '/current/ {print $8}')
 pictures_dir="$(xdg-user-dir PICTURES)/Screenshots"
 temp_file="${pictures_dir}/temp_${timestamp}.png"
-file="Screenshot_${timestamp}_${geometry}.png"
+file="${pictures_dir}/Screenshot_${timestamp}_${geometry}.png"
 
 create_directory "$pictures_dir"
 
-DMENU_OPTIONS="-p 'Select Screenshot Option:' -c -l 5"
-selected_option=$(dmenu $DMENU_OPTIONS <<< "Screenshot Full\nScreenshot 5sec\nScreenshot 10sec\nScreenshot Window\nScreenshot Area") || exit 1
+SCRIPT_NAME="screenshot"
 
-case "$selected_option" in
-  --now)
-    take_screenshot "$pictures_dir/$temp_file" && convert_image "$pictures_dir/$temp_file" "$pictures_dir/$file" && notify "Copied to clipboard." && notify_view "$pictures_dir/$file"
-    ;;
-  --in5)
-    countdown 5 && take_screenshot "$pictures_dir/$temp_file" && convert_image "$pictures_dir/$temp_file" "$pictures_dir/$file" && notify_view "$pictures_dir/$file"
-    ;;
-  --in10)
-    countdown 10 && take_screenshot "$pictures_dir/$temp_file" && convert_image "$pictures_dir/$temp_file" "$pictures_dir/$file" && notify_view "$pictures_dir/$file"
-    ;;
-  --win)
-    take_screenshot "$pictures_dir/$temp_file" -i "$(xdotool getactivewindow)" && convert_image "$pictures_dir/$temp_file" "$pictures_dir/$file" && notify_view "$pictures_dir/$file"
-    ;;
-  --area)
-    take_screenshot "$pictures_dir/$temp_file" -s -b 2 -c 0.35,0.55,0.85,0.25 && convert_image "$pictures_dir/$temp_file" "$pictures_dir/$file" && notify_view "$pictures_dir/$file"
-    ;;
-  *)
-    exit 1
-    ;;
+options=("Screenshot --now" "Screenshot --in5" "Screenshot --in10" "Screenshot --win" "Screenshot --area")
+
+selected_option=$(printf '%s\n' "${options[@]}" | dmenu -i -l 5 -p "$SCRIPT_NAME") || exit 1
+
+# Function to use dmenu to prompt user to open in viewnior
+viewnior_prompt() {
+    open_in_viewnior=$(echo -e "Yes\nNo" | dmenu -p "Open in viewnior?")
+    if [ "$open_in_viewnior" == "Yes" ]; then
+        viewnior "$1"
+    fi
+}
+
+case $selected_option in
+    "Screenshot --now")
+        take_screenshot "$temp_file" && convert_image "$temp_file" "$file" && notify "Copied to clipboard."
+        viewnior_prompt "$file"
+        ;;
+    "Screenshot --in5")
+        countdown 5 && take_screenshot "$temp_file" && convert_image "$temp_file" "$file"
+        viewnior_prompt "$file" 
+        ;;
+    "Screenshot --in10")
+        countdown 10 && take_screenshot "$temp_file" && convert_image "$temp_file" "$file"
+        viewnior_prompt "$file"  
+        ;;
+    "Screenshot --win")
+        take_screenshot "$temp_file" -i "$(xdotool getactivewindow)" && convert_image "$temp_file" "$file"
+        viewnior_prompt "$file"  
+        ;;
+    "Screenshot --area")
+        take_screenshot "$temp_file" -s -b 2 -c 0.35,0.55,0.85,0.25 && convert_image "$temp_file" "$file"
+        viewnior_prompt "$file"  
+        ;;
+    *)
+        exit 1
+        ;;
 esac
+
+# Remove temp file
+rm "$temp_file"
 
 exit 0
