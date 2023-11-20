@@ -47,7 +47,7 @@ SCRIPT_NAME="screenshot"
 
 options=("Screenshot --now" "Screenshot --in5" "Screenshot --in10" "Screenshot --win" "Screenshot --area")
 
-selected_option=$(printf '%s\n' "${options[@]}" | dmenu -i -l 5 -p "$SCRIPT_NAME") || exit 1
+selected_option=$(printf '%s\n' "${options[@]}" | dmenu -i -p "$SCRIPT_NAME" -c -l 5) || exit 1
 
 # Function to use dmenu to prompt user to open in viewnior
 viewnior_prompt() {
