@@ -63,13 +63,13 @@ viewnior_prompt() {
 
 case $selected_option in
   "Screenshot --now" | "Screenshot --in5" | "Screenshot --in10")
-    countdown "${selected_option: -1}" && take_screenshot "$temp_file" && convert_image "$temp_file" "$file" && notify "Screenshot taken after ${selected_option: -1} seconds."
+    countdown "${selected_option: -1}" && sleep 2 && take_screenshot "$temp_file" && convert_image "$temp_file" "$file" && notify "Screenshot taken after ${selected_option: -1} seconds."
     ;;
   "Screenshot --win")
-    take_window_screenshot "$temp_file" && convert_image "$temp_file" "$file" && notify "Window screenshot taken."
+    take_window_screenshot "$temp_file" && sleep 2 && convert_image "$temp_file" "$file" && notify "Window screenshot taken."
     ;;
   "Screenshot --area")
-    take_area_screenshot "$temp_file" && convert_image "$temp_file" "$file" && notify "Area screenshot taken."
+    take_area_screenshot "$temp_file" && sleep 2 && convert_image "$temp_file" "$file" && notify "Area screenshot taken."
     ;;
   *)
     exit 1
