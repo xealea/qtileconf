@@ -28,10 +28,16 @@ take_screenshot() {
   maim -u -f png "$1"
 }
 
+take_area_screenshot() {
+  maim -s "$1"
+}
+
+take_window_screenshot() {
+  maim -i "$(xdotool getactivewindow)" "$1"
+}
+
 create_directory() {
-  if [[ ! -d "$1" ]]; then
-    mkdir -p "$1" || { echo "Error creating directory: $1"; exit 1; }
-  fi
+  [[ -d "$1" ]] || mkdir -p "$1" || { echo "Error creating directory: $1"; exit 1; }
 }
 
 # Main
@@ -45,43 +51,32 @@ create_directory "$pictures_dir"
 
 SCRIPT_NAME="screenshot"
 
-options=("Screenshot --now" "Screenshot --in5" "Screenshot --in10" "Screenshot --win" "Screenshot --area")
+options=("Screenshot --now" "Screenshot --in5" "Screenshot --in10" "Screenshot --win" "Screenshot --area" )
 
-selected_option=$(printf '%s\n' "${options[@]}" | dmenu -i -p "$SCRIPT_NAME" -c -l 5) || exit 1
+selected_option=$(printf '%s\n' "${options[@]}" | dmenu -i -p "$SCRIPT_NAME" -c -l 7) || exit 1
 
-# Function to use dmenu to prompt user to open in viewnior
+# Function to use dmenu to prompt the user to open in viewnior
 viewnior_prompt() {
-    open_in_viewnior=$(echo -e "Yes\nNo" | dmenu -p "Open in viewnior?" -c -l 2
-    if [ "$open_in_viewnior" == "Yes" ]; then
-        viewnior "$1"
-    fi
+  open_in_viewnior=$(echo -e "Yes\nNo" | dmenu -p "Open in viewnior?" -c -l 2)
+  [[ "$open_in_viewnior" == "Yes" ]] && viewnior "$1"
 }
 
 case $selected_option in
-    "Screenshot --now")
-        take_screenshot "$temp_file" && convert_image "$temp_file" "$file" && notify "Copied to clipboard."
-        viewnior_prompt "$file"
-        ;;
-    "Screenshot --in5")
-        countdown 5 && take_screenshot "$temp_file" && convert_image "$temp_file" "$file"
-        viewnior_prompt "$file" 
-        ;;
-    "Screenshot --in10")
-        countdown 10 && take_screenshot "$temp_file" && convert_image "$temp_file" "$file"
-        viewnior_prompt "$file"  
-        ;;
-    "Screenshot --win")
-        take_screenshot "$temp_file" -i "$(xdotool getactivewindow)" && convert_image "$temp_file" "$file"
-        viewnior_prompt "$file"  
-        ;;
-    "Screenshot --area")
-        take_screenshot "$temp_file" -s -b 2 -c 0.35,0.55,0.85,0.25 && convert_image "$temp_file" "$file"
-        viewnior_prompt "$file"  
-        ;;
-    *)
-        exit 1
-        ;;
+  "Screenshot --now" | "Screenshot --in5" | "Screenshot --in10")
+    countdown "${selected_option: -1}" && take_screenshot "$temp_file" && convert_image "$temp_file" "$file" && notify "Screenshot taken after ${selected_option: -1} seconds."
+    ;;
+  "Screenshot --win")
+    take_window_screenshot "$temp_file" && convert_image "$temp_file" "$file" && notify "Window screenshot taken."
+    ;;
+  "Screenshot --area")
+    take_area_screenshot "$temp_file" && convert_image "$temp_file" "$file" && notify "Area screenshot taken."
+    ;;
+  *)
+    exit 1
+    ;;
 esac
+
+viewnior_prompt "$file"
 
 # Remove temp file
 rm "$temp_file"
