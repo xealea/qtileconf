@@ -51,7 +51,7 @@ selected_option=$(printf '%s\n' "${options[@]}" | dmenu -i -l 5 -p "$SCRIPT_NAME
 
 # Function to use dmenu to prompt user to open in viewnior
 viewnior_prompt() {
-    open_in_viewnior=$(echo -e "Yes\nNo" | dmenu -p "Open in viewnior?")
+    open_in_viewnior=$(echo -e "Yes\nNo" | dmenu -p "Open in viewnior?" -c -l 2
     if [ "$open_in_viewnior" == "Yes" ]; then
         viewnior "$1"
     fi
