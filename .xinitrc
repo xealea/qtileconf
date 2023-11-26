@@ -1,14 +1,6 @@
 #!/bin/sh
 # Email: xealea@proton.me
 
-# Kill already running process
-_ps=(xsettingsd ksuperkey)
-for _prs in "${_ps[@]}"; do
-	if [[ `pidof ${_prs}` ]]; then
-		killall -9 ${_prs}
-	fi
-done
-
 # polkit agent
 if [[ ! `pidof xfce-polkit` ]]; then
 	/usr/lib/xfce-polkit/xfce-polkit &
