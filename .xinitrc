@@ -1,11 +1,6 @@
 #!/bin/sh
 # Email: xealea@proton.me
 
-# polkit agent
-if [[ ! `pidof xfce-polkit` ]]; then
-	/usr/lib/xfce-polkit/xfce-polkit &
-fi
-
 # Environment variables
 export QT_QPA_PLATFORMTHEME="gtk3"
 export VISUAL="lvim"
@@ -27,25 +22,30 @@ export XDEB_OPT_FIX_CONFLICT="true"
 # Path my script
 export PATH="$PATH:$HOME/.local/bin:$PATH"
 
+# polkit agent
+if [[ ! `pidof xfce-polkit` ]]; then
+	exec /usr/lib/xfce-polkit/xfce-polkit &
+fi
+
 # Run processes
-~/.fehbg &
-xfsettingsd &
-xfce4-power-manager &
-xdg-user-dirs-update &
-xdg-user-dirs-gtk-update &
-dbus-run-session pipewire &
+exec ~/.fehbg &
+exec xfsettingsd &
+exec xfce4-power-manager &
+exec xdg-user-dirs-update &
+exec xdg-user-dirs-gtk-update &
+exec dbus-run-session pipewire &
 
 # Enable Super Keys For Menu
-ksuperkey -e 'Super_L=Alt_L|F1' &
-ksuperkey -e 'Super_R=Alt_L|F1' &
+exec ksuperkey -e 'Super_L=Alt_L|F1' &
+exec superkey -e 'Super_R=Alt_L|F1' &
 
 # Start dunst & picom
-picom --config  ~/.config/picom.conf &
-dunst -config ~/.config/dunst/dunstrc &
+exec picom --config  ~/.config/picom.conf &
+exec dunst -config ~/.config/dunst/dunstrc &
 
 # X lock
-xscreensaver -no-splash &
-xautolock -time 5 -locker "xscreensaver-command -lock" -detectsleep &
+exec xscreensaver -no-splash &
+exec xautolock -time 5 -locker "xscreensaver-command -lock" -detectsleep &
 
 # run without login manager
-dbus-run-session qtile start
+exec dbus-run-session qtile start

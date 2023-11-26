@@ -142,12 +142,6 @@ screens = [
                     foreground="#89938C",
                     active="bdc2be"
                 ),
-#               widget.Sep(
-#                   padding=10,
-#                   linewidth=5,
-#                   size_percent=50,
-#                   foreground="#1b2125"
-#               ),
                 widget.WindowName(
                     fontsize=14,
                     foreground="#89938C"
@@ -159,24 +153,24 @@ screens = [
                     name_transform=lambda name: name.upper(),
                     foreground="#89938C"
                 ),
-                # widget.TextBox(
-                #     text=f" {cpu_icon} ",
-                #     fontsize=14,
-                #     foreground="#89938C"
-                # ),
-                # widget.CPU(
-                #     fontsize=14,
-                #     foreground="#89938C"
-                # ),
-                # widget.TextBox(
-                #     text=f" {memory_icon} ",
-                #     fontsize=14,
-                #     foreground="#89938C"
-                # ),
-                # widget.Memory(
-                #     fontsize=14,
-                #     foreground="#89938C"
-                # ),
+                widget.TextBox(
+                    text=f" {cpu_icon} ",
+                    fontsize=14,
+                    foreground="#89938C"
+                ),
+                widget.CPU(
+                    fontsize=14,
+                    foreground="#89938C"
+                ),
+                widget.TextBox(
+                    text=f" {memory_icon} ",
+                    fontsize=14,
+                    foreground="#89938C"
+                ),
+                widget.Memory(
+                    fontsize=14,
+                    foreground="#89938C"
+                ),
                 widget.TextBox(
                     text=f" {thermal_icon} ",
                     fontsize=14,
@@ -240,24 +234,17 @@ screens = [
                     fontsize=14,
                     foreground="#89938C"
                 ),
-#               widget.TextBox(
-#                    text=f" {capsnum_icon} ",
-#                    fontsize=14,
-#                    foreground="#89938C",
-#                ),
-#                widget.CapsNumLockIndicator(fontsize=14),
-                 # Add other widgets as needed
-                 widget.Systray(
-		    padding=10,
-		    fontsize=10,
+                widget.Systray(
+		            padding=10,
+		            fontsize=10,
                     foreground="#89938C"
                  ),
-		 widget.TextBox(
+		        widget.TextBox(
                     text=f" {powermenu_icon} ",
-		    padding=10,
+		            padding=10,
                     fontsize=14,
                     foreground="#89938C",
-		    mouse_callbacks={'Button1': lambda: qtile.cmd_spawn("powermenu")}
+		            mouse_callbacks={'Button1': lambda: qtile.cmd_spawn("powermenu")}
                 ),
             ],
             43,  # Set height of the bar
@@ -277,12 +264,12 @@ mouse = [
 floating_layout = layout.Floating(
     float_rules=[
         *layout.Floating.default_float_rules,
-        Match(wm_class='confirmreset'),  # gitk
-        Match(wm_class='makebranch'),    # gitk
-        Match(wm_class='maketag'),       # gitk
-        Match(wm_class='ssh-askpass'),   # ssh-askpass
-        Match(title='branchdialog'),     # gitk
-        Match(title='pinentry'),         # GPG key password entry
+        Match(wm_class='confirmreset'),  
+        Match(wm_class='makebranch'),    
+        Match(wm_class='maketag'),       
+        Match(wm_class='ssh-askpass'),   
+        Match(title='branchdialog'),     
+        Match(title='pinentry'),         
         Match(wm_class='confirm'),
         Match(wm_class='dialog'),
         Match(wm_class='download'),
