@@ -1,5 +1,6 @@
 #!/bin/bash
 # Email: xealea@proton.me
+# GIT: xealea
 
 # Function to install packages on Arch Linux
 install_arch() {
