@@ -1,6 +1,13 @@
 #!/bin/sh
 # Email: xealea@proton.me
 
+# Kill already running processes
+for _prs in xsettingsd ksuperkey; do
+    if pidof $_prs > /dev/null; then
+        killall -9 $_prs
+    fi
+done
+
 # Environment variables
 export QT_QPA_PLATFORMTHEME="gtk3"
 export VISUAL="lvim"
