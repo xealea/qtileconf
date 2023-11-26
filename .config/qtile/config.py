@@ -128,127 +128,127 @@ screens = [
                     text=f" {launcher_icon} ",
                     fontsize=14,
                     padding=5,
-                    foreground="#89938C",
+                    foreground="#f2f4f8",
                     mouse_callbacks={'Button1': lambda: qtile.cmd_spawn("dmenu_run -l 15 -c -g 3")}
                 ),
                 widget.CurrentLayout(
                     fontsize=14,
-                    foreground="#89938C"
+                    foreground="#f2f4f8"
                 ),
                 widget.GroupBox(
                     highlight_method='block',
-                    this_current_screen_border='1b2125',
+                    this_current_screen_border='#161616',
                     fontsize=14,
-                    foreground="#89938C",
+                    foreground="#f2f4f8",
                     active="bdc2be"
                 ),
                 widget.WindowName(
                     fontsize=14,
-                    foreground="#89938C"
+                    foreground="#f2f4f8"
                 ),  
                 widget.Chord(
                     chords_colors={
                         "launch": ("#ff0000", "#ffffff"),
                     },
                     name_transform=lambda name: name.upper(),
-                    foreground="#89938C"
+                    foreground="#f2f4f8"
                 ),
                 widget.TextBox(
                     text=f" {cpu_icon} ",
                     fontsize=14,
-                    foreground="#89938C"
+                    foreground="#f2f4f8"
                 ),
                 widget.CPU(
                     fontsize=14,
-                    foreground="#89938C"
+                    foreground="#f2f4f8"
                 ),
                 widget.TextBox(
                     text=f" {memory_icon} ",
                     fontsize=14,
-                    foreground="#89938C"
+                    foreground="#f2f4f8"
                 ),
                 widget.Memory(
                     fontsize=14,
-                    foreground="#89938C"
+                    foreground="#f2f4f8"
                 ),
                 widget.TextBox(
                     text=f" {thermal_icon} ",
                     fontsize=14,
-                    foreground="#89938C"
+                    foreground="#f2f4f8"
                 ),
                 widget.ThermalSensor(
                     fontsize=14,
-                    foreground="#89938C"
+                    foreground="#f2f4f8"
                 ),
                 widget.TextBox(
                     text=f" {net_icon} ",
                     fontsize=14,
-                    foreground="#89938C",
+                    foreground="#f2f4f8",
 		    mouse_callbacks={'Button1': lambda: qtile.cmd_spawn("alacritty -e nmtui")}
                 ),
                 widget.Net(
                     format='{down:.0f}{down_suffix} ↓↑ {up:.0f}{up_suffix}',
                     fontsize=14,
-                    foreground="#89938C",
+                    foreground="#f2f4f8",
 		    mouse_callbacks={'Button1': lambda: qtile.cmd_spawn("alacritty -e nmtui")}
                 ),
 #               widget.TextBox(
 #                   text=f" {bluetooth_icon} ",
 #                   fontsize=14,
-#                   foreground="#89938C",
+#                   foreground="#f2f4f8",
 #               ),
 #               widget.Bluetooth(fontsize=14),
 #               widget.TextBox(
 #                   text=f" {pulsevolume_icon} ",
 #                   fontsize=14,
-#                   foreground="#89938C",
+#                   foreground="#f2f4f8",
 #               ),
 #               widget.Volume(fontsize=14),
                 widget.TextBox(
                     text=f" {battery_icon} ",
                     fontsize=14,
-                    foreground="#89938C",
+                    foreground="#f2f4f8",
 		    mouse_callbacks={'Button1': lambda: qtile.cmd_spawn("xfce4-power-manager-settings")}
                 ),
                 widget.Battery(
     		    battery=0,
     		    format="{percent:2.0%} |",
     		    fontsize=14,
-    		    foreground="#89938C",
+    		    foreground="#f2f4f8",
     		    mouse_callbacks={'Button1': lambda: qtile.cmd_spawn("xfce4-power-manager-settings")}
 		),
 		widget.Battery(
     		    battery=1,
     		    format="{percent:2.0%}",
     		    fontsize=14,
-    		    foreground="#89938C",
+    		    foreground="#f2f4f8",
     		    mouse_callbacks={'Button1': lambda: qtile.cmd_spawn("xfce4-power-manager-settings")}
 		),
                 widget.TextBox(
                     text=f" {clock_icon} ",
                     fontsize=14,
-                    foreground="#89938C"
+                    foreground="#f2f4f8"
                 ),
                 widget.Clock(
                     format="%I:%M %p",
                     fontsize=14,
-                    foreground="#89938C"
+                    foreground="#f2f4f8"
                 ),
                 widget.Systray(
 		            padding=10,
 		            fontsize=10,
-                    foreground="#89938C"
+                    foreground="#f2f4f8"
                  ),
 		        widget.TextBox(
                     text=f" {powermenu_icon} ",
 		            padding=10,
                     fontsize=14,
-                    foreground="#89938C",
+                    foreground="#f2f4f8",
 		            mouse_callbacks={'Button1': lambda: qtile.cmd_spawn("powermenu")}
                 ),
             ],
             43,  # Set height of the bar
-            background="#1b2125",  # Set the background color
+            background="#161616",  # Set the background color
             margin=[15, 15, 0, 15],  # Set the left, top, right, and bottom margins
         ),
     ),

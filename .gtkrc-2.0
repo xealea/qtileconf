@@ -2,8 +2,8 @@
 # Any customization should be done in ~/.gtkrc-2.0.mine instead.
 
 include "/home/vixel/.gtkrc-2.0.mine"
-gtk-theme-name="Flat"
-gtk-icon-theme-name="Papirus-Dark"
+gtk-theme-name="pime"
+gtk-icon-theme-name="pixcone"
 gtk-font-name="Cantarell 9"
 gtk-cursor-theme-name="Material-Light"
 gtk-cursor-theme-size=24
