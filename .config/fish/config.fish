@@ -34,7 +34,7 @@ starship init fish | source
 
 # Environment variables
 set -x QT_QPA_PLATFORMTHEME "gtk3"
-set -x VISUAL "lvim" 
+set -x VISUAL "nvim" 
 set -x EDITOR "geany" 
 set -x TERM "alacritty" 
 set -x HISTCONTROL "ignoredups:erasedups"

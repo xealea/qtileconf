@@ -10,7 +10,7 @@ done
 
 # Environment variables
 export QT_QPA_PLATFORMTHEME="gtk3"
-export VISUAL="lvim"
+export VISUAL="nvim"
 export EDITOR="geany"
 export TERM="alacritty"
 export HISTCONTROL="ignoredups:erasedups"
