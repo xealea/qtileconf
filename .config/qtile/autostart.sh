@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # Email: xealea@proton.me
 
 # Kill already running process
