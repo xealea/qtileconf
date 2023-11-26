@@ -3,7 +3,7 @@
 
 include "/home/vixel/.gtkrc-2.0.mine"
 gtk-theme-name="pime"
-gtk-icon-theme-name="pixcone"
+gtk-icon-theme-name="pixcone-dark-colorful"
 gtk-font-name="Cantarell 9"
 gtk-cursor-theme-name="Material-Light"
 gtk-cursor-theme-size=24

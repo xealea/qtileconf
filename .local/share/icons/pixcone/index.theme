@@ -14,12 +14,7 @@
 
 [Icon Theme]
 Name = pixcone
-
 Comment = Third-party icons theme based on GNOME Project's Adwaita icons theme
-Comment[it] = Tema di icone di terze parti basato sul tema delle icone Adwaita del Progetto GNOME
-Comment[pt] = Tema de ícones terceirizados baseado no tema de ícones Adwaita do Projeto GNOME
-Comment[pt_BR] = Tema de ícones terceirizados baseado no tema de ícones Adwaita do Projeto GNOME
-Comment[pt_PT] = Tema de ícones terceirizados baseado no tema de ícones Adwaita do Projeto GNOME
 
 DisplayDepth=32
 Encoding=UTF-8
