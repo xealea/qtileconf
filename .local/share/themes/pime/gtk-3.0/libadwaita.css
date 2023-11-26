@@ -38,11 +38,11 @@
 @define-color light_3 #deddda;
 @define-color light_4 #c0bfbc;
 @define-color light_5 #9a9996;
-@define-color dark_1 #77767b;
-@define-color dark_2 #5e5c64;
-@define-color dark_3 #3d3846;
-@define-color dark_4 #241f31;
-@define-color dark_5 #000000;
+@define-color dark_1 #161616;
+@define-color dark_2 #161616;
+@define-color dark_3 #161616;
+@define-color dark_4 #161616;
+@define-color dark_5 #161616;
 .background { color: @window_fg_color; background-color: @window_bg_color; }
 
 dnd { color: @window_fg_color; }
