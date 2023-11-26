@@ -1,0 +1,6 @@
+[X-GNOME-Metatheme]
+Name=pime
+Type=X-GNOME-Metatheme
+Comment=pime gtk3 theme
+Encoding=UTF-8
+GtkTheme=pime
