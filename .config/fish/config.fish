@@ -51,7 +51,7 @@ set -x XDEB_OPT_WARN_CONFLICT "true"
 set -x XDEB_OPT_FIX_CONFLICT "true"
 
 # Path my script
-set -x PATH="$PATH:$HOME/.config/nvim/bin:$PATH"
+set -x PATH "$PATH:$HOME/.config/nvim/bin:$PATH"
 set -x PATH "$PATH:$HOME/.local/bin:$PATH"
 
 # Change title terminal
