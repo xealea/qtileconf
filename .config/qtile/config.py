@@ -159,24 +159,24 @@ screens = [
                     name_transform=lambda name: name.upper(),
                     foreground="#89938C"
                 ),
-                widget.TextBox(
-                    text=f" {cpu_icon} ",
-                    fontsize=14,
-                    foreground="#89938C"
-                ),
-                widget.CPU(
-                    fontsize=14,
-                    foreground="#89938C"
-                ),
-                widget.TextBox(
-                    text=f" {memory_icon} ",
-                    fontsize=14,
-                    foreground="#89938C"
-                ),
-                widget.Memory(
-                    fontsize=14,
-                    foreground="#89938C"
-                ),
+                # widget.TextBox(
+                #     text=f" {cpu_icon} ",
+                #     fontsize=14,
+                #     foreground="#89938C"
+                # ),
+                # widget.CPU(
+                #     fontsize=14,
+                #     foreground="#89938C"
+                # ),
+                # widget.TextBox(
+                #     text=f" {memory_icon} ",
+                #     fontsize=14,
+                #     foreground="#89938C"
+                # ),
+                # widget.Memory(
+                #     fontsize=14,
+                #     foreground="#89938C"
+                # ),
                 widget.TextBox(
                     text=f" {thermal_icon} ",
                     fontsize=14,
@@ -299,12 +299,6 @@ floating_layout = layout.Floating(
     fullscreen_border_width=0,
     border_width=0
 )
-
-# Startup applications
-@hook.subscribe.startup_once
-def autostart():
-    subprocess.run([os.path.expanduser("~/.config/qtile/autostart.sh")])
-    subprocess.call(["xsetroot", "-cursor_name", "left_ptr"])
 
 @hook.subscribe.client_new
 def set_floating(window):
