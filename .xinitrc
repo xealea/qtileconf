@@ -27,8 +27,7 @@ export XDEB_OPT_WARN_CONFLICT="true"
 export XDEB_OPT_FIX_CONFLICT="true"
 
 # Path my script
-export PATH="$PATH:$HOME/.config/nvim/bin:$PATH"
-export PATH="$PATH:$HOME/.local/bin:$PATH"
+export PATH="$HOME/.config/nvim/bin:$HOME/.local/bin:$PATH"
 
 # polkit agent
 if [[ ! `pidof xfce-polkit` ]]; then
