@@ -2,10 +2,10 @@
 
 <channel name="xsettings" version="1.0">
   <property name="Net" type="empty">
-    <property name="ThemeName" type="empty"/>
+    <property name="ThemeName" type="string" value="pime"/>
     <property name="IconThemeName" type="empty"/>
-    <property name="DoubleClickTime" type="int" value="100"/>
-    <property name="DoubleClickDistance" type="int" value="2"/>
+    <property name="DoubleClickTime" type="empty"/>
+    <property name="DoubleClickDistance" type="empty"/>
     <property name="DndDragThreshold" type="empty"/>
     <property name="CursorBlink" type="empty"/>
     <property name="CursorBlinkTime" type="empty"/>
