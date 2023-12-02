@@ -32,6 +32,6 @@
     </property>
     <property name="RightHanded" type="bool" value="true"/>
     <property name="Threshold" type="int" value="1"/>
-   <property name="Acceleration" type="double" value="2"/>
+    <property name="Acceleration" type="double" value="5.5"/>
   </property>
 </channel>
