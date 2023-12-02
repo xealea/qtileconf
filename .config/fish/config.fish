@@ -51,7 +51,7 @@ set -x XDEB_OPT_WARN_CONFLICT "true"
 set -x XDEB_OPT_FIX_CONFLICT "true"
 
 # NYoom
-set -x NVIM_APPNAME "vixel"
+set -x NVIM_APPNAME "nvim"
 
 # Path my script
 set -x PATH "$HOME/.config/nvim/bin:$HOME/.local/bin:$PATH"
