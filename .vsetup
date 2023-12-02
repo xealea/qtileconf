@@ -35,24 +35,23 @@ if [[ ! `pidof xfce-polkit` ]]; then
 fi
 
 # Run processes
-exec ~/.fehbg &
-exec xfsettingsd &
-exec xfce4-power-manager &
-exec xdg-user-dirs-update &
-exec xdg-user-dirs-gtk-update &
-exec dbus-run-session pipewire &
+~/.fehbg &
+xfsettingsd &
+xfce4-power-manager &
+dbus-run-session pipewire &
 
 # Enable Super Keys For Menu
-exec ksuperkey -e 'Super_L=Alt_L|F1' &
-exec superkey -e 'Super_R=Alt_L|F1' &
+ksuperkey -e 'Super_L=Alt_L|F1' &
+superkey -e 'Super_R=Alt_L|F1' &
+xsetroot -cursor_name left_ptr &
 
 # Start dunst & picom
-exec picom --config  ~/.config/picom.conf &
-exec dunst -config ~/.config/dunst/dunstrc &
+picom --config  ~/.config/picom.conf &
+dunst -config ~/.config/dunst/dunstrc &
 
 # X lock
-exec xscreensaver -no-splash &
-exec xautolock -time 5 -locker "xscreensaver-command -lock" -detectsleep &
+xscreensaver -no-splash &
+xautolock -time 5 -locker "xscreensaver-command -lock" -detectsleep &
 
 # run without login manager
-exec dbus-run-session qtile start
+dbus-run-session qtile start
