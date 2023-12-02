@@ -80,16 +80,12 @@ for i in groups:
 def init_layout_theme():
     return {"margin":15,
             "border_width":0,
-            "border_focus": "#5e81ac",
-            "border_normal": "#4c566a"
             }
 
 layout_theme = init_layout_theme()
 
 layouts = [
-    #layout.MonadTall(margin=0, border_width=0, border_focus="#5e81ac", border_normal="#4c566a"),
     layout.MonadTall(**layout_theme),
-    #layout.MonadWide(margin=0, border_width=0, border_focus="#5e81ac", border_normal="#4c566a"),
     layout.MonadWide(**layout_theme),
     layout.Matrix(**layout_theme),
     layout.Bsp(**layout_theme),
