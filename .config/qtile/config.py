@@ -292,6 +292,11 @@ def set_floating(window):
     if window.window.get_wm_transient_for() or window.window.get_wm_type() in ["notification", "toolbar", "splash", "dialog"]:
         window.floating = True
 
+@hook.subscribe.startup_once
+def autostart():
+    home = os.path.expanduser('~')
+    subprocess.call([home + '/.vsetup'])
+
 # Configuration
 focus_on_window_activation = "smart"
 reconfigure_screens = True
