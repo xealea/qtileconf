@@ -2,7 +2,7 @@
 # Any customization should be done in ~/.gtkrc-2.0.mine instead.
 
 include "/home/vixel/.gtkrc-2.0.mine"
-gtk-theme-name="adw-gtk3-dark"
+gtk-theme-name="Andromeda"
 gtk-icon-theme-name="ePapirus-Dark"
 gtk-font-name="Cantarell 11"
 gtk-cursor-theme-name="oreo_white_cursors"

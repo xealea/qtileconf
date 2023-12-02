@@ -1,11 +1,15 @@
-#!/bin/sh
+#!/usr/bin/env bash
 # Email: xealea@proton.me
 
-# Kill already running processes
-for _prs in xsettingsd ksuperkey; do
-    if pidof $_prs > /dev/null; then
-        killall -9 $_prs
-    fi
+# Init DIR
+DIR="$HOME/.config"
+
+# Kill already running process
+_ps=(xsettingsd ksuperkey)
+for _prs in "${_ps[@]}"; do
+	if [[ `pidof ${_prs}` ]]; then
+		killall -9 ${_prs}
+	fi
 done
 
 # Environment variables
@@ -30,7 +34,7 @@ export XDEB_OPT_FIX_CONFLICT="true"
 export NVIM_APPNAME="nvim"
 
 # Path my script
-export PATH="$HOME/.config/nvim/bin:$HOME/.local/bin:$PATH"
+export PATH=""$DIR"/nvim/bin:$HOME/.local/bin:$PATH"
 
 # polkit agent
 if [[ ! `pidof xfce-polkit` ]]; then
@@ -42,6 +46,7 @@ exec ~/.fehbg &
 xfsettingsd &
 xfce4-power-manager &
 dbus-run-session pipewire &
+xsettingsd --config="$DIR"/xsettingsd/xsettingsd.conf &
 
 # Enable Super Keys For Menu
 ksuperkey -e 'Super_L=Alt_L|F1' &
@@ -49,8 +54,8 @@ superkey -e 'Super_R=Alt_L|F1' &
 xsetroot -cursor_name left_ptr &
 
 # Start dunst & picom
-picom --config  ~/.config/picom.conf &
-dunst -config ~/.config/dunst/dunstrc &
+picom --config  "$DIR"/picom.conf &
+dunst -config "$DIR"/dunst/dunstrc &
 
 # X lock
 xscreensaver -no-splash &
