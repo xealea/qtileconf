@@ -26,6 +26,9 @@ export XDEB_OPT_SYNC="true"
 export XDEB_OPT_WARN_CONFLICT="true"
 export XDEB_OPT_FIX_CONFLICT="true"
 
+# Nyoom
+export NVIM_APPNAME="nvim"
+
 # Path my script
 export PATH="$HOME/.config/nvim/bin:$HOME/.local/bin:$PATH"
 
