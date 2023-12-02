@@ -35,7 +35,7 @@ if [[ ! `pidof xfce-polkit` ]]; then
 fi
 
 # Run processes
-~/.fehbg &
+exec ~/.fehbg &
 xfsettingsd &
 xfce4-power-manager &
 dbus-run-session pipewire &
