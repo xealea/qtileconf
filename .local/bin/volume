@@ -16,20 +16,16 @@ adjust_volume() {
     show_notification "Volume Adjusted to $(get_volume)%"
 }
 
-# Function to increase volume
-increase_volume() {
-    adjust_volume +5%
+# Function to increase/decrease volume
+change_volume() {
+    adjust_volume "$1"
 }
 
-# Function to decrease volume
-decrease_volume() {
-    adjust_volume -5%
-}
-
-# Function to mute/unmute volume
+# Function to toggle mute/unmute volume
 toggle_mute() {
     pactl set-sink-mute @DEFAULT_SINK@ toggle
-    if pactl list sinks | grep -q 'Mute: yes'; then
+    muted=$(pactl list sinks | awk '/Mute:/ {print $2}')
+    if [ "$muted" == "yes" ]; then
         show_notification "Volume Muted"
     else
         show_notification "Volume Unmuted"
@@ -38,8 +34,8 @@ toggle_mute() {
 
 # Check command line arguments
 case "$1" in
-    "-i") increase_volume ;;
-    "-d") decrease_volume ;;
+    "-i") change_volume +5% ;;
+    "-d") change_volume -5% ;;
     "-m") toggle_mute ;;
     *) echo "Invalid argument. Usage: $0 {-i|-d|-m}" ;;
 esac
