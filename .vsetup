@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 # Email: xealea@proton.me
 
+# VAR SET NO = NOT ACTIVE | YES = ACTIVE
+PICOM=NO
+QTILE_RELOAD=YES
+
 # Init DIR
 DIR="$HOME/.config"
 
@@ -48,6 +52,10 @@ xfsettingsd &
 xrdb ~/.Xresources &
 xfce4-power-manager &
 dbus-run-session pipewire &
+if [ $QTILE_RELOAD = "YES" ];
+then
+	python -m py_compile ~/.config/qtile/config.py &
+fi
 xsettingsd --config="$DIR"/xsettingsd/xsettingsd.conf &
 
 # Enable Super Keys For Menu
@@ -56,7 +64,10 @@ superkey -e 'Super_R=Alt_L|F1' &
 xsetroot -cursor_name left_ptr &
 
 # Start dunst & picom
-picom --config  "$DIR"/picom.conf &
+if [ $PICOM = "YES" ];
+then
+	picom --config  "$DIR"/picom.conf &
+fi
 dunst -config "$DIR"/dunst/dunstrc &
 
 # X lock
