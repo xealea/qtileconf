@@ -124,7 +124,7 @@ alias ncu 'nix-channel --update'
 
 # Arch & Paru
 alias pacs 'sudo pacman -Syu'
-alias paci 'sudo pacman -S'
+alias paci 'sudo pacman -S --noconfirm'
 alias pacr 'sudo pacman -Rs'
 alias pacq 'pacman -Q'
 alias pacinfo 'pacman -Qi'
