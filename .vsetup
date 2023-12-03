@@ -2,7 +2,7 @@
 # Email: xealea@proton.me
 
 # VAR SET NO = NOT ACTIVE | YES = ACTIVE
-PICOM=NO
+PICOM=YES
 XLOCK=YES
 QTILE_RELOAD=YES
 
@@ -61,9 +61,8 @@ if [ $XLOCK = "YES" ]; then
 fi
 
 # Run processes 
-exec ~/.fehbg &
+~/.fehbg &
 xfsettingsd &
-xrdb ~/.Xresources &
 xfce4-power-manager &
 dbus-run-session pipewire &
 superkey -e 'Super_R=Alt_L|F1' &
