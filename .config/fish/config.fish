@@ -38,6 +38,7 @@ set -x VISUAL "nvim"
 set -x EDITOR "geany" 
 set -x TERM "alacritty" 
 set -x HISTCONTROL "ignoredups:erasedups"
+set -x XCURSOR_THEME "oreo_white_cursors xclock"
 
 # Set other env
 set -x XDG_CONFIG_HOME "$HOME/.config"
