@@ -3,17 +3,16 @@
 
 # VAR SET NO = NOT ACTIVE | YES = ACTIVE
 PICOM=NO
+XLOCK=YES
 QTILE_RELOAD=YES
 
 # Init DIR
 DIR="$HOME/.config"
 
 # Kill already running process
-_ps=(xsettingsd ksuperkey)
-for _prs in "${_ps[@]}"; do
-	if [[ `pidof ${_prs}` ]]; then
-		killall -9 ${_prs}
-	fi
+for _prs in xsettingsd ksuperkey; do
+    pid=$(pidof $_prs)
+    [[ -n $pid ]] && kill -9 $pid
 done
 
 # Environment variables
@@ -39,40 +38,41 @@ export XDEB_OPT_FIX_CONFLICT="true"
 export NVIM_APPNAME="nvim"
 
 # Path my script
-export PATH=""$DIR"/nvim/bin:$HOME/.local/bin:$PATH"
+export PATH="$DIR/nvim/bin:$HOME/.local/bin:$PATH"
 
 # polkit agent
-if [[ ! `pidof xfce-polkit` ]]; then
-	exec /usr/lib/xfce-polkit/xfce-polkit &
+if ! pidof xfce-polkit; then
+    exec /usr/lib/xfce-polkit/xfce-polkit &
+fi
+
+# qtile
+if [ $QTILE_RELOAD = "YES" ]; then
+    python -m py_compile ~/.config/qtile/config.py &
+fi
+
+# picom
+if [ $PICOM = "YES" ]; then
+    picom --config "$DIR/picom.conf" &
+fi
+
+# lockscreen
+if [ $XLOCK = "YES" ]; then
+	xautolock -time 5 -locker "xscreensaver-command -lock" -detectsleep &
 fi
 
 # Run processes
-exec ~/.fehbg &
-xfsettingsd &
-xrdb ~/.Xresources &
-xfce4-power-manager &
-dbus-run-session pipewire &
-if [ $QTILE_RELOAD = "YES" ];
-then
-	python -m py_compile ~/.config/qtile/config.py &
-fi
-xsettingsd --config="$DIR"/xsettingsd/xsettingsd.conf &
-
-# Enable Super Keys For Menu
-ksuperkey -e 'Super_L=Alt_L|F1' &
-superkey -e 'Super_R=Alt_L|F1' &
-xsetroot -cursor_name left_ptr &
-
-# Start dunst & picom
-if [ $PICOM = "YES" ];
-then
-	picom --config  "$DIR"/picom.conf &
-fi
-dunst -config "$DIR"/dunst/dunstrc &
-
-# X lock
-xscreensaver -no-splash &
-xautolock -time 5 -locker "xscreensaver-command -lock" -detectsleep &
+{ 
+	~/.fehbg &
+	xfsettingsd &
+	xrdb ~/.Xresources &
+	xfce4-power-manager &
+	dbus-run-session pipewire &
+	superkey -e 'Super_R=Alt_L|F1' &
+	xsetroot -cursor_name left_ptr &
+	ksuperkey -e 'Super_L=Alt_L|F1' &
+	dunst -config "$DIR/dunst/dunstrc" &
+    xsettingsd --config="$DIR/xsettingsd/xsettingsd.conf" &
+}
 
 # run without login manager
 exec dbus-run-session qtile start
