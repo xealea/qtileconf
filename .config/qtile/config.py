@@ -16,13 +16,9 @@ terminal = "alacritty" # Use the default terminal emulator
 # Script path
 screenshot = "screenshot"
 powermenu = "powermenu"
-volume = "volume"
-
-# Command scripts
-vup = "-i"
-vdown = "-d"
-vmute = "-m"
-# ---
+volumeup = "volume -i"
+volumem = "volume -m"
+volumedown = "volume -d"
 
 # Key bindings
 keys = [
@@ -51,9 +47,9 @@ keys = [
     Key([mod], "r", lazy.spawn("dmenu_run -l 15 -c -g 3"), desc="Spawn a command using a prompt widget"),
     
     # Custom bindings
-    Key([], "XF86AudioRaiseVolume", lazy.spawn(f"{volume} {vup}"), desc='Volume Up'),
-    Key([], "XF86AudioLowerVolume", lazy.spawn(f"{volume} {vdown}"), desc='Volume Down'),
-    Key([], "XF86AudioMute", lazy.spawn(f"{volume} {vmute}"), desc='Volume Mute'),
+    Key([], "XF86AudioRaiseVolume", lazy.spawn(volumeup), desc='Volume Up'),
+    Key([], "XF86AudioLowerVolume", lazy.spawn(volumedown), desc='Volume Down'),
+    Key([], "XF86AudioMute", lazy.spawn(volumem), desc='Volume Mute'),
     Key([], "XF86AudioPlay", lazy.spawn("playerctl play-pause"), desc='playerctl'),
     Key([], "XF86AudioPrev", lazy.spawn("playerctl previous"), desc='playerctl'),
     Key([], "XF86AudioNext", lazy.spawn("playerctl next"), desc='playerctl'),
@@ -61,7 +57,7 @@ keys = [
     Key([], "XF86MonBrightnessDown", lazy.spawn("brightnessctl s 10%-"), desc='Brightness Down'),
     Key([mod], "e", lazy.spawn("thunar"), desc='File manager'),
     Key([mod], "h", lazy.spawn("xclip"), desc='Clipboard'),
-    Key([mod], "s", lazy.spawn(f"{screenshot}"), desc='Screenshot'),
+    Key([mod], "s", lazy.spawn(screenshot), desc='Screenshot'),
 ]
 
 # Groups

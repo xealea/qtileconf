@@ -60,19 +60,17 @@ if [ $XLOCK = "YES" ]; then
 	xautolock -time 5 -locker "xscreensaver-command -lock" -detectsleep &
 fi
 
-# Run processes
-{ 
-	~/.fehbg &
-	xfsettingsd &
-	xrdb ~/.Xresources &
-	xfce4-power-manager &
-	dbus-run-session pipewire &
-	superkey -e 'Super_R=Alt_L|F1' &
-	xsetroot -cursor_name left_ptr &
-	ksuperkey -e 'Super_L=Alt_L|F1' &
-	dunst -config "$DIR/dunst/dunstrc" &
-    xsettingsd --config="$DIR/xsettingsd/xsettingsd.conf" &
-}
+# Run processes 
+exec ~/.fehbg &
+xfsettingsd &
+xrdb ~/.Xresources &
+xfce4-power-manager &
+dbus-run-session pipewire &
+superkey -e 'Super_R=Alt_L|F1' &
+xsetroot -cursor_name left_ptr &
+ksuperkey -e 'Super_L=Alt_L|F1' &
+dunst -config "$DIR/dunst/dunstrc" &
+xsettingsd --config="$DIR/xsettingsd/xsettingsd.conf" &
 
 # run without login manager
 exec dbus-run-session qtile start
