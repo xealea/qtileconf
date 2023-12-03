@@ -65,9 +65,7 @@ fi
 xfsettingsd &
 xfce4-power-manager &
 dbus-run-session pipewire &
-superkey -e 'Super_R=Alt_L|F1' &
 xsetroot -cursor_name left_ptr &
-ksuperkey -e 'Super_L=Alt_L|F1' &
 dunst -config "$DIR/dunst/dunstrc" &
 xsettingsd --config="$DIR/xsettingsd/xsettingsd.conf" &
 
