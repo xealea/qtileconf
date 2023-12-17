@@ -10,7 +10,7 @@ TIMER_ICON="/usr/share/icons/dunst/timer.png"
 
 # Functions
 notify() {
-  dunstify -u low --replace=699 -i "$NOTIFY_ICON" "$1"
+  notify-send -u low --replace=699 -i "$NOTIFY_ICON" "$1"
 }
 
 countdown() {

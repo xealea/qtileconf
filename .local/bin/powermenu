@@ -29,31 +29,31 @@ case $selected_option in
     "Poweroff")
         confirm_option=$(echo -e "Yes\nNo" | dmenu -i -p "Are you sure you want to power off?" -c -l 2)
         if [ "$confirm_option" = "Yes" ]; then
-            dunstify "Powering off..."
+            notify-send "Powering off..."
             $power_command
         else
-            dunstify "Power off canceled"
+            notify-send "Power off canceled"
         fi
         ;;
     "Reboot")
         confirm_option=$(echo -e "Yes\nNo" | dmenu -i -p "Are you sure you want to reboot?" -c -l 2)
         if [ "$confirm_option" = "Yes" ]; then
-            dunstify "Rebooting..."
+            notify-send "Rebooting..."
             $reboot_command
         else
-            dunstify "Reboot canceled"
+            notify-send "Reboot canceled"
         fi
         ;;
     "Sleep")
         confirm_option=$(echo -e "Yes\nNo" | dmenu -i -p "Are you sure you want to sleep?" -c -l 2)
         if [ "$confirm_option" = "Yes" ]; then
-            dunstify "Putting system to sleep..."
+            notify-send "Putting system to sleep..."
             $sleep_command
         else
-            dunstify "Sleep canceled"
+            notify-send "Sleep canceled"
         fi
         ;;
     *)
-        dunstify "Invalid option"
+        notify-send "Invalid option"
         ;;
 esac

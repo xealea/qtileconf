@@ -64,10 +64,7 @@ fi
 ~/.fehbg &
 xfsettingsd &
 xfce4-power-manager &
-dbus-run-session pipewire &
 xsetroot -cursor_name left_ptr &
-dunst -config "$DIR/dunst/dunstrc" &
 xsettingsd --config="$DIR/xsettingsd/xsettingsd.conf" &
 
-# run without login manager
 exec dbus-run-session qtile start

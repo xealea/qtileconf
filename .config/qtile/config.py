@@ -16,13 +16,6 @@ terminal = "alacritty" # Use the default terminal emulator
 # Script path
 screenshot = "screenshot"
 powermenu = "powermenu"
-volume = "volume"
-
-# Command scripts
-vup = "-i"
-vdown = "-d"
-vmute = "-m"
-# ---
 
 # Key bindings
 keys = [
@@ -51,9 +44,9 @@ keys = [
     Key([mod], "r", lazy.spawn("dmenu_run -l 15 -c -g 3"), desc="Spawn a command using a prompt widget"),
     
     # Custom bindings
-    Key([], "XF86AudioRaiseVolume", lazy.spawn(f"{volume} {vup}"), desc='Volume Up'),
-    Key([], "XF86AudioLowerVolume", lazy.spawn(f"{volume} {vdown}"), desc='Volume Down'),
-    Key([], "XF86AudioMute", lazy.spawn(f"{volume} {vmute}"), desc='Volume Mute'),
+    Key([], "XF86AudioRaiseVolume", lazy.spawn("pamixer -i 10"), desc='Volume Up'),
+    Key([], "XF86AudioLowerVolume", lazy.spawn("pamixer -d 10"), desc='Volume Down'),
+    Key([], "XF86AudioMute", lazy.spawn("pamixer -t"), desc='Volume Mute'),
     Key([], "XF86AudioPlay", lazy.spawn("playerctl play-pause"), desc='playerctl'),
     Key([], "XF86AudioPrev", lazy.spawn("playerctl previous"), desc='playerctl'),
     Key([], "XF86AudioNext", lazy.spawn("playerctl next"), desc='playerctl'),
