@@ -8,3 +8,7 @@ repository="https://github.com/xealea/qtileconf"
 destination="$HOME/qtileconf"
 git clone $repository
 rsync -a --exclude=".git*" --exclude="install.sh" "$destination/" "$HOME"
+fc-cache -rv
+xdg-user-dir
+xdg-user-dirs-update
+xdg-user-dirs-gtk-update
