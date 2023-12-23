@@ -60,11 +60,11 @@ if [ $XLOCK = "YES" ]; then
 	xautolock -time 5 -locker "xscreensaver-command -lock" -detectsleep &
 fi
 
-# Run processes 
+# Run processes
 ~/.fehbg &
 xfsettingsd &
 xfce4-power-manager &
 xsetroot -cursor_name left_ptr &
 xsettingsd --config="$DIR/xsettingsd/xsettingsd.conf" &
-
+exec dbus-run-session nm-applet --sm-disable &
 exec dbus-run-session qtile start
