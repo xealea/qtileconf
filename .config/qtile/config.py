@@ -42,7 +42,7 @@ keys = [
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     Key([mod], "r", lazy.spawn("dmenu_run -l 15 -c -g 3"), desc="Spawn a command using a prompt widget"),
-    
+
     # Custom bindings
     Key([], "XF86AudioRaiseVolume", lazy.spawn("pamixer -i 10"), desc='Volume Up'),
     Key([], "XF86AudioLowerVolume", lazy.spawn("pamixer -d 10"), desc='Volume Down'),
@@ -95,17 +95,19 @@ widget_defaults = dict(
 )
 extension_defaults = [widget_defaults.copy()]
 
+# # remove bar
+# screens = [ Screen() ]
 # Define the glyphs for your icons
 launcher_icon = "󰋜"
 cpu_icon = ""
 memory_icon = "󰍛"
 thermal_icon = ""
-net_icon = "󰀂"
-bluetooth_icon = ""
-pulsevolume_icon = "" 
+# net_icon = "󰀂"
+# bluetooth_icon = ""
+# pulsevolume_icon = ""
 battery_icon = ""
 clock_icon = ""
-capsnum_icon = ""
+# capsnum_icon = ""
 powermenu_icon = "⏻"
 
 # Bar configuration
@@ -134,7 +136,7 @@ screens = [
                 widget.WindowName(
                     fontsize=14,
                     foreground="#f2f4f8"
-                ),  
+                ),
                 widget.Chord(
                     chords_colors={
                         "launch": ("#ff0000", "#ffffff"),
@@ -169,26 +171,31 @@ screens = [
                     fontsize=14,
                     foreground="#f2f4f8"
                 ),
-                widget.TextBox(
-                    text=f" {battery_icon} ",
-                    fontsize=14,
-                    foreground="#f2f4f8",
-		        mouse_callbacks={'Button1': lambda: qtile.cmd_spawn("xfce4-power-manager-settings")}
-                ),
-                widget.Battery(
-    		        battery=0,
-    		        format="{percent:2.0%} |",
-    		        fontsize=14,
-    		        foreground="#f2f4f8",
-    		    mouse_callbacks={'Button1': lambda: qtile.cmd_spawn("xfce4-power-manager-settings")}
-		        ),
-		            widget.Battery(
-    		        battery=1,
-    		        format="{percent:2.0%}",
-    		        fontsize=14,
-    		        foreground="#f2f4f8",
-    		    mouse_callbacks={'Button1': lambda: qtile.cmd_spawn("xfce4-power-manager-settings")}
-		        ),
+#               widget.TextBox(
+#                   text=f" {net_icon} ",
+#                   fontsize=14,
+#                   foreground="#f2f4f8",
+#       	    mouse_callbacks={'Button1': lambda: qtile.cmd_spawn("nm-applet")}
+#               ),
+#               widget.Net(
+#                   format='{down:.0f}{down_suffix} ↓↑ {up:.0f}{up_suffix}',
+#                   fontsize=14,
+#                   foreground="#f2f4f8",
+#	      	    mouse_callbacks={'Button1': lambda: qtile.cmd_spawn("nm-applet")}
+#               ),
+#               widget.TextBox(
+#                   text=f" {bluetooth_icon} ",
+#                   fontsize=14,
+#                   foreground="#f2f4f8",
+#               ),
+#               widget.Bluetooth(fontsize=14),
+#               widget.TextBox(
+#                   text=f" {pulsevolume_icon} ",
+#                   fontsize=14,
+#                   foreground="#f2f4f8",
+#		    mouse_callbacks={'Button1': lambda: qtile.cmd_spawn("pasystray")}
+#               ),
+#               widget.Volume(fontsize=14),
                 widget.TextBox(
                     text=f" {clock_icon} ",
                     fontsize=14,
@@ -199,17 +206,37 @@ screens = [
                     fontsize=14,
                     foreground="#f2f4f8"
                 ),
-                widget.Systray(
-		            padding=10,
-		            fontsize=10,
-                    foreground="#f2f4f8"
-                 ),
-		        widget.TextBox(
-                    text=f" {powermenu_icon} ",
-		            padding=10,
+		widget.TextBox(
+                    text=f" {battery_icon} ",
                     fontsize=14,
                     foreground="#f2f4f8",
-		            mouse_callbacks={'Button1': lambda: qtile.cmd_spawn("powermenu")}
+                    mouse_callbacks={'Button1': lambda: qtile.cmd_spawn("xfce4-power-manager-settings")}
+                ),
+                widget.Battery(
+                    battery=0,
+                    format="{percent:2.0%} |",
+                    fontsize=14,
+                    foreground="#f2f4f8",
+                    mouse_callbacks={'Button1': lambda: qtile.cmd_spawn("xfce4-power-manager-settings")}
+                ),
+                widget.Battery(
+                    battery=1,
+                    format="{percent:2.0%}",
+                    fontsize=14,
+                    foreground="#f2f4f8",
+                    mouse_callbacks={'Button1': lambda: qtile.cmd_spawn("xfce4-power-manager-settings")}
+                ),
+		widget.Systray(
+                    padding=10,
+                    fontsize=10,
+                    foreground="#f2f4f8"
+                ),
+	        widget.TextBox(
+                    text=f" {powermenu_icon} ",
+	            padding=10,
+                    fontsize=14,
+                    foreground="#f2f4f8",
+	            mouse_callbacks={'Button1': lambda: qtile.cmd_spawn("powermenu")}
                 ),
             ],
             43,  # Set height of the bar
@@ -229,12 +256,12 @@ mouse = [
 floating_layout = layout.Floating(
     float_rules=[
         *layout.Floating.default_float_rules,
-        Match(wm_class='confirmreset'),  
-        Match(wm_class='makebranch'),    
-        Match(wm_class='maketag'),       
-        Match(wm_class='ssh-askpass'),   
-        Match(title='branchdialog'),     
-        Match(title='pinentry'),         
+        Match(wm_class='confirmreset'),
+        Match(wm_class='makebranch'),
+        Match(wm_class='maketag'),
+        Match(wm_class='ssh-askpass'),
+        Match(title='branchdialog'),
+        Match(title='pinentry'),
         Match(wm_class='confirm'),
         Match(wm_class='dialog'),
         Match(wm_class='download'),
@@ -268,7 +295,7 @@ reconfigure_screens = True
 dgroups_key_binder = None
 follow_mouse_focus = True
 bring_front_click = False
-dgroups_app_rules = [] 
+dgroups_app_rules = []
 auto_fullscreen = True
 wl_input_rules = None
 auto_minimize = True
