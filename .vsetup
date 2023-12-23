@@ -65,6 +65,7 @@ fi
 xfsettingsd &
 xfce4-power-manager &
 xsetroot -cursor_name left_ptr &
+exec dbus-run-session pasystray &
 xsettingsd --config="$DIR/xsettingsd/xsettingsd.conf" &
 exec dbus-run-session nm-applet --sm-disable &
 exec dbus-run-session qtile start
