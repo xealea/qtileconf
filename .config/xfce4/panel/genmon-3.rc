@@ -1,0 +1,6 @@
+Command=/home/vixel/.genmon-plugin/cpu-panel.sh
+UseLabel=0
+Text=CPU
+UpdatePeriod=30000
+Font=IBM Plex Sans 10
+

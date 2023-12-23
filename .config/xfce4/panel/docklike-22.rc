@@ -1,0 +1,10 @@
+[user]
+pinned=/usr/share/applications/firefox.desktop;/usr/share/applications/thunar.desktop;/usr/share/applications/thunderbird.desktop;/usr/share/applications/vlc.desktop;/usr/share/applications/xfce4-terminal.desktop;/usr/share/applications/galculator.desktop;
+indicatorStyle=2
+inactiveIndicatorStyle=2
+indicatorOrientation=1
+indicatorColor=rgb(255,163,72)
+inactiveColor=rgb(76,166,230)
+indicatorColorFromTheme=false
+forceIconSize=true
+iconSize=24

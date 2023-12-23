@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=End Session
+Comment=End Session
+Exec=xfce4-session-logout &
+Icon=/home/vixel/.asset/power-off.svg
+Path=
+Terminal=false
+StartupNotify=false
