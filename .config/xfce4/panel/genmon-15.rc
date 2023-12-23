@@ -1,6 +1,0 @@
-Command=/home/vixel/.genmon-plugin/memory-panel.sh
-UseLabel=0
-Text=RAM
-UpdatePeriod=30000
-Font=IBM Plex Sans 10
-
