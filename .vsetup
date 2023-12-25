@@ -65,8 +65,9 @@ fi
 xfsettingsd &
 xfce4-power-manager &
 xsetroot -cursor_name left_ptr &
-exec dbus-run-session pasystray --no-icon-tooltip --notify=all &
+dbus-run-session blueman-applet &
+dbus-run-session nm-applet --sm-disable &
+dbus-run-session pasystray --no-icon-tooltip --notify=all &
 xsettingsd --config="$DIR/xsettingsd/xsettingsd.conf" &
-exec dbus-run-session nm-applet --sm-disable &
 /usr/lib/xfce4/notifyd/xfce4-notifyd &
 exec dbus-run-session qtile start
