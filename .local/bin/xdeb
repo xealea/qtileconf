@@ -1,11 +1,12 @@
 #!/bin/sh
 
 # Directories and filenames
-XDEB_PKGROOT="$(realpath "${XDEB_PKGROOT-${PWD}}")"
-XDEB_DESTDIR="${XDEB_PKGROOT}/destdir"
-XDEB_DATADIR="${XDEB_PKGROOT}/data"
-XDEB_BINPKGS="${XDEB_PKGROOT}/binpkgs"
-XDEB_SHLIBS="${XDEB_PKGROOT}/shlibs"
+XDEB_PKGROOT="$(realpath -m "${XDEB_PKGROOT-"$(pwd)"}")"
+XDEB_WORKDIR="$(realpath -m "${XDEB_WORKDIR-"${XDEB_PKGROOT}/workdir"}")"
+XDEB_DESTDIR="$(realpath -m "${XDEB_DESTDIR-"${XDEB_PKGROOT}/destdir"}")"
+XDEB_DATADIR="$(realpath -m "${XDEB_DATADIR-"${XDEB_PKGROOT}/datadir"}")"
+XDEB_BINPKGS="$(realpath -m "${XDEB_BINPKGS-"${XDEB_PKGROOT}/binpkgs"}")"
+XDEB_SHLIBS="$(realpath -m "${XDEB_SHLIBS-"${XDEB_PKGROOT}/shlibs"}")"
 
 # Options
 XDEB_OPT_DEPS="${XDEB_OPT_DEPS-false}"
@@ -17,33 +18,33 @@ XDEB_OPT_FIX_CONFLICT="${XDEB_OPT_FIX_CONFLICT-false}"
 XDEB_OPT_WARN_CONFLICT="${XDEB_OPT_WARN_CONFLICT-true}"
 XDEB_SUFFIX=""
 
-alias pkgrep="grep -Po -m1"
-
-log_message() {
-	echo "\033[1m[\033[36mi\033[0;1m]\033[0m ${*}"
+log_info() {
+	printf "\033[1;36mI\033[0m %s\033[0m\n" "${*}"
 }
 
-log_success() {
-	echo "\033[1m[\033[32m+\033[0;1m]\033[0m ${*}"
+log_warn() {
+	printf "\033[1;33mW\033[0m %s\033[0m\n" "${*}"
 }
 
-log_failure() {
-	echo "\033[1m[\033[33m-\033[0;1m]\033[0m ${*}"
+log_crit() {
+	printf "\033[1;31mE\033[0;1m %s\033[0m\n" "${*}"
 }
 
-log_critical() {
-	echo "\033[1m[\033[31m!\033[0;1m] ${*}\033[0m"
+sync_shlibs() {
+	curl \
+		-s "https://raw.githubusercontent.com/void-linux/void-packages/master/common/shlibs" \
+		-o "${XDEB_SHLIBS}" \
+		-f || {
+		log_crit "Unable to sync shlibs."
+		exit 1
+	}
+	log_info "Synced shlibs"
 }
 
 # clean : Removes old package data, without removing any binpkgs
 clean() {
-	rm -f "${XDEB_PKGROOT}"/control.tar.?z
-	rm -f "${XDEB_PKGROOT}"/data.tar.?z
-	rm -f "${XDEB_PKGROOT}"/debian-binary
-	rm -f "${XDEB_PKGROOT}"/_gpgorigin
-
 	rm -f "${XDEB_BINPKGS}"/.xbps-pkg-*
-
+	rm -rf "${XDEB_WORKDIR}"
 	rm -rf "${XDEB_DATADIR}"
 	rm -rf "${XDEB_DESTDIR}"
 }
@@ -63,17 +64,18 @@ clean_all() {
 
 genrdeps() {
 	find "${XDEB_DESTDIR}" -type f | while read -r f; do
-		[ "$(head -c 4 "${f}")" = "$(printf "\177ELF")" ] || continue
+		[ "$(head -c 4 "${f}" | tr -d '\0')" = "$(printf "\177ELF")" ] || continue
 		objdump -p "${f}" | grep NEEDED | awk '{print $2}'
 	done | sort -u | while read -r lib; do
 		# Ignore libraries provided by current package
 		[ -n "$(find "${XDEB_DESTDIR}" -name "${lib}")" ] && continue
 
+		# Escape string
 		_lib=$(echo "${lib}" | sed -E 's|\+|\\+|g')
 		rdep="$(grep -E -m1 "^${_lib}[[:blank:]]+.*$" "${XDEB_SHLIBS}" | cut -d ' ' -f2)"
 
 		[ -z "${rdep}" ] && {
-			log_failure "Unable to find dependency for ${lib}" >&2
+			log_warn "Unable to find dependency for ${lib}" >&2
 			continue
 		}
 
@@ -81,21 +83,24 @@ genrdeps() {
 	done | sort -u | tr '\n' ' '
 }
 
+# If 2 arguments, move $1 to $2/$1
+# if 3 arguments, move $1 to $2/$3
 fix_conflict() {
 	[ ! -e "${XDEB_DESTDIR}/${1}" ] || [ ! -d "${XDEB_DESTDIR}/${1}" ] && return 1
 
-	mkdir -p "${XDEB_DESTDIR}/$(dirname "${2}")"
-	mv "${XDEB_DESTDIR}/${1}" "${XDEB_DESTDIR}/${2}";
-	log_success "Moved conflicting directory '${1}'"
-
-	return 0
+	src="${1}"
+	dst="${2}/${3-"${1}"}"
+	mkdir -p "${XDEB_DESTDIR}/${2}"
+	cp -rT "${XDEB_DESTDIR}/${src}" "${XDEB_DESTDIR}/${dst}"
+	rm -rf "${XDEB_DESTDIR}/${src}"
+	log_info "Moved conflict '${src}' -> '${dst}'"
 }
 
 check_command() {
-	command -v "$1" > /dev/null 2>&1 && return 0
-
-	log_critical "Dependency '${1}' not found"
-	exit 1
+	command -v "${1}" > /dev/null 2>&1 || {
+		log_crit "Executable '${1}' from package '${2-"${1}"}' not found."
+		exit 1
+	}
 }
 
 usage() {
@@ -105,7 +110,7 @@ usage: xdeb [-S] [-d] [-Sd] [--deps] ... FILE
   -S                         # Sync runtime dependency file
   -c                         # Clean everything except shlibs and binpkgs
   -r                         # Clean repodata (Use when rebuilding a package)
-  -q                         # Don't build the package at all
+  -q                         # Extract files, quit before building
   -C                         # Clean all files
   -b                         # No extract, just build files in destdir
   -e                         # Remove empty directories
@@ -114,39 +119,45 @@ usage: xdeb [-S] [-d] [-Sd] [--deps] ... FILE
   -f                         # Attempt to automatically fix common conflicts
   --deps=...                 # Add manual dependencies
   --arch=...                 # Add an arch for the package to run on
+  --name=...                 # Build package with custom name
+  --version=...              # Build package with custom version
   --revision=... | --rev=... # Set package revision. Alternative to -r
   --help | -h                # Show this page
 
 example:
   xdeb -Cq                   # Remove all files and quit
   xdeb -Sd FILE              # Sync depdendency list and create package
-  xdeb --deps='ar>0' FILE    # Add ar as a manual dependency and create package
+  xdeb --deps='tar>0' FILE   # Add tar as manual dependency and create package
 EOF
-	exit ${1}
+	exit "${1}"
 }
 
-check_command tar # tar
-check_command curl # curl
+# check dependencies, omit coreutils
+check_command xz
+check_command tar
+check_command curl
 
-check_command ar # binutils
-check_command objdump # binutils
+check_command ar binutils
+check_command objdump binutils
 
-check_command xbps-rindex # xbps
-check_command xbps-create # xbps
+check_command xbps-rindex xbps
+check_command xbps-create xbps
 
 mkdir -p "${XDEB_PKGROOT}"
 
 while [ "${#}" != "0" ]; do
 	case "${1}" in
 		--deps|--arch|--revision)
-			log_failure "${1} invalid. Use ${1}=... instead"; exit 1; continue;;
+			log_crit "'${1}' invalid. Use ${1}=... instead"; exit 1;;
 
 		--deps=*) XDEB_DEPENDENCIES="${XDEB_DEPENDENCIES}${1#*=} "; shift; continue;;
 		--arch=*) archs="${1#*=}"; shift; continue;;
+		--name=*) pkgname="${1#*=}"; shift; continue;;
+		--version=*) version="${1#*=}"; shift; continue;;
 		--revision=*|--rev=*) revision="${1#*=}"; shift; continue;;
 
 		--help) usage 0;;
-		--*) log_failure "invalid option '${1}'"; usage 1; exit 1;;
+		--*) log_crit "invalid option '${1}'"; usage 1;;
 		-*);;
 		# Posix getopt stops after first non-option
 		*) [ "${#}" = 1 ] && XDEB_BASEPKG="${1}"; break;;
@@ -155,7 +166,7 @@ while [ "${#}" != "0" ]; do
 	flag="${1#?}"
 	while [ -n "${flag}" ]; do
 		case "${flag}" in
-			S*) XDEB_OPT_SYNC=true;;
+			S*) sync_shlibs;;
 			d*) XDEB_OPT_DEPS=true;;
 			h*) usage 0;;
 			c*) clean;;
@@ -168,7 +179,7 @@ while [ "${#}" != "0" ]; do
 			m*) XDEB_SUFFIX="-32bit";;
 			i*) XDEB_OPT_WARN_CONFLICT=false;;
 			f*) XDEB_OPT_FIX_CONFLICT=true;;
-			*) log_failure "invalid option -- '${flag%"${flag#?}"}'"; usage 1;;
+			*) log_crit "invalid option -- '${flag%"${flag#?}"}'"; usage 1;;
 		esac
 
 		flag="${flag#?}"
@@ -177,22 +188,15 @@ while [ "${#}" != "0" ]; do
 	shift
 done
 
-[ "${XDEB_OPT_SYNC}" = true ] && {
-	curl \
-		-s "https://raw.githubusercontent.com/void-linux/void-packages/master/common/shlibs" \
-		-o "${XDEB_SHLIBS}"
-	log_success "Synced shlibs"
-}
-
 [ "${XDEB_OPT_DEPS}" = true ] && [ ! -r "${XDEB_SHLIBS}" ] && {
-	log_failure "Sync atleast once, before using the depencency option"
+	log_crit "shlibs file not synced. Run xdeb with '-Sd' to fetch dependency file"
 	exit 1
 }
 
 [ "${XDEB_OPT_EXTRACT}" = true ] && {
 	# Does the filename end with .deb? Is the file readable?
-	echo "${XDEB_BASEPKG}" | grep -q "\.deb$" && [ -r "${XDEB_BASEPKG}" ] || {
-		log_critical "Last argument has to point to an existing deb package"
+	[ -z "${XDEB_BASEPKG##*.deb}" ] && [ -r "${XDEB_BASEPKG}" ] || {
+		log_crit "Last argument is not a .deb file or does not exist"
 		exit 1
 	}
 
@@ -200,94 +204,118 @@ done
 	mkdir -p "${XDEB_BINPKGS}"
 	mkdir -p "${XDEB_DATADIR}"
 	mkdir -p "${XDEB_DESTDIR}"
+	mkdir -p "${XDEB_WORKDIR}"
 
-	# Extract the packages, every operation has to succeed
-	ar -xf "${XDEB_BASEPKG}" --output "${XDEB_PKGROOT}" &&
-	tar -xf "${XDEB_PKGROOT}"/control.tar.?z -C "${XDEB_DATADIR}" &&
-	tar -xf "${XDEB_PKGROOT}"/data.tar.?z -C "${XDEB_DESTDIR}" || {
-		log_failure "Not a valid deb file"
+	ar -xf "${XDEB_BASEPKG}" --output "${XDEB_WORKDIR}" &&
+	tar -xf "${XDEB_WORKDIR}"/control.* -C "${XDEB_DATADIR}" &&
+	tar -xf "${XDEB_WORKDIR}"/data.* -C "${XDEB_DESTDIR}" || {
+		log_crit "Not a valid deb file, one of the extraction steps failed"
 		exit 1
 	}
 
-	log_success "Extracted files"
+	log_info "Extracted files"
 }
 
 # Quit after parsing every argument argument
 [ "${XDEB_OPT_QUIT}" = true ] && {
-	log_message "Quitting before building"
+	log_info "Quitting before building"
 	exit 0;
 }
 
-# The variable names are the same as in the regular xbps-src package build
-pkgname=$(pkgrep "Package:[ \t]*\K.*" "${XDEB_DATADIR}/control")
-version=$(pkgrep "Version:[ \t]*\K.*" "${XDEB_DATADIR}/control")
-license=$(pkgrep "License:[ \t]*\K.*" "${XDEB_DATADIR}/control")
-maintainer=$(pkgrep "Maintainer:[ \t]*\K.*" "${XDEB_DATADIR}/control")
-short_desc=$(pkgrep "Description:[ \t]*\K.*" "${XDEB_DATADIR}/control")
-long_desc=$(pkgrep -z "Description:[ \t\n]*\K.*" "${XDEB_DATADIR}/control" | tr '\0' '\n')
-archs=${archs-$(pkgrep "Architecture:[ \t]*\K.*" "${XDEB_DATADIR}/control")}
-revision="${revision-1}"
+# Check commandline arguments "-z" to prevent empty arguments.
+# This is incomplete and regex-validation must be added.
+#
+# Variable names are analogous to xbps-src
+[ -z "${revision}" ] && \
+	revision="1"
 
-# It seems that debian packages don't have to provide a short_desc (XMind-ZEN didn't do it)
-[ -z "${short_desc}" ] && short_desc="${long_desc}"
+[ -z "${pkgname}" ] && \
+	pkgname=$(grep -Po -m1 "Package:[ \t]*\K.*" "${XDEB_DATADIR}/control")
+
+[ -z "${version}" ] && \
+	version=$(grep -Po -m1 "Version:[ \t]*\K.*" "${XDEB_DATADIR}/control")
+
+license=$(grep -Po -m1 "License:[ \t]*\K.*" "${XDEB_DATADIR}/control")
+maintainer=$(grep -Po -m1 "Maintainer:[ \t]*\K.*" "${XDEB_DATADIR}/control")
+short_desc=$(grep -Po -m1 "Description:[ \t]*\K.*" "${XDEB_DATADIR}/control")
+long_desc=$(grep -Po -m1 -z "Description:[ \t\n]*\K.*" "${XDEB_DATADIR}/control" | tr '\0' '\n')
+archs=${archs-$(grep -Po -m1 "Architecture:[ \t]*\K.*" "${XDEB_DATADIR}/control")}
+
+# if not short_desc: short_desc=long_desc
+# if not long_desc: long_desc=short_desc
+if [ -z "${short_desc}" ] && [ -z "${long_desc}" ]; then
+	log_crit "Neither long_desc or short_desc provided by package"
+	exit 1
+elif [ -z "${short_desc}" ]; then
+	short_desc="${long_desc}"
+elif [ -z "${long_desc}" ]; then
+	long_desc="${short_desc}"
+fi
 
 version=$(echo "${version}" | grep -Po "^(\d|\.)*")
 case "${archs}" in
 	amd64) archs="x86_64";;
+	arm64) archs="aarch64";;
+	armhf) archs="armv7l";;
 	i386) archs="i686";;
 	all) archs="noarch";;
-	*);;
+	*)
+		log_crit "Invalid arch: ${archs}. Use '--arch=...' to set arch manually."
+		exit 1
+		;;
 esac
 
-[ "${XDEB_OPT_DEPS}" = true ] && {
-	XDEB_DEPENDENCIES="${XDEB_DEPENDENCIES}$(genrdeps)"
-}
+[ "${XDEB_OPT_DEPS}" = true ] && XDEB_DEPENDENCIES="${XDEB_DEPENDENCIES}$(genrdeps)"
 
 # Remove trailing space
 XDEB_DEPENDENCIES="${XDEB_DEPENDENCIES%* }"
-[ -n "${XDEB_DEPENDENCIES}" ] && {
-	log_success "Resolved dependencies (${XDEB_DEPENDENCIES})"
-}
+[ -n "${XDEB_DEPENDENCIES}" ] && log_info "Resolved dependencies (${XDEB_DEPENDENCIES})"
 
 [ "${XDEB_OPT_FIX_CONFLICT}" = true ] && {
-	fix_conflict bin   usr/bin
-	fix_conflict lib   usr/lib
-	fix_conflict lib32 usr/lib32
-	fix_conflict lib64 usr/lib64
-	fix_conflict sbin  usr/sbin
+	fix_conflict bin       usr
+	fix_conflict lib       usr
+	fix_conflict lib32     usr
+	fix_conflict lib64     usr
+	fix_conflict sbin      usr bin
+	fix_conflict usr/sbin  usr bin
+	fix_conflict usr/lib64 usr lib
 }
 
 [ "${XDEB_OPT_CLEAN_DIR}" != true ] && [ "${XDEB_OPT_WARN_CONFLICT}" != true ] || {
-	find "${XDEB_DESTDIR}" -depth | {
+	command -v xbps-query >/dev/null && ign="$(xbps-query -f "${pkgname}" | sed 's/ -> .*//')"
+
+	find "${XDEB_DESTDIR}" -depth -mindepth 1 | (
 		while read -r f; do
 			# Remove empty directories
 			[ "${XDEB_OPT_CLEAN_DIR}" = true ] && [ -z "$(ls -A "${f}")" ] && {
 				rm -rf "${f}"
-				log_success "Removed empty directory ${f}"
+				log_info "Removed empty directory ${f}"
 				continue
 			}
 
 			# Check for conflicts
 			[ "${XDEB_OPT_WARN_CONFLICT}" != true ] && continue
 
-			fr="${f#${XDEB_DESTDIR}}"
+			fr="${f#"${XDEB_DESTDIR}"}"
 			[ ! -e "${fr}" ] && continue
-			[ ! -L "${fr}" ] && [ -d "${fr}" ] && [ ! -L "${f}" ] && [ -d "${f}" ] && \
-				continue
+			[ ! -L "${fr}" ] && [ -d "${fr}" ] && [ ! -L "${f}" ] && [ -d "${f}" ] && continue
 
-			log_critical "Conflict: \033[0m'${f#${PWD}/}'"
+			echo "${ign}" | grep -q -x -F "${fr}" && continue
+			[ -z "$(ls -A "${f}")" ] && {
+				log_crit "Conflict: '${f#"${PWD}/"}'. Use '-e' to remove automatically."
+			} || {
+				log_crit "Conflict: '${f#"${PWD}/"}'"
+			}
 			rc=1
 		done
 
-		return "${rc-0}"
-	} || log_critical "Unless updating, consider removing conflicting files and rebuild with '-rb'"
+		exit "${rc-0}"
+	) || log_crit "Consider (re)moving file(s) from '${XDEB_DESTDIR}' and run \`xdeb -rb\`"
 }
-
-short_binpkgs="${XDEB_BINPKGS#${PWD}/}"
 
 cd "${XDEB_BINPKGS}" || exit
 
 out="${pkgname}${XDEB_SUFFIX}-${version}_${revision}"
 xbps-create -q -A "${archs}" -n "${out}" -m "${maintainer}" -s "${short_desc}" -S "${long_desc}" -l "${license}" -D "${XDEB_DEPENDENCIES}" "${XDEB_DESTDIR}"
 xbps-rindex -a "${out}.${archs}.xbps"
-log_success "Done. Install using \`xbps-install -R ${short_binpkgs} ${out}\`"
+log_info "Install using \`xbps-install -R ${XDEB_BINPKGS#"${PWD}/"} ${out}\`"
