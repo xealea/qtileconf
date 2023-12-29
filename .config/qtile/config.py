@@ -14,6 +14,7 @@ mod = "mod4" # Use the Super key as the main modifier
 terminal = "alacritty" # Use the default terminal emulator
 
 # Script path
+launchers = "launch"
 screenshot = "screenshot"
 powermenu = "powermenu"
 
@@ -41,7 +42,7 @@ keys = [
     Key([mod], "c", lazy.window.kill(), desc="Kill focused window"),
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
-    Key([mod], "r", lazy.spawn("dmenu_run -l 15 -c -g 3"), desc="Spawn a command using a prompt widget"),
+    Key([mod], lazy.spawn(f"{launch}"), desc="Spawn a command launcher"),
 
     # Custom bindings
     Key([], "XF86AudioRaiseVolume", lazy.spawn("pamixer -i 10"), desc='Volume Up'),
