@@ -13,11 +13,6 @@ from time import sleep
 mod = "mod4" # Use the Super key as the main modifier
 terminal = "alacritty" # Use the default terminal emulator
 
-# Script path
-launchers = "launch"
-screenshot = "screenshot"
-powermenu = "powermenu"
-
 # Key bindings
 keys = [
     # Default bindings
@@ -42,7 +37,7 @@ keys = [
     Key([mod], "c", lazy.window.kill(), desc="Kill focused window"),
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
-    Key([mod], lazy.spawn(f"{launch}"), desc="Spawn a command launcher"),
+    Key([mod], "x", lazy.spawn("launch"), desc="Spawn a command launcher"),
 
     # Custom bindings
     Key([], "XF86AudioRaiseVolume", lazy.spawn("pamixer -i 10"), desc='Volume Up'),
@@ -55,7 +50,7 @@ keys = [
     Key([], "XF86MonBrightnessDown", lazy.spawn("brightnessctl s 10%-"), desc='Brightness Down'),
     Key([mod], "e", lazy.spawn("thunar"), desc='File manager'),
     Key([mod], "h", lazy.spawn("xclip"), desc='Clipboard'),
-    Key([mod], "s", lazy.spawn(f"{screenshot}"), desc='Screenshot'),
+    Key([mod], "s", lazy.spawn("screenshot"), desc='Screenshot'),
 ]
 
 # Groups
