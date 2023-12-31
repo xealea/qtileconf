@@ -5,17 +5,17 @@
 # Copyright © 2023 Lea <xealea@proton.me>
 
 # Configuration
-NOTIFY_ICON="/usr/share/icons/dunst/picture.png"
-TIMER_ICON="/usr/share/icons/dunst/timer.png"
+NOTIFY_ICON="" # Use Nerd Fonts icon for notifications
+TIMER_ICON="" # Use Nerd Fonts icon for timer
 
 # Functions
 notify() {
-  notify-send -u low --replace=699 -i "$NOTIFY_ICON" "$1"
+  notify-send -u low -i "$NOTIFY_ICON" "$1"
 }
 
 countdown() {
   for ((sec = $1; sec > 0; sec--)); do
-    notify "Taking shot in: $sec"
+    notify "Taking shot in: $sec $TIMER_ICON"
     sleep 1
   done
 }
@@ -51,24 +51,24 @@ create_directory "$pictures_dir"
 
 SCRIPT_NAME="screenshot"
 
-options=("Screenshot --now" "Screenshot --in5" "Screenshot --in10" "Screenshot --win" "Screenshot --area" )
+options=(" Screenshot Now Full" " Screenshot In 5 Second" " Screenshot In 10 Second" " Screenshot Window" " Screenshot Area" )
 
-selected_option=$(printf '%s\n' "${options[@]}" | dmenu -i -p "$SCRIPT_NAME" -c -l 7) || exit 1
+selected_option=$(printf '%s\n' "${options[@]}" | rofi -dmenu -i -p "$SCRIPT_NAME" -columns 1 -width 30) || exit 1
 
-# Function to use dmenu to prompt the user to open in viewnior
+# Function to use rofi to prompt the user to open in viewnior
 viewnior_prompt() {
-  open_in_viewnior=$(echo -e "Yes\nNo" | dmenu -p "Open in viewnior?" -c -l 2)
+  open_in_viewnior=$(echo -e "Yes\nNo" | rofi -dmenu -p "Open in viewnior?" -columns 1 -width 20)
   [[ "$open_in_viewnior" == "Yes" ]] && viewnior "$1"
 }
 
 case $selected_option in
-  "Screenshot --now" | "Screenshot --in5" | "Screenshot --in10")
+  " Screenshot Now Full" | " Screenshot In 5 Second" | " Screenshot In 10 Second")
     countdown "${selected_option: -1}" && sleep 2 && take_screenshot "$temp_file" && convert_image "$temp_file" "$file" && notify "Screenshot taken after ${selected_option: -1} seconds."
     ;;
-  "Screenshot --win")
+  " Screenshot Window")
     take_window_screenshot "$temp_file" && sleep 2 && convert_image "$temp_file" "$file" && notify "Window screenshot taken."
     ;;
-  "Screenshot --area")
+  " Screenshot Area")
     take_area_screenshot "$temp_file" && sleep 2 && convert_image "$temp_file" "$file" && notify "Area screenshot taken."
     ;;
   *)
