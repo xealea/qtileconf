@@ -1,13 +1,9 @@
 import os
-import re
-import socket
 import subprocess
-from libqtile import bar, layout, widget, hook, qtile
+from libqtile import bar, extension, layout, widget, hook, qtile
 from libqtile.config import Click, Drag, Group, Key, Match, Screen, KeyChord
 from libqtile.lazy import lazy
-from libqtile.utils import guess_terminal
 from libqtile.dgroups import simple_key_binder
-from time import sleep
 
 # Define some variables
 mod = "mod4" # Use the Super key as the main modifier
@@ -24,7 +20,7 @@ keys = [
     Key([mod, "control"], "h", lazy.layout.shuffle_left(), desc="Move window to the left"),
     Key([mod, "control"], "l", lazy.layout.shuffle_right(), desc="Move window to the right"),
     Key([mod, "control"], "j", lazy.layout.shuffle_down(), desc="Move window down"),
-    Key([mod, "control"], "k", lazy.layout.shuffle_up(), desc="Move window up"),
+    Key([mod, "control"], "k", lazy.layout.shuffle_up(), desc=f"Move window up"),
     Key([mod, "shift"], "h", lazy.layout.grow_left(), desc="Grow window to the left"),
     Key([mod, "shift"], "l", lazy.layout.grow_right(), desc="Grow window to the right"),
     Key([mod, "shift"], "j", lazy.layout.grow_down(), desc="Grow window down"),
@@ -37,7 +33,7 @@ keys = [
     Key([mod], "c", lazy.window.kill(), desc="Kill focused window"),
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
-    Key([mod], "x", lazy.spawn("launch"), desc="Spawn a command launcher"),
+    Key([mod], "x", lazy.spawn("rofi -show drun"), desc="Spawn a command launcher"),
 
     # Custom bindings
     Key([], "XF86AudioRaiseVolume", lazy.spawn("pamixer -i 10"), desc='Volume Up'),
