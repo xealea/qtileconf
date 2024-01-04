@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 # Email: xealea@proton.me
 
-# VAR SET NO = NOT ACTIVE | YES = ACTIVE
-PICOM=YES
-XLOCK=YES
-QTILE_RELOAD=YES
+# set
+run() {
+	if ! pgrep -f "$1" ; then
+		"$@"&
+	fi
+}
 
 # Init DIR
 DIR="$HOME/.config"
@@ -45,29 +47,13 @@ if ! pidof xfce-polkit; then
     exec /usr/lib/xfce-polkit/xfce-polkit &
 fi
 
-# qtile
-if [ $QTILE_RELOAD = "YES" ]; then
-    python -m py_compile ~/.config/qtile/config.py &
-fi
-
-# picom
-if [ $PICOM = "YES" ]; then
-    picom --config "$DIR/picom.conf" &
-fi
-
-# lockscreen
-if [ $XLOCK = "YES" ]; then
-	xautolock -time 5 -locker "xscreensaver-command -lock" -detectsleep &
-fi
-
 # Run processes
-~/.fehbg &
-xfsettingsd &
-xfce4-power-manager &
-xsetroot -cursor_name left_ptr &
-dbus-run-session blueman-applet &
-dbus-run-session nm-applet --sm-disable &
-dbus-run-session pasystray --no-icon-tooltip --notify=all &
-xsettingsd --config="$DIR/xsettingsd/xsettingsd.conf" &
-/usr/lib/xfce4/notifyd/xfce4-notifyd &
-exec dbus-run-session qtile start
+run ~/.fehbg &
+run nm-applet &
+run xfsettingsd &
+run blueman-applet &
+run xfce4-power-manager &
+run xsetroot -cursor_name left_ptr &
+run picom --config "$DIR/picom.conf" --daemon &
+run xsettingsd --config="$DIR/xsettingsd/xsettingsd.conf" &
+run /usr/lib/xfce4/notifyd/xfce4-notifyd
