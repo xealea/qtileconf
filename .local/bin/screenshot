@@ -6,11 +6,11 @@
 
 # Configuration
 NOTIFY_ICON="" # Use Nerd Fonts icon for notifications
-TIMER_ICON="" # Use Nerd Fonts icon for timer
+TIMER_ICON=""  # Use Nerd Fonts icon for timer
 
 # Functions
 notify() {
-  notify-send -u low -i "$NOTIFY_ICON" "$1"
+  dunstify -u low -i "$NOTIFY_ICON" "$1"
 }
 
 countdown() {
@@ -51,7 +51,7 @@ create_directory "$pictures_dir"
 
 SCRIPT_NAME="screenshot"
 
-options=(" Screenshot Now Full" " Screenshot In 5 Second" " Screenshot In 10 Second" " Screenshot Window" " Screenshot Area" )
+options=(" Screenshot Now Full" " Screenshot In 5 Second" " Screenshot In 10 Second" " Screenshot Window" " Screenshot Area")
 
 selected_option=$(printf '%s\n' "${options[@]}" | rofi -dmenu -i -p "$SCRIPT_NAME" -columns 1 -width 30) || exit 1
 
@@ -62,18 +62,18 @@ viewnior_prompt() {
 }
 
 case $selected_option in
-  " Screenshot Now Full" | " Screenshot In 5 Second" | " Screenshot In 10 Second")
-    countdown "${selected_option: -1}" && sleep 2 && take_screenshot "$temp_file" && convert_image "$temp_file" "$file" && notify "Screenshot taken after ${selected_option: -1} seconds."
-    ;;
-  " Screenshot Window")
-    take_window_screenshot "$temp_file" && sleep 2 && convert_image "$temp_file" "$file" && notify "Window screenshot taken."
-    ;;
-  " Screenshot Area")
-    take_area_screenshot "$temp_file" && sleep 2 && convert_image "$temp_file" "$file" && notify "Area screenshot taken."
-    ;;
-  *)
-    exit 1
-    ;;
+" Screenshot Now Full" | " Screenshot In 5 Second" | " Screenshot In 10 Second")
+  countdown "${selected_option: -1}" && sleep 2 && take_screenshot "$temp_file" && convert_image "$temp_file" "$file" && notify "Screenshot taken after ${selected_option: -1} seconds."
+  ;;
+" Screenshot Window")
+  take_window_screenshot "$temp_file" && sleep 2 && convert_image "$temp_file" "$file" && notify "Window screenshot taken."
+  ;;
+" Screenshot Area")
+  take_area_screenshot "$temp_file" && sleep 2 && convert_image "$temp_file" "$file" && notify "Area screenshot taken."
+  ;;
+*)
+  exit 1
+  ;;
 esac
 
 viewnior_prompt "$file"
