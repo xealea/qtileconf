@@ -17,30 +17,8 @@ for _prs in xsettingsd dunst ksuperkey; do
     [[ -n $pid ]] && kill -9 $pid
 done
 
-# Environment variables
-export QT_QPA_PLATFORMTHEME="gtk3"
-export VISUAL="nvim"
-export EDITOR="geany"
-export TERM="alacritty"
-export HISTCONTROL="ignoredups:erasedups"
-export XCURSOR_THEME="oreo_white_cursors xclock"
-
-# Set other env
-export XDG_CONFIG_HOME="$HOME/.config"
-export XDG_DATA_HOME="$HOME/.local/share"
-export XDG_CACHE_HOME="$HOME/.cache"
-
-# Xdeb for voidlinux
-export XDEB_OPT_DEPS="true"
-export XDEB_OPT_SYNC="true"
-export XDEB_OPT_WARN_CONFLICT="true"
-export XDEB_OPT_FIX_CONFLICT="true"
-
-# Nyoom
-export NVIM_APPNAME="nvim"
-
-# Path my script
-export PATH="$DIR/nvim/bin:$HOME/.local/bin:$PATH"
+# Source environment variables
+source "$HOME/.envvars"
 
 # polkit agent
 if ! pidof xfce-polkit; then
