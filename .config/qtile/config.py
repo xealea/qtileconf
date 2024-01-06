@@ -63,7 +63,7 @@ for i in groups:
 
 # Layouts
 def init_layout_theme():
-    return {"margin":15,
+    return {"margin":8,
             "border_width":0,
             }
 
@@ -109,10 +109,10 @@ screens = [
             [
                 widget.TextBox(
                     text=f" {launcher_icon} ",
-                    fontsize=14,
+                    fontsize=24,
                     padding=5,
                     foreground="#f2f4f8",
-                    mouse_callbacks={'Button1': lambda: qtile.cmd_spawn("dmenu_run -l 15 -c -g 3")}
+                    mouse_callbacks={'Button1': lambda: qtile.cmd_spawn("rofi -show drun")}
                 ),
                 widget.CurrentLayout(
                     fontsize=14,
@@ -136,33 +136,33 @@ screens = [
                     name_transform=lambda name: name.upper(),
                     foreground="#f2f4f8"
                 ),
-                widget.TextBox(
-                    text=f" {cpu_icon} ",
-                    fontsize=14,
-                    foreground="#f2f4f8"
-                ),
-                widget.CPU(
-                    fontsize=14,
-                    foreground="#f2f4f8"
-                ),
-                widget.TextBox(
-                    text=f" {memory_icon} ",
-                    fontsize=14,
-                    foreground="#f2f4f8"
-                ),
-                widget.Memory(
-                    fontsize=14,
-                    foreground="#f2f4f8"
-                ),
-                widget.TextBox(
-                    text=f" {thermal_icon} ",
-                    fontsize=14,
-                    foreground="#f2f4f8"
-                ),
-                widget.ThermalSensor(
-                    fontsize=14,
-                    foreground="#f2f4f8"
-                ),
+#               widget.TextBox(
+#                   text=f" {cpu_icon} ",
+#                   fontsize=14,
+#                   foreground="#f2f4f8"
+#               ),
+#               widget.CPU(
+#                   fontsize=14,
+#                   foreground="#f2f4f8"
+#               ),
+#               widget.TextBox(
+#                   text=f" {memory_icon} ",
+#		    fontsize=14,
+#                   foreground="#f2f4f8"
+#               ),
+#               widget.Memory(
+#                   fontsize=14,
+#                   foreground="#f2f4f8"
+#               ),
+#		    widget.TextBox(
+#                   text=f" {thermal_icon} ",
+#                   fontsize=14,
+#                   foreground="#f2f4f8"
+#               ),
+#               widget.ThermalSensor(
+#                   fontsize=14,
+#                   foreground="#f2f4f8"
+#               ),
 #               widget.TextBox(
 #                   text=f" {net_icon} ",
 #                   fontsize=14,
@@ -231,9 +231,9 @@ screens = [
 	            mouse_callbacks={'Button1': lambda: qtile.cmd_spawn("powermenu")}
                 ),
             ],
-            43,  # Set height of the bar
+            50,  # Set height of the bar
             background="#161616",  # Set the background color
-            margin=[15, 15, 0, 15],  # Set the left, top, right, and bottom margins
+            margin=[8, 8, 0, 8],  # Set the left, top, right, and bottom margins
         ),
     ),
 ]
