@@ -21,5 +21,5 @@ jobs:
 
     - name: Find and test Bash scripts
       run: |
-        find qtileconf/.local/bin -type f -exec shellcheck {} +
+        find .local/bin -type f -exec shellcheck {} +
         
