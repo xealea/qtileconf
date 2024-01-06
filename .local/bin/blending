@@ -1,57 +1,43 @@
 #!/bin/bash
 
 # Get the current sink index
-sink_index=$(pactl list sinks | grep -A1 'Sink #' | grep 'Sink #' | awk '{print $3}')
+sink_index=$(pactl list sinks | awk '/Sink #/{print $3; exit}')
 
 # Set the step size for volume adjustment and brightness adjustment
 volume_step=5
 brightness_step=5
 
-# Function to increase volume
-increase_volume() {
-  pactl set-sink-volume "$sink_index" "+$volume_step%"
-  volume="$(pactl list sinks | grep 'Volume:' | head -n1 | awk '{print $5}')"
-  dunstify "Volume Control +" -h string:x-canonical-private-synchronous:"$volume"
+# Function to adjust volume and display notification
+adjust_volume() {
+  pactl set-sink-volume "$sink_index" "$1$volume_step%"
+  volume="$(pactl list sinks | awk '/Volume:/{print $5; exit}')"
+  dunstify "Volume Control $2" -h string:x-canonical-private-synchronous:"$volume"
 }
 
-# Function to decrease volume
-decrease_volume() {
-  pactl set-sink-volume "$sink_index" "-$volume_step%"
-  volume="$(pactl list sinks | grep 'Volume:' | head -n1 | awk '{print $5}')"
-  dunstify "Volume Control -" -h string:x-canonical-private-synchronous:"$volume"
-}
-
-# Function to toggle mute/unmute
+# Function to toggle mute/unmute and display notification
 toggle_mute() {
   pactl set-sink-mute "$sink_index" toggle
   if pactl list sinks | grep -q 'Mute: yes'; then
     dunstify "Volume Control X"
   else
-    volume="$(pactl list sinks | grep 'Volume:' | head -n1 | awk '{print $5}')"
+    volume="$(pactl list sinks | awk '/Volume:/{print $5; exit}')"
     dunstify "Volume Control â" -h string:x-canonical-private-synchronous:"Current Volume: $volume"
   fi
 }
 
-# Function to increase brightness
-increase_brightness() {
-  brightnessctl set +"$brightness_step%" # Adjust to your specific device
-  brightness="$(brightnessctl | grep 'Current brightness' | awk '{print $3}')"
-  dunstify "Brightness +" -h string:x-canonical-private-synchronous:"$brightness"
-}
-
-# Function to decrease brightness
-decrease_brightness() {
-  brightnessctl set -"$brightness_step%" # Adjust to your specific device
-  brightness="$(brightnessctl | grep 'Current brightness' | awk '{print $3}')"
-  dunstify "Brightness -" -h string:x-canonical-private-synchronous:"$brightness"
+# Function to adjust brightness and display notification
+adjust_brightness() {
+  brightnessctl set "$1$brightness_step%"
+  brightness="$(brightnessctl | awk '/Current brightness/{print $3; exit}')"
+  dunstify "Brightness $2" -h string:x-canonical-private-synchronous:"$brightness"
 }
 
 # Parse command line arguments
 case "$1" in
-  "vol+") increase_volume ;;
-  "vol-") decrease_volume ;;
+  "vol+") adjust_volume "+" "+" ;;
+  "vol-") adjust_volume "-" "-" ;;
   "volx") toggle_mute ;;
-  "light+") increase_brightness ;;
-  "light-") decrease_brightness ;;
-  *) echo "Invalid option: $1. Use 'up', 'down', 'mute', 'brightness_up', or 'brightness_down'." ;;
+  "light+") adjust_brightness "+" "+" ;;
+  "light-") adjust_brightness "-" "-" ;;
+  *) echo "Invalid option: $1. Use 'vol+', 'vol-', 'volx', 'light+', or 'light-'." ;;
 esac
