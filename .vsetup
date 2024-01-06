@@ -48,6 +48,7 @@ if ! pidof xfce-polkit; then
 fi
 
 # Run processes
+run tint2 &
 run ~/.fehbg &
 run nm-applet &
 run xfsettingsd &
