@@ -9,9 +9,9 @@ DIR="$HOME/.config"
 
 # set
 run() {
-	if ! pgrep -f "$1" ; then
-		"$@"&
-	fi
+  if ! pgrep -f "$1" ; then
+    "$@" &
+  fi
 }
 
 # Kill already running process
