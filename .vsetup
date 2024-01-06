@@ -12,7 +12,7 @@ run() {
 DIR="$HOME/.config"
 
 # Kill already running process
-for _prs in xsettingsd ksuperkey; do
+for _prs in xsettingsd dunst ksuperkey; do
     pid=$(pidof $_prs)
     [[ -n $pid ]] && kill -9 $pid
 done
@@ -44,7 +44,7 @@ export PATH="$DIR/nvim/bin:$HOME/.local/bin:$PATH"
 
 # polkit agent
 if ! pidof xfce-polkit; then
-    exec /usr/lib/xfce-polkit/xfce-polkit &
+    run /usr/lib/xfce-polkit/xfce-polkit &
 fi
 
 # Run processes
@@ -53,8 +53,8 @@ run ~/.fehbg &
 run nm-applet &
 run xfsettingsd &
 run blueman-applet &
+run /usr/bin/dunst &
 run xfce4-power-manager &
 run xsetroot -cursor_name left_ptr &
 run picom --config "$DIR/picom.conf" --daemon &
-run xsettingsd --config="$DIR/xsettingsd/xsettingsd.conf" &
-run /usr/lib/xfce4/notifyd/xfce4-notifyd
+run xsettingsd --config="$DIR/xsettingsd/xsettingsd.conf"
