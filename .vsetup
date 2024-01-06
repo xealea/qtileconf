@@ -48,11 +48,11 @@ if ! pidof xfce-polkit; then
 fi
 
 # Run processes
+run ~/.fehbg
 run nm-applet &
 run xfsettingsd &
 run blueman-applet &
 run /usr/bin/dunst &
-run nitrogen --restore &
 run xfce4-power-manager &
 run xsetroot -cursor_name left_ptr &
 run picom --config "$DIR/picom.conf" --daemon &
