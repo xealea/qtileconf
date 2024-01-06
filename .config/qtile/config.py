@@ -91,9 +91,9 @@ extension_defaults = [widget_defaults.copy()]
 # screens = [ Screen() ]
 # Define the glyphs for your icons
 launcher_icon = "󰋜"
-cpu_icon = ""
-memory_icon = "󰍛"
-thermal_icon = ""
+# cpu_icon = ""
+# memory_icon = "󰍛"
+# thermal_icon = ""
 # net_icon = "󰀂"
 # bluetooth_icon = ""
 # pulsevolume_icon = ""
@@ -114,10 +114,10 @@ screens = [
                     foreground="#f2f4f8",
                     mouse_callbacks={'Button1': lambda: qtile.cmd_spawn("rofi -show drun")}
                 ),
-                widget.CurrentLayout(
-                    fontsize=14,
-                    foreground="#f2f4f8"
-                ),
+#               widget.CurrentLayout(
+#                   fontsize=14,
+#                   foreground="#f2f4f8"
+#               ),
                 widget.GroupBox(
                     highlight_method='block',
                     this_current_screen_border='#161616',
