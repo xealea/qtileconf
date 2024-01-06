@@ -11,7 +11,7 @@ detect_init_system() {
   elif [ -x "$(command -v loginctl)" ]; then
     init_system="loginctl"
   else
-    notify-send "Unable to detect init system. Exiting."
+    dunstify "Unable to detect init system. Exiting."
     exit 1
   fi
 }
@@ -36,7 +36,7 @@ case $init_system in
     logout_command="loginctl terminate-session"
     ;;
   *)
-    notify-send "Unsupported init system. Exiting."
+    dunstify "Unsupported init system. Exiting."
     exit 1
     ;;
 esac
@@ -52,46 +52,46 @@ selected_option=$(printf '%s\n' "${options[@]}" | rofi -dmenu -i -p "$SCRIPT_NAM
 case $selected_option in
     " Poweroff")
         if confirm_option; then
-            notify-send "Powering off..."
+            dunstify "Powering off..."
             $power_command
         else
-            notify-send "Power off canceled"
+            dunstify "Power off canceled"
         fi
         ;;
     " Reboot")
         if confirm_option; then
-            notify-send "Rebooting..."
+            dunstify "Rebooting..."
             $reboot_command
         else
-            notify-send "Reboot canceled"
+            dunstify "Reboot canceled"
         fi
         ;;
     " Sleep")
         if confirm_option; then
-            notify-send "Putting system to sleep..."
+            dunstify "Putting system to sleep..."
             $sleep_command
         else
-            notify-send "Sleep canceled"
+            dunstify "Sleep canceled"
         fi
         ;;
     " Hibernate")
         if confirm_option; then
-            notify-send "Hibernating..."
+            dunstify "Hibernating..."
             $hibernate_command
         else
-            notify-send "Hibernation canceled"
+            dunstify "Hibernation canceled"
         fi
         ;;
     " Log Out")
         if confirm_option; then
-            notify-send "Logging out..."
+            dunstify "Logging out..."
             $logout_command
         else
-            notify-send "Log out canceled"
+            dunstify "Log out canceled"
         fi
         ;;
     *)
-        notify-send "Invalid option"
+        dunstify "Invalid option"
         ;;
 esac
 
