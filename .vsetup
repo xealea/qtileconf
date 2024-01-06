@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 # Email: xealea@proton.me
 
+# Source environment variables
+source "$HOME/.envvars"
+
+# Init DIR
+DIR="$HOME/.config"
+
 # set
 run() {
 	if ! pgrep -f "$1" ; then
@@ -8,17 +14,11 @@ run() {
 	fi
 }
 
-# Init DIR
-DIR="$HOME/.config"
-
 # Kill already running process
 for _prs in xsettingsd dunst ksuperkey; do
     pid=$(pidof $_prs)
     [[ -n $pid ]] && kill -9 $pid
 done
-
-# Source environment variables
-source "$HOME/.envvars"
 
 # polkit agent
 if ! pidof xfce-polkit; then
