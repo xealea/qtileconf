@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# Email: xealea@proton.me
 
 # Environment variables
 export QT_QPA_PLATFORMTHEME="gtk3"
