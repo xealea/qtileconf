@@ -9,33 +9,55 @@ from libqtile.dgroups import simple_key_binder
 mod = "mod4" # Use the Super key as the main modifier
 terminal = "alacritty" # Use the default terminal emulator
 
-# Key bindings
 keys = [
-    # Default bindings
+    # A list of available commands that can be bound to keys can be found
+    # at https://docs.qtile.org/en/latest/manual/config/lazy.html
+    # Switch between windows
     Key([mod], "h", lazy.layout.left(), desc="Move focus to left"),
     Key([mod], "l", lazy.layout.right(), desc="Move focus to right"),
     Key([mod], "j", lazy.layout.down(), desc="Move focus down"),
     Key([mod], "k", lazy.layout.up(), desc="Move focus up"),
     Key([mod], "space", lazy.layout.next(), desc="Move window focus to other window"),
-    Key([mod, "control"], "h", lazy.layout.shuffle_left(), desc="Move window to the left"),
-    Key([mod, "control"], "l", lazy.layout.shuffle_right(), desc="Move window to the right"),
-    Key([mod, "control"], "j", lazy.layout.shuffle_down(), desc="Move window down"),
-    Key([mod, "control"], "k", lazy.layout.shuffle_up(), desc=f"Move window up"),
-    Key([mod, "shift"], "h", lazy.layout.grow_left(), desc="Grow window to the left"),
-    Key([mod, "shift"], "l", lazy.layout.grow_right(), desc="Grow window to the right"),
-    Key([mod, "shift"], "j", lazy.layout.grow_down(), desc="Grow window down"),
-    Key([mod, "shift"], "k", lazy.layout.grow_up(), desc="Grow window up"),
+    # Move windows between left/right columns or move up/down in current stack.
+    # Moving out of range in Columns layout will create new column.
+    Key([mod, "shift"], "h", lazy.layout.shuffle_left(), desc="Move window to the left"),
+    Key([mod, "shift"], "l", lazy.layout.shuffle_right(), desc="Move window to the right"),
+    Key([mod, "shift"], "j", lazy.layout.shuffle_down(), desc="Move window down"),
+    Key([mod, "shift"], "k", lazy.layout.shuffle_up(), desc="Move window up"),
+    # Grow windows. If current window is on the edge of screen and direction
+    # will be to screen edge - window would shrink.
+    Key([mod, "control"], "h", lazy.layout.grow_left(), desc="Grow window to the left"),
+    Key([mod, "control"], "l", lazy.layout.grow_right(), desc="Grow window to the right"),
+    Key([mod, "control"], "j", lazy.layout.grow_down(), desc="Grow window down"),
+    Key([mod, "control"], "k", lazy.layout.grow_up(), desc="Grow window up"),
     Key([mod], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
-    Key([mod], "f", lazy.window.toggle_fullscreen()),
-    Key([mod, "shift"], "Return", lazy.layout.toggle_split(), desc="Toggle between split and unsplit sides of stack"),
+    # Toggle between split and unsplit sides of stack.
+    # Split = all windows displayed
+    # Unsplit = 1 window displayed, like Max layout, but still with
+    # multiple stack panes
+    Key(
+        [mod, "shift"],
+        "Return",
+        lazy.layout.toggle_split(),
+        desc="Toggle between split and unsplit sides of stack",
+    ),
     Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
+    # Toggle between different layouts as defined below
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
-    Key([mod], "c", lazy.window.kill(), desc="Kill focused window"),
+    Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
+    Key(
+        [mod],
+        "f",
+        lazy.window.toggle_fullscreen(),
+        desc="Toggle fullscreen on the focused window",
+    ),
+    Key([mod], "t", lazy.window.toggle_floating(), desc="Toggle floating on the focused window"),
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
-    Key([mod], "x", lazy.spawn("rofi -show drun"), desc="Spawn a command launcher"),
+#    Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
 
-    # Custom bindings
+    # Misc and my custom cmd
+    Key([mod], "x", lazy.spawn("rofi -show drun"), desc="Spawn a command launcher"),
     Key([], "XF86AudioRaiseVolume", lazy.spawn("pamixer -i 10"), desc='Volume Up'),
     Key([], "XF86AudioLowerVolume", lazy.spawn("pamixer -d 10"), desc='Volume Down'),
     Key([], "XF86AudioMute", lazy.spawn("pamixer -t"), desc='Volume Mute'),
@@ -50,17 +72,16 @@ keys = [
 ]
 
 # Groups
-groups = [Group(f"{i+1}", label="󰏃") for i in range(8)]
+group_labels = ["1", "2", "3", "4", "5", "6", "7", "8"]
+groups = [Group(label) for label in group_labels]
 
-for i in groups:
-    keys.extend(
-        [
-            Key([mod], i.name, lazy.group[i.name].toscreen(), desc=f"Switch to group {i.name}"),
-            Key([mod, "shift"], i.name, lazy.window.togroup(i.name, switch_group=True),
-                desc=f"Switch to & move focused window to group {i.name}"),
-        ]
-    )
-
+for i, group in enumerate(groups, 1):
+    keys.extend([
+        Key([mod], str(i), lazy.group[group.name].toscreen(), desc=f"Switch to group {group.name}"),
+        Key([mod, "shift"], str(i), lazy.window.togroup(group.name, switch_group=True),
+            desc=f"Switch to & move focused window to group {group.name}"),
+    ])
+	
 # Layouts
 def init_layout_theme():
     return {"margin":8,
@@ -70,13 +91,13 @@ def init_layout_theme():
 layout_theme = init_layout_theme()
 
 layouts = [
-    layout.MonadTall(**layout_theme),
-    layout.MonadWide(**layout_theme),
-    layout.Matrix(**layout_theme),
-    layout.Bsp(**layout_theme),
-    layout.Floating(**layout_theme),
-    layout.RatioTile(**layout_theme),
-    layout.Max(**layout_theme)
+    layout.MonadTall(layout_theme),
+    layout.MonadWide(layout_theme),
+    layout.Matrix(layout_theme),
+    layout.Bsp(layout_theme),
+    layout.Floating(layout_theme),
+    layout.RatioTile(layout_theme),
+    layout.Max(layout_theme)
 ]
 
 # Widget Defaults
