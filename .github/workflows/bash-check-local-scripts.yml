@@ -1,0 +1,25 @@
+name: Bash Scripts Test
+
+on: [push, pull_request]
+
+jobs:
+  test-scripts:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Bash
+      uses: actions/setup-node@v3
+      with:
+        node-version: '14'
+        check-latest: true
+
+    - name: Install ShellCheck
+      run: npm install -g shellcheck
+
+    - name: Find and test Bash scripts
+      run: |
+        find qtileconf/.local/bin -type f -exec shellcheck {} +
+        
