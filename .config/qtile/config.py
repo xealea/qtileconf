@@ -126,7 +126,7 @@ powermenu_icon = "⏻"
 # Bar configuration
 screens = [
     Screen(
-        top=bar.Bar(
+        left=bar.Bar(
             [
                 widget.TextBox(
                     text=f" {launcher_icon} ",
@@ -254,7 +254,7 @@ screens = [
             ],
             50,  # Set height of the bar
             background="#161616",  # Set the background color
-            margin=[8, 8, 0, 8],  # Set the left, top, right, and bottom margins
+            margin=[8, 0, 8, 8],  # Set the left, top, right, and bottom margins
         ),
     ),
 ]
