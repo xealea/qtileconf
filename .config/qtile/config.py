@@ -72,7 +72,7 @@ keys = [
 ]
 
 # Groups
-group_labels = ["1", "2", "3", "4", "5", "6", "7", "8"]
+group_labels = ["", "", "", "", "", "", "", ""]
 groups = [Group(label) for label in group_labels]
 
 for i, group in enumerate(groups, 1):
@@ -91,13 +91,13 @@ def init_layout_theme():
 layout_theme = init_layout_theme()
 
 layouts = [
-    layout.MonadTall(layout_theme),
-    layout.MonadWide(layout_theme),
-    layout.Matrix(layout_theme),
-    layout.Bsp(layout_theme),
-    layout.Floating(layout_theme),
-    layout.RatioTile(layout_theme),
-    layout.Max(layout_theme)
+    layout.MonadTall(**layout_theme),
+    layout.MonadWide(**layout_theme),
+    layout.Matrix(**layout_theme),
+    layout.Bsp(**layout_theme),
+    layout.Floating(**layout_theme),
+    layout.RatioTile(**layout_theme),
+    layout.Max(**layout_theme)
 ]
 
 # Widget Defaults
@@ -111,7 +111,7 @@ extension_defaults = [widget_defaults.copy()]
 # # remove bar
 # screens = [ Screen() ]
 # Define the glyphs for your icons
-launcher_icon = "󰋜"
+launcher_icon = ""
 # cpu_icon = ""
 # memory_icon = "󰍛"
 # thermal_icon = ""
@@ -126,12 +126,12 @@ powermenu_icon = "⏻"
 # Bar configuration
 screens = [
     Screen(
-        left=bar.Bar(
+        top=bar.Bar(
             [
                 widget.TextBox(
                     text=f" {launcher_icon} ",
-                    fontsize=24,
-                    padding=5,
+                    fontsize=18,
+                    padding=8,
                     foreground="#f2f4f8",
                     mouse_callbacks={'Button1': lambda: qtile.cmd_spawn("rofi -show drun")}
                 ),
@@ -139,16 +139,24 @@ screens = [
 #                   fontsize=14,
 #                   foreground="#f2f4f8"
 #               ),
+		widget.WindowName(
+                    fontsize=14,
+                    foreground="#f2f4f8"
+                ),
                 widget.GroupBox(
                     highlight_method='block',
                     this_current_screen_border='#161616',
-                    fontsize=14,
+                    fontsize=18,
                     foreground="#f2f4f8",
-                    active="bdc2be"
+                    active="bdc2be",
+		            margin=10,
+   		            margin_x=0, 
+   		            margin_y=2,
+    		        padding_x=6,
+    		        padding_y=6
                 ),
-                widget.WindowName(
-                    fontsize=14,
-                    foreground="#f2f4f8"
+		widget.Spacer(
+                    background='#161616'
                 ),
                 widget.Chord(
                     chords_colors={
@@ -254,7 +262,7 @@ screens = [
             ],
             50,  # Set height of the bar
             background="#161616",  # Set the background color
-            margin=[8, 0, 8, 8],  # Set the left, top, right, and bottom margins
+            margin=[8, 8, 0, 8],  # Set the left, top, right, and bottom margins
         ),
     ),
 ]
