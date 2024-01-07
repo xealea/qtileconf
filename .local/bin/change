@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# Define the theme folder path
+QTHEME_DIR="$HOME/.qtheme"
+
+# Get the list of themes
+THEME_LIST=$(ls "$QTHEME_DIR")
+
+# Use rofi to select a theme
+selected_theme=$(echo "$THEME_LIST" | rofi -dmenu -p "Select Theme:")
+
+# Check if the selection is not empty
+if [ -n "$selected_theme" ]; then
+    # Define the source and destination paths
+    SRC_PATH="$QTHEME_DIR/$selected_theme"
+    DEST_PATH="$HOME/.config/"
+
+    # Copy the selected theme to the destination
+    cp -r "$SRC_PATH" "$DEST_PATH"
+
+    # Print a message
+    echo "Theme '$selected_theme' applied successfully!"
+
+    # Restart Qtile to apply the changes
+    qtile cmd-obj -o cmd -f restart
+else
+    # Print a message if no theme is selected
+    echo "No theme selected. Exiting..."
+fi
+
