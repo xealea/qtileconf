@@ -1,0 +1,22 @@
+special:
+    background: "#090810"
+    foreground: "#d8d1db"
+    cursor: "#d8d1db"
+
+colors:
+    color0: "#090810"
+    color1: "#645F9F"
+    color2: "#6248CD"
+    color3: "#9B41C7"
+    color4: "#985EEA"
+    color5: "#75879B"
+    color6: "#A59FE1"
+    color7: "#d8d1db"
+    color8: "#979299"
+    color9: "#645F9F"
+    color10: "#6248CD"
+    color11: "#9B41C7"
+    color12: "#985EEA"
+    color13: "#75879B"
+    color14: "#A59FE1"
+    color15: "#d8d1db"
