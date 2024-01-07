@@ -1,0 +1,24 @@
+wallpaper: "/home/lea/.wallpaper/void14.png"
+
+special:
+    background: "#100c0f"
+    foreground: "#c1a9ac"
+    cursor: "#c1a9ac"
+
+colors:
+    color0: "#100c0f"
+    color1: "#6E2836"
+    color2: "#643B43"
+    color3: "#6E4D52"
+    color4: "#901E34"
+    color5: "#9E3046"
+    color6: "#D73C58"
+    color7: "#c1a9ac"
+    color8: "#877678"
+    color9: "#6E2836"
+    color10: "#643B43"
+    color11: "#6E4D52"
+    color12: "#901E34"
+    color13: "#9E3046"
+    color14: "#D73C58"
+    color15: "#c1a9ac"
