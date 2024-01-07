@@ -16,7 +16,7 @@ if [ -n "$selected_theme" ]; then
     DEST_PATH="$HOME/.config/"
 
     # Copy the selected theme to the destination
-    cp -r "$SRC_PATH" "$DEST_PATH"
+    cp -r "$SRC_PATH/*" "$DEST_PATH"
 
     # Print a message
     echo "Theme '$selected_theme' applied successfully!"
