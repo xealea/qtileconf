@@ -46,7 +46,7 @@ fi
 rsync -a --exclude=".git*" --exclude="install.sh" "$destination/" "$HOME"
 
 # Update font cache
-fc-cache -rv
+fc-cache -r
 
 # Update user directories
 xdg-user-dirs-update
