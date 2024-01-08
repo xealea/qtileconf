@@ -19,6 +19,19 @@ if [ -n "$selected_theme" ]; then
     # Copy the selected theme to the destination
     cp -r "$SRC_PATH/"* "$DEST_PATH"
 
+    # Update the icon theme based on the selected theme
+    case $selected_theme in
+        "redrose")
+            gsettings set org.gnome.desktop.interface icon-theme "Tela-red"
+            ;;
+        "bluerod")
+            gsettings set org.gnome.desktop.interface icon-theme "Tela-purple"
+            ;;
+        "nyoom")
+            gsettings set org.gnome.desktop.interface icon-theme "Tela-black"
+            ;;
+    esac
+
     # Use rofi to select a wallpaper
     selected_wallpaper=$(ls "$WALLPAPER_DIR" | rofi -dmenu -p "Select Wallpaper:")
 
