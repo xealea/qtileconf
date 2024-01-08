@@ -93,7 +93,7 @@ keys = [
     Key([mod], "e", lazy.spawn("thunar"), desc="File manager"),
     Key([mod], "h", lazy.spawn("xclip"), desc="Clipboard"),
     Key([mod], "s", lazy.spawn("screenshot"), desc="Screenshot"),
-    Key([mod], "s", lazy.spawn("change"), desc="Theme Change"),
+    Key([mod], "t", lazy.spawn("change"), desc="Theme Change"),
 ]
 
 # Groups
