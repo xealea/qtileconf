@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# Define the theme folder path
+# Define the theme and wallpaper folder paths
 QTHEME_DIR="$HOME/.qtheme"
+WALLPAPER_DIR="$HOME/.wallpaper"
 
 # Get the list of themes
 THEME_LIST=$(ls "$QTHEME_DIR")
@@ -16,7 +17,19 @@ if [ -n "$selected_theme" ]; then
     DEST_PATH="$HOME/.config/"
 
     # Copy the selected theme to the destination
-    cp -r "$SRC_PATH/*" "$DEST_PATH"
+    cp -r "$SRC_PATH/"* "$DEST_PATH"
+
+    # Use rofi to select a wallpaper
+    selected_wallpaper=$(ls "$WALLPAPER_DIR" | rofi -dmenu -p "Select Wallpaper:")
+
+    # Check if the wallpaper selection is not empty
+    if [ -n "$selected_wallpaper" ]; then
+        # Set the selected wallpaper
+        feh --bg-fill "$WALLPAPER_DIR/$selected_wallpaper"
+        echo "Wallpaper '$selected_wallpaper' set successfully!"
+    else
+        echo "No wallpaper selected. Using the default wallpaper."
+    fi
 
     # Print a message
     echo "Theme '$selected_theme' applied successfully!"
@@ -27,4 +40,3 @@ else
     # Print a message if no theme is selected
     echo "No theme selected. Exiting..."
 fi
-

@@ -1,22 +1,25 @@
-special:
-    background: "#090810"
-    foreground: "#d8d1db"
-    cursor: "#d8d1db"
-
 colors:
-    color0: "#090810"
-    color1: "#645F9F"
-    color2: "#6248CD"
-    color3: "#9B41C7"
-    color4: "#985EEA"
-    color5: "#75879B"
-    color6: "#A59FE1"
-    color7: "#d8d1db"
-    color8: "#979299"
-    color9: "#645F9F"
-    color10: "#6248CD"
-    color11: "#9B41C7"
-    color12: "#985EEA"
-    color13: "#75879B"
-    color14: "#A59FE1"
-    color15: "#d8d1db"
+  primary:
+    background: '0x090810'
+    foreground: '0xd8d1db'
+  cursor:
+    text: '0xd8d1db'
+    cursor: '0xd8d1db'
+  normal:
+    black: '0x090810'
+    red: '0x645F9F'
+    green: '0x6248CD'
+    yellow: '0x9B41C7'
+    blue: '0x985EEA'
+    magenta: '0x75879B'
+    cyan: '0xA59FE1'
+    white: '0xd8d1db'
+  bright:
+    black: '0x979299'
+    red: '0x645F9F'
+    green: '0x6248CD'
+    yellow: '0x9B41C7'
+    blue: '0x985EEA'
+    magenta: '0x75879B'
+    cyan: '0xA59FE1'
+    white: '0xd8d1db'
