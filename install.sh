@@ -2,6 +2,16 @@
 
 set -e
 
+# Function to check if a directory or file exists
+check_existence() {
+	if [ -e "$1" ]; then
+		echo "[$1] already exists. Skipping."
+		return 0 # Return success (true)
+	else
+		return 1 # Return failure (false)
+	fi
+}
+
 # Package installation based on the distribution
 if command -v xbps-install &>/dev/null; then
 	# Install packages for Void Linux
@@ -11,19 +21,23 @@ else
 	echo "Package installation for this distribution is not supported in this script."
 fi
 
-# Setup Audio Bruh
-sudo mkdir -p /etc/pipewire/pipewire.conf.d
-ln -s /usr/share/examples/pipewire/20-pipewire-pulse.conf /etc/pipewire/pipewire.conf.d/
+# Setup Audio Bruh if not already set up
+if check_existence "/etc/pipewire/pipewire.conf.d/20-pipewire-pulse.conf"; then
+	echo "Audio setup already exists. Skipping."
+else
+	sudo mkdir -p /etc/pipewire/pipewire.conf.d
+	ln -s /usr/share/examples/pipewire/20-pipewire-pulse.conf /etc/pipewire/pipewire.conf.d/
+	echo "Audio setup completed."
+fi
 
 # Define variables
 repository="https://github.com/xealea/qtileconf"
 destination="$HOME/qtileconf"
 
-# Check if the destination directory already exists
-if [ -d "$destination" ]; then
-	echo "The destination directory already exists. Skipping cloning."
+# Clone the repository if it doesn't already exist
+if check_existence "$destination"; then
+	echo "Repository already cloned. Skipping."
 else
-	# Clone the repository
 	git clone "$repository" "$destination"
 	echo "Repository cloned successfully."
 fi
