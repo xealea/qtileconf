@@ -47,6 +47,19 @@ if [ -n "$selected_theme" ]; then
     # Print a message
     echo "Theme '$selected_theme' applied successfully!"
 
+    # Update user directories
+    xdg-user-dirs-update
+    xdg-user-dirs-gtk-update
+
+    # Display user directories
+    xdg-user-dir
+
+    # Kill already running process
+    for _prs in xsettingsd alacritty firefox dunst thunar ksuperkey; do
+    	pid=$(pidof $_prs)
+   	[[ -n $pid ]] && kill -9 $pid
+    done
+
     # Restart Qtile to apply the changes
     qtile cmd-obj -o cmd -f restart
 else
