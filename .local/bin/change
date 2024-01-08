@@ -1,23 +1,37 @@
 #!/bin/bash
+set -e
 
 # Define the theme and wallpaper folder paths
-QTHEME_DIR="$HOME/.qtheme"
-WALLPAPER_DIR="$HOME/.wallpaper"
+qtheme_dir="$HOME/.qtheme"
+wallpaper_dir="$HOME/.wallpaper"
 
-# Get the list of themes
-THEME_LIST=$(ls "$QTHEME_DIR")
+# Function to select a theme
+select_theme() {
+    theme_list=$(ls "$qtheme_dir")
+    selected_theme=$(echo "$theme_list" | rofi -dmenu -p "Select Theme:")
+    
+    if [ -n "$selected_theme" ]; then
+        apply_theme "$selected_theme"
+    else
+        echo "No theme selected. Exiting..."
+        exit 1
+    fi
+}
 
-# Use rofi to select a theme
-selected_theme=$(echo "$THEME_LIST" | rofi -dmenu -p "Select Theme:")
-
-# Check if the selection is not empty
-if [ -n "$selected_theme" ]; then
-    # Define the source and destination paths
-    SRC_PATH="$QTHEME_DIR/$selected_theme"
-    DEST_PATH="$HOME/.config/"
+# Function to apply the selected theme
+apply_theme() {
+    local selected_theme="$1"
+    src_path="$qtheme_dir/$selected_theme"
+    dest_path="$HOME/.config/"
+    
+    # Check if the theme directory exists
+    if [ ! -d "$src_path" ]; then
+        echo "Error: Theme directory '$src_path' not found."
+        exit 1
+    fi
 
     # Copy the selected theme to the destination
-    cp -r "$SRC_PATH/"* "$DEST_PATH"
+    cp -r "$src_path/"* "$dest_path"
 
     # Update the icon theme based on the selected theme
     case $selected_theme in
@@ -32,20 +46,21 @@ if [ -n "$selected_theme" ]; then
             ;;
     esac
 
-    # Use rofi to select a wallpaper
-    selected_wallpaper=$(ls "$WALLPAPER_DIR" | rofi -dmenu -p "Select Wallpaper:")
+    select_wallpaper
+}
 
-    # Check if the wallpaper selection is not empty
+# Function to select a wallpaper
+select_wallpaper() {
+    wallpaper_list=$(ls "$wallpaper_dir")
+    selected_wallpaper=$(echo "$wallpaper_list" | rofi -dmenu -p "Select Wallpaper:")
+
     if [ -n "$selected_wallpaper" ]; then
         # Set the selected wallpaper
-        feh --bg-fill "$WALLPAPER_DIR/$selected_wallpaper"
+        feh --bg-fill "$wallpaper_dir/$selected_wallpaper"
         echo "Wallpaper '$selected_wallpaper' set successfully!"
     else
         echo "No wallpaper selected. Using the default wallpaper."
     fi
-
-    # Print a message
-    echo "Theme '$selected_theme' applied successfully!"
 
     # Update user directories
     xdg-user-dirs-update
@@ -54,15 +69,14 @@ if [ -n "$selected_theme" ]; then
     # Display user directories
     xdg-user-dir
 
-    # Kill already running process
-    for _prs in xsettingsd alacritty firefox dunst thunar ksuperkey; do
-    	pid=$(pidof $_prs)
-   	[[ -n $pid ]] && kill -9 $pid
-    done
-
     # Restart Qtile to apply the changes
     qtile cmd-obj -o cmd -f restart
-else
-    # Print a message if no theme is selected
-    echo "No theme selected. Exiting..."
-fi
+
+    # Kill already running processes
+    for process in xsettingsd alacritty firefox dunst thunar ksuperkey; do
+        pidof "$process" && killall "$process"
+    done
+}
+
+# Start the script by selecting a theme
+select_theme
