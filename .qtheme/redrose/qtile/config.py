@@ -93,6 +93,7 @@ keys = [
     Key([mod], "h", lazy.spawn("xclip"), desc="Clipboard"),
     Key([mod], "s", lazy.spawn("screenshot"), desc="Screenshot"),
     Key([mod], "t", lazy.spawn("change"), desc="Theme Change"),
+    Key([mod], "b", lazy.spawn("wallset"), desc="Wallpaper Change"),
 ]
 
 # Groups

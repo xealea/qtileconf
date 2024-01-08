@@ -1,0 +1,27 @@
+#!/bin/bash
+
+WALLPAPER_DIR="$HOME/.wallpaper"
+
+# Check if Rofi and Feh are installed
+if ! command -v rofi &> /dev/null || ! command -v feh &> /dev/null; then
+    echo "Rofi or feh not found. Please install the required tools."
+    exit 1
+fi
+
+# Check if the wallpaper directory exists
+if [ ! -d "$WALLPAPER_DIR" ]; then
+    echo "Wallpaper directory not found: $WALLPAPER_DIR"
+    exit 1
+fi
+
+# Use rofi to select a wallpaper
+selected_wallpaper=$(ls "$WALLPAPER_DIR" | rofi -dmenu -p "Select Wallpaper:")
+
+# Check if the wallpaper selection is not empty
+if [ -n "$selected_wallpaper" ]; then
+    # Set the selected wallpaper
+    feh --bg-fill "$WALLPAPER_DIR/$selected_wallpaper"
+    echo "Wallpaper '$selected_wallpaper' set successfully!"
+else
+    echo "No wallpaper selected. Using the default wallpaper."
+fi
