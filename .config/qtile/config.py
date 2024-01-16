@@ -148,6 +148,10 @@ widget_defaults = dict(
 )
 extension_defaults = [widget_defaults.copy()]
 
+# Remove Parse text
+def no_text(text):
+    return ""
+
 # # remove bar
 # screens = [ Screen() ]
 # Define the glyphs for your icons
@@ -215,8 +219,12 @@ screens = [
                 ),
 		widget.TaskList(
 		    icon_size=20,
-		    parse_text=None,
-		    window_name_location=False,
+		    parse_text=no_text,
+                    text_minimized="",
+                    text_maximized="",
+                    text_floating="",
+		    highlight_method="block",
+		    foreground="#f2f4f8",
 		),
                 #		widget.Spacer(background="#161616"),
                 widget.Chord(
@@ -279,7 +287,9 @@ screens = [
                 #               ),
                 #               widget.Volume(fontsize=14),
                 widget.TextBox(
-                    text=f" {clock_icon} ", fontsize=14, foreground="#f2f4f8"
+                    text=f" {clock_icon} ",
+		    fontsize=14,
+	            foreground="#f2f4f8",
                 ),
                 widget.Clock(format="%I:%M %p", fontsize=14, foreground="#f2f4f8"),
                 widget.TextBox(
