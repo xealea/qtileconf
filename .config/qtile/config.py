@@ -166,13 +166,14 @@ powermenu_icon = "⏻"
 # Bar configuration
 screens = [
     Screen(
-        top=bar.Bar(
+        bottom=bar.Bar(
             [
                 widget.TextBox(
                     text=f" {launcher_icon} ",
                     fontsize=18,
-                    padding=8,
-                    foreground="#f2f4f8",
+                    padding=14,
+		    background="#f2f4f8",
+                    foreground="#161616",
                     mouse_callbacks={
                         "Button1": lambda: qtile.cmd_spawn("rofi -show drun")
                     },
@@ -181,20 +182,43 @@ screens = [
                 #                   fontsize=14,
                 #                   foreground="#f2f4f8"
                 #               ),
-                widget.WindowName(fontsize=14, foreground="#f2f4f8"),
+		widget.Spacer(
+		    background="#161616",
+		    length=18,
+		),
                 widget.GroupBox(
+		    use_mouse_wheel=True,
                     highlight_method="block",
                     this_current_screen_border="#161616",
-                    fontsize=18,
+                    fontsize=20,
                     foreground="#f2f4f8",
                     active="bdc2be",
                     margin=10,
                     margin_x=0,
                     margin_y=2,
-                    padding_x=6,
+		    padding=20,
+                    padding_x=4,
                     padding_y=6,
                 ),
-                widget.Spacer(background="#161616"),
+		widget.Spacer(
+                    background="#161616",
+                    length=14,
+                ),
+		widget.Sep(
+		    foreground="#f2f4f8",
+		    linewidth=6,
+		    size_percent=40,
+		),
+		widget.Spacer(
+                    background="#161616",
+                    length=18,
+                ),
+		widget.TaskList(
+		    icon_size=20,
+		    parse_text=None,
+		    window_name_location=False,
+		),
+                #		widget.Spacer(background="#161616"),
                 widget.Chord(
                     chords_colors={
                         "launch": ("#ff0000", "#ffffff"),
@@ -301,7 +325,7 @@ screens = [
             ],
             50,  # Set height of the bar
             background="#161616",  # Set the background color
-            margin=[8, 8, 0, 8],  # Set the left, top, right, and bottom margins
+            margin=[0, 0, 0, 0],  # Set the left, top, right, and bottom margins
         ),
     ),
 ]
