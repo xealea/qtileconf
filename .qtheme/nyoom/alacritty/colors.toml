@@ -1,0 +1,23 @@
+[colors.bright]
+black = "0x525252"
+blue = "0x78a9ff"
+cyan = "0x42be65"
+green = "0x33b1ff"
+magenta = "0xff7eb6"
+red = "0x3ddbd9"
+white = "0xffffff"
+yellow = "0xee5396"
+
+[colors.normal]
+black = "0x161616"
+blue = "0x78a9ff"
+cyan = "0x42be65"
+green = "0x33b1ff"
+magenta = "0xff7eb6"
+red = "0x3ddbd9"
+white = "0xdde1e6"
+yellow = "0xee5396"
+
+[colors.primary]
+background = "0x161616"
+foreground = "0xf2f4f8"
