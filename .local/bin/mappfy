@@ -1,0 +1,69 @@
+#!/bin/bash
+
+# Define the directory containing .desktop files
+desktop_dir="/usr/share/applications"
+
+# Use rofi to show the manual
+rofi -show information -e "This script allows you to add an additional command to the 'Exec' line in selected '.desktop' files within the specified directory.
+
+Options:
+1. dbus-launch
+2. dbus-run-session
+3. Write your custom command
+
+Usage:
+mappfy"
+
+# Get a list of all .desktop files in the specified directory
+desktop_files=("$desktop_dir"/*.desktop)
+
+# Check if there are any .desktop files
+if [ ${#desktop_files[@]} -eq 0 ]; then
+    echo "No .desktop files found in $desktop_dir. Exiting."
+    exit 1
+fi
+
+# Use rofi to get user input for the additional command
+selected_option=$(echo -e "dbus-launch\ndbus-run-session\nWrite your custom command" | rofi -dmenu -p "Select an additional cmd or write manual the cmd:")
+
+# Define the additional command based on the user's selection
+case "$selected_option" in
+    "dbus-launch")
+        additional_command="dbus-launch"
+        ;;
+    "dbus-run-session")
+        additional_command="dbus-run-session"
+        ;;
+    "Write your custom command")
+        read -p "Enter your custom command: " additional_command
+        ;;
+    *)
+        echo "Invalid option. Exiting."
+        exit 1
+        ;;
+esac
+
+# Use rofi to get user input for selecting applications
+selected_apps=$(printf "%s\n" "${desktop_files[@]##*/}" | rofi -dmenu -p "Select applications to modify:" -multi-select)
+
+# Check if the user selected any applications
+if [ -n "$selected_apps" ]; then
+    # Loop through selected applications and modify their Exec line
+    for selected_app in $selected_apps; do
+        desktop_file="$desktop_dir/$selected_app"
+        # Check if the file exists
+        if [ -e "$desktop_file" ]; then
+            # Check if Exec line exists, if not add it, otherwise insert the new command at the beginning
+            if grep -q "^Exec=" "$desktop_file"; then
+                sed -i "s|^Exec=|Exec=$additional_command |" "$desktop_file"
+            else
+                echo "Exec=$additional_command" >> "$desktop_file"
+            fi
+            dunstify "Additional command added to $desktop_file"
+        fi
+    done
+
+    dunstify "Additional command added successfully."
+else
+    dunstify "No applications selected. Exiting."
+fi
