@@ -187,9 +187,13 @@ screens = [
                 #                   foreground="#f2f4f8"
                 #               ),
 		widget.Spacer(
-		    background="#090810",
+		    background="#100c0f",
 		    length=14,
 		),
+		widget.Spacer(
+                    background="#100c0f",
+                    length=14,
+                ),
                 widget.GroupBox(
 		    use_mouse_wheel=True,
                     highlight_method="block",
@@ -197,26 +201,26 @@ screens = [
                     fontsize=20,
                     foreground="#d8d1db",
                     active="#d8d1db",
-                    margin=10,
+                    margin=0,
                     margin_x=0,
                     margin_y=2,
-		    padding=20,
-                    padding_x=4,
+		    padding=0,
+                    padding_x=2,
                     padding_y=6,
                 ),
 		widget.Spacer(
-                    background="#090810",
+                    background="#100c0f",
                     length=14,
                 ),
+		widget.Spacer(
+                    background="#100c0f",
+                    length=7,
+                ),
 		widget.Sep(
-		    foreground="#d8d1db",
+		    foreground="#D73C58",
 		    linewidth=2,
 		    size_percent=35,
 		),
-		widget.Spacer(
-                    background="#090810",
-                    length=14,
-                ),
 		widget.TaskList(
 		    icon_size=20,
 		    parse_text=no_text,
