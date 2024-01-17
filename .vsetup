@@ -26,7 +26,7 @@ if ! pidof xfce-polkit; then
 fi
 
 # Run processes
-run ~/.fehbg
+run ~/.fehbg &
 run pipewire &
 run nm-applet &
 run xfsettingsd &
