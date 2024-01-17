@@ -4,30 +4,26 @@ set -e
 
 # Function to check if a directory or file exists
 check_existence() {
-	if [ -e "$1" ]; then
-		echo "[$1] already exists. Skipping."
-		return 0 # Return success (true)
-	else
-		return 1 # Return failure (false)
-	fi
+    [ -e "$1" ]
 }
 
 # Package installation based on the distribution
 if command -v xbps-install &>/dev/null; then
-	# Install packages for Void Linux
-	sudo xbps-install -Sy bluez blueman bluez rofi pamixer NetworkManager alacritty git curl neovim xfce4-settings qtile xorg-minimal xorg-input-drivers xorg-fonts xorg-video-drivers xorg-server xorg xsettingsd dconf-editor dconf rsync vsv wget aria2 dunst python python3 feh fehQlibs gtk+ gtk+3 gtk4 nano xinit xsetroot dbus dbus-elogind dbus-elogind-libs dbus-elogind-x11 dbus-glib dbus-libs dbus-x11 elogind gcc gcc-multilib thunar-volman thunar-archive-plugin thunar-media-tags-plugin pipewire pavucontrol starship psutils acpi acpica-utils acpid dhcpcd-gtk ImageMagick pfetch htop exa openssh openssl xdg-user-dirs xdg-user-dirs-gtk picom gnupg2 mpv nwg-launchers nwg-look linux-firmware-intel intel-gmmlib intel-gpu-tools intel-media-driver intel-ucode intel-video-accel vulkan-loader android-file-transfer-linux android-tools android-udev-rules libvirt libvirt-glib libvirt-python3 gvfs gvfs-afc gvfs-afp gvfs-cdda gvfs-goa gvfs-gphoto2 gvfs-mtp gvfs-smb udiskie udisks2 brightnessctl xdotool apparmor libselinux rpm rpmextract lxappearance lxappearance-obconf xfce4-power-manager xfce-polkit polkit-elogind maim viewnior nodeenv nodejs node_exporter xdg-desktop-portal xdg-desktop-portal-kde xdg-desktop-portal-wlr xdg-desktop-portal-gnome xdg-desktop-portal-gtk xdg-user-dirs xdg-user-dirs-gtk xdg-utils gedit zip unzip tar 7zip 7zip-unrar bzip2 zstd lz4 lz4jsoncat xz libXft-devel libXinerama-devel make virt-manager virt-manager-tools fish-shell pasystray network-manager-applet void-repo-nonfree void-repo-multilib void-repo-multilib-nonfree
-	echo "Packages installed successfully on Void Linux."
+    sudo xbps-install -Sy bluez blueman bluez rofi pamixer NetworkManager alacritty git curl neovim xfce4-settings qtile xorg-minimal xorg-input-drivers xorg-fonts xorg-video-drivers xorg-server xorg xsettingsd dconf-editor dconf rsync vsv wget aria2 dunst python python3 feh fehQlibs gtk+ gtk+3 gtk4 nano xinit xsetroot dbus dbus-elogind dbus-elogind-libs dbus-elogind-x11 dbus-glib dbus-libs dbus-x11 elogind gcc gcc-multilib thunar-volman thunar-archive-plugin thunar-media-tags-plugin pipewire pavucontrol starship psutils acpi acpica-utils acpid dhcpcd-gtk ImageMagick pfetch htop exa openssh openssl xdg-user-dirs xdg-user-dirs-gtk picom gnupg2 mpv nwg-launchers nwg-look linux-firmware-intel intel-gmmlib intel-gpu-tools intel-media-driver intel-ucode intel-video-accel vulkan-loader android-file-transfer-linux android-tools android-udev-rules libvirt libvirt-glib libvirt-python3 gvfs gvfs-afc gvfs-afp gvfs-cdda gvfs-goa gvfs-gphoto2 gvfs-mtp gvfs-smb udiskie udisks2 brightnessctl xdotool apparmor libselinux rpm rpmextract lxappearance lxappearance-obconf xfce4-power-manager xfce-polkit polkit-elogind maim viewnior nodeenv nodejs node_exporter xdg-desktop-portal xdg-desktop-portal-kde xdg-desktop-portal-wlr xdg-desktop-portal-gnome xdg-desktop-portal-gtk xdg-user-dirs xdg-user-dirs-gtk xdg-utils gedit zip unzip tar 7zip 7zip-unrar bzip2 zstd lz4 lz4jsoncat xz libXft-devel libXinerama-devel make virt-manager virt-manager-tools fish-shell pasystray network-manager-applet void-repo-nonfree void-repo-multilib void-repo-multilib-nonfree
+    echo "Packages installed successfully on Void Linux."
 else
-	echo "Package installation for this distribution is not supported in this script."
+    echo "Package installation for this distribution is not supported in this script."
 fi
 
-# Setup Audio Bruh if not already set up
-if check_existence "/etc/pipewire/pipewire.conf.d/20-pipewire-pulse.conf"; then
-	echo "Audio setup already exists. Skipping."
+# Audio setup
+pipewire_conf_dir="/etc/pipewire/pipewire.conf.d"
+pipewire_conf_link="/usr/share/examples/pipewire/20-pipewire-pulse.conf"
+
+if check_existence "$pipewire_conf_dir/20-pipewire-pulse.conf"; then
+    echo "Audio setup already exists. Skipping."
 else
-	sudo mkdir -p /etc/pipewire/pipewire.conf.d
-	sudo ln -s /usr/share/examples/pipewire/20-pipewire-pulse.conf /etc/pipewire/pipewire.conf.d/
-	echo "Audio setup completed."
+    sudo mkdir -p "$pipewire_conf_dir" && sudo ln -s "$pipewire_conf_link" "$pipewire_conf_dir/"
+    echo "Audio setup completed."
 fi
 
 # Define variables
@@ -37,10 +33,10 @@ file_path="/usr/share/xsession/qtile.desktop"
 
 # Clone the repository if it doesn't already exist
 if check_existence "$destination"; then
-	echo "Repository already cloned. Skipping."
+    echo "Repository already cloned. Skipping."
 else
-	git clone "$repository" "$destination"
-	echo "Repository cloned successfully."
+    git clone "$repository" "$destination"
+    echo "Repository cloned successfully."
 fi
 
 # Check for the Existence of Command Rsync
@@ -55,21 +51,15 @@ rsync -a --exclude=".git*" --exclude="install.sh" "$destination/" "$HOME"
 # Update font cache
 fc-cache -r
 
-# copy the sddm xsession for voidlinux ( dbus mode )
-# Combine copy commands
-if command -v xbps-install &>/dev/null; then
-	# copy special qtile runner ( sddm )
-	# Check if the file exists
-        if [ -f "$file_path" ]; then
-                # Replace 'Exec=qtile start' with 'Exec=dbus-run-session qtile start'
-                sed -i 's/Exec=qtile start/Exec=dbus-run-session qtile start/' "$file_path"
-                echo "Script executed successfully."
-        else
-                echo "File not found: $file_path"
-        fi
+# Modify SDDM Xsession for Void Linux (dbus mode)
+if command -v xbps-install &>/dev/null && [ -f "$file_path" ]; then
+    sed -i 's/Exec=qtile start/Exec=dbus-run-session qtile start/' "$file_path"
+    echo "Script executed successfully."
 else
-	echo "For this distribution is no need to ( dbus )."
+    echo "For this distribution, no need to use dbus."
 fi
+
+# Copy icon, theme, and font files
 sudo cp -r $HOME/qtileconf/.icons/* /usr/share/icons/
 sudo cp -r $HOME/qtileconf/.themes/* /usr/share/themes/
 sudo cp -r $HOME/qtileconf/.fonts/* /usr/share/fonts/
