@@ -62,8 +62,10 @@ fc-cache -r
 
 # copy the sddm xsession for voidlinux ( dbus mode )
 # Combine copy commands
-sudo cp $HOME/qtileconf/qtile.desktop /usr/share/xsessions/
-sudo cp -r $HOME/qtileconf/{.icons,.themes,.fonts}/* /usr/share/{icons,themes,fonts}/
+sudo cp $HOME/qtileconf/qtile.desktop /usr/share/xsessions/qtile.desktop
+sudo cp -r $HOME/qtileconf/.icons/* /usr/share/icons/
+sudo cp -r $HOME/qtileconf/.themes/* /usr/share/themes/
+sudo cp -r $HOME/qtileconf/.fonts/* /usr/share/fonts/
 
 # Update user directories
 xdg-user-dirs-update
