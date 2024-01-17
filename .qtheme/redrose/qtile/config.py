@@ -217,7 +217,7 @@ screens = [
                     length=7,
                 ),
 		widget.Sep(
-		    foreground="#f2f4f8",
+		    foreground="#D73C58",
 		    linewidth=2,
 		    size_percent=35,
 		),

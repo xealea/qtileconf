@@ -29,7 +29,7 @@ fi
 # Define variables
 repository="https://github.com/xealea/qtileconf"
 destination="$HOME/qtileconf"
-file_path="/usr/share/xsession/qtile.desktop"
+file_path="/usr/share/xsessions/qtile.desktop"
 
 # Clone the repository if it doesn't already exist
 if check_existence "$destination"; then
