@@ -52,12 +52,12 @@ rsync -a --exclude=".git*" --exclude="install.sh" "$destination/" "$HOME"
 fc-cache -r
 
 # Modify SDDM Xsession for Void Linux (dbus mode)
-if command -v xbps-install &>/dev/null && [ -f "$file_path" ]; then
-    sudo sed -i 's/Exec=qtile start/Exec=dbus-run-session qtile start/' "$file_path"
-    echo "Script executed successfully."
-else
-    echo "For this distribution, no need to use dbus."
-fi
+#if command -v xbps-install &>/dev/null && [ -f "$file_path" ]; then
+#    sudo sed -i 's/Exec=qtile start/Exec=dbus-run-session qtile start/' "$file_path"
+#    echo "Script executed successfully."
+#else
+#    echo "For this distribution, no need to use dbus."
+#fi
 
 # Copy icon, theme, and font files
 sudo cp -r $HOME/qtileconf/.icons/* /usr/share/icons/
