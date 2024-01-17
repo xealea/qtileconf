@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# Detect screen resolution
+screen_resolution=$(xrandr | awk '/\*/ {print $1; exit}')
+
+# Display options using rofi
+selected_audio=$(echo "alsa_output.pci-0000_00_1b.0.analog-stereo.monitor" | rofi -dmenu -p "Select Audio Source:")
+selected_quality=$(echo "realtime good better best" | rofi -dmenu -p "Select Quality:")
+selected_preset=$(echo "ultrafast superfast veryfast faster fast" | rofi -dmenu -p "Select Preset:")
+selected_crf=$(seq 0 51 | rofi -dmenu -p "Select CRF (0-51):")
+selected_framerate=$(echo "30 60 120" | rofi -dmenu -p "Select Framerate:")
+selected_bitrate=$(echo "5M 10M 15M" | rofi -dmenu -p "Select Bitrate:")
+selected_codec=$(echo "libx264 libvpx" | rofi -dmenu -p "Select Video Codec:")
+selected_format=$(echo "mkv mp4" | rofi -dmenu -p "Select Output Format:")
+
+# Get current date for the filename
+current_date=$(date +"%Y-%m-%d_%H-%M-%S")
+output_filename="$HOME/Videos/record_$current_date.$selected_format"
+
+# Notification using dunstify
+dunstify -u low "Recording started" "Filename: $output_filename"
+
+# ffmpeg command with auto-detected screen resolution and user-selected options
+ffmpeg -f x11grab \
+          -s "$screen_resolution" \
+          -i :0.0+0,0 \
+          -f pulse \
+          -i "$selected_audio" \
+          -ac 1 \
+          -c:v "$selected_codec" \
+          -b:v "$selected_bitrate" \
+          -crf "$selected_crf" \
+          -quality "$selected_quality" \
+          -preset "$selected_preset" \
+          -framerate "$selected_framerate" \
+          -y "$output_filename"
+
+# Notification using dunstify
+dunstify -u low "Recording finished" "Filename: $output_filename"
