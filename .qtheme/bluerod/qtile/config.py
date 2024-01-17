@@ -123,7 +123,7 @@ for i, group in enumerate(groups, 1):
 # Layouts
 def init_layout_theme():
     return {
-        "margin": 8,
+        "margin": 0,
         "border_width": 0,
     }
 
