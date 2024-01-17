@@ -33,6 +33,7 @@ fi
 # Define variables
 repository="https://github.com/xealea/qtileconf"
 destination="$HOME/qtileconf"
+file_path="/usr/share/xsession/qtile.desktop"
 
 # Clone the repository if it doesn't already exist
 if check_existence "$destination"; then
@@ -58,8 +59,15 @@ fc-cache -r
 # Combine copy commands
 if command -v xbps-install &>/dev/null; then
 	# copy special qtile runner ( sddm )
-	sudo cp $HOME/qtileconf/qtile.desktop /usr/share/xsessions/qtile.desktop
- else
+	# Check if the file exists
+        if [ -f "$file_path" ]; then
+                # Replace 'Exec=qtile start' with 'Exec=dbus-run-session qtile start'
+                sed -i 's/Exec=qtile start/Exec=dbus-run-session qtile start/' "$file_path"
+                echo "Script executed successfully."
+        else
+                echo "File not found: $file_path"
+        fi
+else
 	echo "For this distribution is no need to ( dbus )."
 fi
 sudo cp -r $HOME/qtileconf/.icons/* /usr/share/icons/
