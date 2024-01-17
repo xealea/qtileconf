@@ -62,7 +62,12 @@ fc-cache -r
 
 # copy the sddm xsession for voidlinux ( dbus mode )
 # Combine copy commands
-sudo cp $HOME/qtileconf/qtile.desktop /usr/share/xsessions/qtile.desktop
+if command -v xbps-install &>/dev/null; then
+	# copy special qtile runner ( sddm )
+	sudo cp $HOME/qtileconf/qtile.desktop /usr/share/xsessions/qtile.desktop
+ else
+	echo "For this distribution is no need to ( dbus )."
+fi
 sudo cp -r $HOME/qtileconf/.icons/* /usr/share/icons/
 sudo cp -r $HOME/qtileconf/.themes/* /usr/share/themes/
 sudo cp -r $HOME/qtileconf/.fonts/* /usr/share/fonts/
