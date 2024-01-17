@@ -36,12 +36,15 @@ apply_theme() {
     # Update the icon theme based on the selected theme
     case $selected_theme in
         "redrose")
+            gsettings set org.gnome.desktop.interface gtk-theme "adw-gtk3-red"
             gsettings set org.gnome.desktop.interface icon-theme "Tela-red"
             ;;
         "bluerod")
+            gsettings set org.gnome.desktop.interface gtk-theme "adw-gtk3-blue"
             gsettings set org.gnome.desktop.interface icon-theme "Tela-purple"
             ;;
         "nyoom")
+            gsettings set org.gnome.desktop.interface gtk-theme "adw-gtk3-dark"
             gsettings set org.gnome.desktop.interface icon-theme "Tela-black"
             ;;
     esac
