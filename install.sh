@@ -48,6 +48,9 @@ rsync -a --exclude=".git*" --exclude="install.sh" "$destination/" "$HOME"
 # Update font cache
 fc-cache -r
 
+# copy the sddm xsession for voidlinux ( dbus mode )
+sudo cp $HOME/qtileconf/qtile.desktop /usr/share/xsessions/
+
 # Update user directories
 xdg-user-dirs-update
 xdg-user-dirs-gtk-update

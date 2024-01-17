@@ -175,7 +175,7 @@ screens = [
                 widget.TextBox(
                     text=f" {launcher_icon} ",
                     fontsize=18,
-                    padding=14,
+                    padding=10,
 		    background="#f2f4f8",
                     foreground="#161616",
                     mouse_callbacks={
@@ -196,7 +196,7 @@ screens = [
                     this_current_screen_border="#161616",
                     fontsize=20,
                     foreground="#f2f4f8",
-                    active="bdc2be",
+                    active="#f2f4f8",
                     margin=10,
                     margin_x=0,
                     margin_y=2,
@@ -210,12 +210,12 @@ screens = [
                 ),
 		widget.Sep(
 		    foreground="#f2f4f8",
-		    linewidth=4,
-		    size_percent=50,
+		    linewidth=2,
+		    size_percent=35,
 		),
 		widget.Spacer(
                     background="#161616",
-                    length=18,
+                    length=14,
                 ),
 		widget.TaskList(
 		    icon_size=20,
@@ -224,16 +224,23 @@ screens = [
                     text_maximized="",
                     text_floating="",
 		    highlight_method="block",
-		    foreground="#f2f4f8",
+		    border="#f2f4f8",
+		    padding=2,
+		    padding_x=0,
+                    padding_y=8,
+		    margin=2,
+		    borderwidth=10,
+		    theme_mode="preferred",
+		    theme_path="/home/lea/.icons/Tela-black",
 		),
                 #		widget.Spacer(background="#161616"),
-                widget.Chord(
-                    chords_colors={
-                        "launch": ("#ff0000", "#ffffff"),
-                    },
-                    name_transform=lambda name: name.upper(),
-                    foreground="#f2f4f8",
-                ),
+                #widget.Chord(
+                #    chords_colors={
+                #        "launch": ("#ff0000", "#ffffff"),
+                #    },
+                #    name_transform=lambda name: name.upper(),
+                #    foreground="#f2f4f8",
+                #),
                 #               widget.TextBox(
                 #                   text=f" {cpu_icon} ",
                 #                   fontsize=14,
@@ -291,6 +298,10 @@ screens = [
 		    fontsize=10,
 		    foreground="#f2f4f8",
 		),
+		widget.Spacer(
+                    background="#161616",
+                    length=18,
+                ),
                 widget.TextBox(
                     text=f" {clock_icon} ",
 		    fontsize=14,
@@ -326,11 +337,6 @@ screens = [
                         )
                     },
                 ),
-		widget.Sep(
-		    foreground="#f2f4f8",
-		    linewidth=4,
-		    size_percent=50,
-		),
                 widget.Battery(
                     battery=1,
                     format="{percent:2.0%}",

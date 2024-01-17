@@ -1,13 +1,14 @@
 import os
 import subprocess
-from libqtile import bar, extension, layout, widget, hook, qtile
-from libqtile.config import Click, Drag, Group, Key, Match, Screen, KeyChord
-from libqtile.lazy import lazy
+
+from libqtile import bar, extension, hook, layout, qtile, widget
+from libqtile.config import Click, Drag, Group, Key, KeyChord, Match, Screen
 from libqtile.dgroups import simple_key_binder
+from libqtile.lazy import lazy
 
 # Define some variables
-mod = "mod4" # Use the Super key as the main modifier
-terminal = "alacritty" # Use the default terminal emulator
+mod = "mod4"  # Use the Super key as the main modifier
+terminal = "alacritty"  # Use the default terminal emulator
 
 keys = [
     # A list of available commands that can be bound to keys can be found
@@ -101,17 +102,31 @@ group_labels = ["", "", "", "", "", "", "", ""]
 groups = [Group(label) for label in group_labels]
 
 for i, group in enumerate(groups, 1):
-    keys.extend([
-        Key([mod], str(i), lazy.group[group.name].toscreen(), desc=f"Switch to group {group.name}"),
-        Key([mod, "shift"], str(i), lazy.window.togroup(group.name, switch_group=True),
-            desc=f"Switch to & move focused window to group {group.name}"),
-    ])
-	
+    keys.extend(
+        [
+            Key(
+                [mod],
+                str(i),
+                lazy.group[group.name].toscreen(),
+                desc=f"Switch to group {group.name}",
+            ),
+            Key(
+                [mod, "shift"],
+                str(i),
+                lazy.window.togroup(group.name, switch_group=True),
+                desc=f"Switch to & move focused window to group {group.name}",
+            ),
+        ]
+    )
+
+
 # Layouts
 def init_layout_theme():
-    return {"margin":8,
-            "border_width":0,
-            }
+    return {
+        "margin": 8,
+        "border_width": 0,
+    }
+
 
 layout_theme = init_layout_theme()
 
@@ -122,7 +137,7 @@ layouts = [
     layout.Bsp(**layout_theme),
     layout.Floating(**layout_theme),
     layout.RatioTile(**layout_theme),
-    layout.Max(**layout_theme)
+    layout.Max(**layout_theme),
 ]
 
 # Widget Defaults
@@ -132,6 +147,10 @@ widget_defaults = dict(
     padding=2,
 )
 extension_defaults = [widget_defaults.copy()]
+
+# Remove Parse text
+def no_text(text):
+    return ""
 
 # # remove bar
 # screens = [ Screen() ]
@@ -151,141 +170,195 @@ powermenu_icon = "⏻"
 # Bar configuration
 screens = [
     Screen(
-        top=bar.Bar(
+        bottom=bar.Bar(
             [
                 widget.TextBox(
                     text=f" {launcher_icon} ",
                     fontsize=18,
-                    padding=8,
-                    foreground="#c1a9ac",
-                    mouse_callbacks={'Button1': lambda: qtile.cmd_spawn("rofi -show drun")}
+                    padding=10,
+		    background="#D73C58",
+                    foreground="#100c0f",
+                    mouse_callbacks={
+                        "Button1": lambda: qtile.cmd_spawn("rofi -show drun")
+                    },
                 ),
-#               widget.CurrentLayout(
-#                   fontsize=14,
-#                   foreground="#c1a9ac"
-#               ),
-		widget.WindowName(
-                    fontsize=14,
-                    foreground="#c1a9ac"
-                ),
+                #               widget.CurrentLayout(
+                #                   fontsize=14,
+                #                   foreground="#f2f4f8"
+                #               ),
+		widget.Spacer(
+		    background="#100c0f",
+		    length=14,
+		),
                 widget.GroupBox(
-                    highlight_method='block',
-                    this_current_screen_border='#100c0f',
-                    fontsize=18,
-                    foreground="#c1a9ac",
-                    active="bdc2be",
-		            margin=10,
-   		            margin_x=0, 
-   		            margin_y=2,
-    		        padding_x=6,
-    		        padding_y=6
+		    use_mouse_wheel=True,
+                    highlight_method="block",
+                    this_current_screen_border="#100c0f",
+                    fontsize=20,
+                    foreground="#D73C58",
+                    active="#D73C58",
+                    margin=10,
+                    margin_x=0,
+                    margin_y=2,
+		    padding=20,
+                    padding_x=4,
+                    padding_y=6,
                 ),
 		widget.Spacer(
-                    background='#100c0f'
+                    background="#100c0f",
+                    length=14,
                 ),
-                widget.Chord(
-                    chords_colors={
-                        "launch": ("#ff0000", "#ffffff"),
-                    },
-                    name_transform=lambda name: name.upper(),
-                    foreground="#c1a9ac"
+		widget.Sep(
+		    foreground="#D73C58",
+		    linewidth=2,
+		    size_percent=35,
+		),
+		widget.Spacer(
+                    background="#100c0f",
+                    length=14,
                 ),
-#               widget.TextBox(
-#                   text=f" {cpu_icon} ",
-#                   fontsize=14,
-#                   foreground="#c1a9ac"
-#               ),
-#               widget.CPU(
-#                   fontsize=14,
-#                   foreground="#c1a9ac"
-#               ),
-#               widget.TextBox(
-#                   text=f" {memory_icon} ",
-#		    fontsize=14,
-#                   foreground="#c1a9ac"
-#               ),
-#               widget.Memory(
-#                   fontsize=14,
-#                   foreground="#c1a9ac"
-#               ),
-#		    widget.TextBox(
-#                   text=f" {thermal_icon} ",
-#                   fontsize=14,
-#                   foreground="#c1a9ac"
-#               ),
-#               widget.ThermalSensor(
-#                   fontsize=14,
-#                   foreground="#c1a9ac"
-#               ),
-#               widget.TextBox(
-#                   text=f" {net_icon} ",
-#                   fontsize=14,
-#                   foreground="#c1a9ac",
-#       	    mouse_callbacks={'Button1': lambda: qtile.cmd_spawn("nm-applet")}
-#               ),
-#               widget.Net(
-#                   format='{down:.0f}{down_suffix} ↓↑ {up:.0f}{up_suffix}',
-#                   fontsize=14,
-#                   foreground="#c1a9ac",
-#	      	    mouse_callbacks={'Button1': lambda: qtile.cmd_spawn("nm-applet")}
-#               ),
-#               widget.TextBox(
-#                   text=f" {bluetooth_icon} ",
-#                   fontsize=14,
-#                   foreground="#c1a9ac",
-#               ),
-#               widget.Bluetooth(fontsize=14),
-#               widget.TextBox(
-#                   text=f" {pulsevolume_icon} ",
-#                   fontsize=14,
-#                   foreground="#c1a9ac",
-#		    mouse_callbacks={'Button1': lambda: qtile.cmd_spawn("pasystray")}
-#               ),
-#               widget.Volume(fontsize=14),
+		widget.TaskList(
+		    icon_size=20,
+		    parse_text=no_text,
+                    text_minimized="",
+                    text_maximized="",
+                    text_floating="",
+		    highlight_method="block",
+		    border="#D73C58",
+		    padding=2,
+		    padding_x=0,
+                    padding_y=8,
+		    margin=2,
+		    borderwidth=10,
+		    theme_mode="preferred",
+		    theme_path="/home/lea/.icons/Tela-black",
+		),
+                #		widget.Spacer(background="#161616"),
+                #widget.Chord(
+                #    chords_colors={
+                #        "launch": ("#ff0000", "#ffffff"),
+                #    },
+                #    name_transform=lambda name: name.upper(),
+                #    foreground="#f2f4f8",
+                #),
+                #               widget.TextBox(
+                #                   text=f" {cpu_icon} ",
+                #                   fontsize=14,
+                #                   foreground="#f2f4f8"
+                #               ),
+                #               widget.CPU(
+                #                   fontsize=14,
+                #                   foreground="#f2f4f8"
+                #               ),
+                #               widget.TextBox(
+                #                   text=f" {memory_icon} ",
+                # 		    fontsize=14,
+                #                   foreground="#f2f4f8"
+                #               ),
+                #               widget.Memory(
+                #                   fontsize=14,
+                #                   foreground="#f2f4f8"
+                #               ),
+                # 		    widget.TextBox(
+                #                   text=f" {thermal_icon} ",
+                #                   fontsize=14,
+                #                   foreground="#f2f4f8"
+                #               ),
+                #               widget.ThermalSensor(
+                #                   fontsize=14,
+                #                   foreground="#f2f4f8"
+                #               ),
+                #               widget.TextBox(
+                #                   text=f" {net_icon} ",
+                #                   fontsize=14,
+                #                   foreground="#f2f4f8",
+                #       	    mouse_callbacks={'Button1': lambda: qtile.cmd_spawn("nm-applet")}
+                #               ),
+                #               widget.Net(
+                #                   format='{down:.0f}{down_suffix} ↓↑ {up:.0f}{up_suffix}',
+                #                   fontsize=14,
+                #                   foreground="#f2f4f8",
+                # 	      	    mouse_callbacks={'Button1': lambda: qtile.cmd_spawn("nm-applet")}
+                #               ),
+                #               widget.TextBox(
+                #                   text=f" {bluetooth_icon} ",
+                #                   fontsize=14,
+                #                   foreground="#f2f4f8",
+                #               ),
+                #               widget.Bluetooth(fontsize=14),
+                #               widget.TextBox(
+                #                   text=f" {pulsevolume_icon} ",
+                #                   fontsize=14,
+                #                   foreground="#f2f4f8",
+                # 		    mouse_callbacks={'Button1': lambda: qtile.cmd_spawn("pasystray")}
+                #               ),
+                #               widget.Volume(fontsize=14),
+		widget.Systray(
+		    padding=10,
+		    fontsize=10,
+		    foreground="#D73C58",
+		),
+		widget.Spacer(
+                    background="#100c0f",
+                    length=18,
+                ),
                 widget.TextBox(
                     text=f" {clock_icon} ",
-                    fontsize=14,
-                    foreground="#c1a9ac"
+		    fontsize=14,
+		    background="#D73C58",
+                    foreground="#100c0f",
                 ),
                 widget.Clock(
-                    format="%I:%M %p",
-                    fontsize=14,
-                    foreground="#c1a9ac"
-                ),
-		widget.TextBox(
+		    format="%I:%M %p",
+		    fontsize=14,
+	            background="#D73C58",
+                    foreground="#100c0f",
+		),
+                widget.TextBox(
                     text=f" {battery_icon} ",
                     fontsize=14,
-                    foreground="#c1a9ac",
-                    mouse_callbacks={'Button1': lambda: qtile.cmd_spawn("xfce4-power-manager-settings")}
+                    background="#D73C58",
+                    foreground="#100c0f",
+                    mouse_callbacks={
+                        "Button1": lambda: qtile.cmd_spawn(
+                            "xfce4-power-manager-settings"
+                        )
+                    },
                 ),
                 widget.Battery(
                     battery=0,
                     format="{percent:2.0%} |",
                     fontsize=14,
-                    foreground="#c1a9ac",
-                    mouse_callbacks={'Button1': lambda: qtile.cmd_spawn("xfce4-power-manager-settings")}
+                    background="#D73C58",
+                    foreground="#100c0f",
+                    mouse_callbacks={
+                        "Button1": lambda: qtile.cmd_spawn(
+                            "xfce4-power-manager-settings"
+                        )
+                    },
                 ),
                 widget.Battery(
                     battery=1,
                     format="{percent:2.0%}",
                     fontsize=14,
-                    foreground="#c1a9ac",
-                    mouse_callbacks={'Button1': lambda: qtile.cmd_spawn("xfce4-power-manager-settings")}
+                    background="#D73C58",
+                    foreground="#100c0f",
+                    mouse_callbacks={
+                        "Button1": lambda: qtile.cmd_spawn(
+                            "xfce4-power-manager-settings"
+                        )
+                    },
                 ),
-		widget.Systray(
-                    padding=10,
-                    fontsize=10,
-                    foreground="#c1a9ac"
-                ),
-	        widget.TextBox(
+                widget.TextBox(
                     text=f" {powermenu_icon} ",
-	            padding=10,
+                    padding=10,
                     fontsize=14,
-                    foreground="#c1a9ac",
-	            mouse_callbacks={'Button1': lambda: qtile.cmd_spawn("powermenu")}
+                    background="#D73C58",
+                    foreground="#100c0f",
+                    mouse_callbacks={"Button1": lambda: qtile.cmd_spawn("powermenu")},
                 ),
             ],
-            50,  # Set height of the bar
+            40,  # Set height of the bar
             background="#100c0f",  # Set the background color
             margin=[0, 0, 0, 0],  # Set the left, top, right, and bottom margins
         ),
@@ -294,46 +367,61 @@ screens = [
 
 # Drag floating layouts
 mouse = [
-    Drag([mod], "Button1", lazy.window.set_position_floating(), start=lazy.window.get_position()),
-    Drag([mod], "Button3", lazy.window.set_size_floating(), start=lazy.window.get_size()),
+    Drag(
+        [mod],
+        "Button1",
+        lazy.window.set_position_floating(),
+        start=lazy.window.get_position(),
+    ),
+    Drag(
+        [mod], "Button3", lazy.window.set_size_floating(), start=lazy.window.get_size()
+    ),
     Click([mod], "Button2", lazy.window.bring_to_front()),
 ]
 
 floating_layout = layout.Floating(
     float_rules=[
         *layout.Floating.default_float_rules,
-        Match(wm_class='confirmreset'),
-        Match(wm_class='makebranch'),
-        Match(wm_class='maketag'),
-        Match(wm_class='ssh-askpass'),
-        Match(title='branchdialog'),
-        Match(title='pinentry'),
-        Match(wm_class='confirm'),
-        Match(wm_class='dialog'),
-        Match(wm_class='download'),
-        Match(wm_class='error'),
-        Match(wm_class='file_progress'),
-        Match(wm_class='notification'),
-        Match(wm_class='splash'),
-        Match(wm_class='toolbar'),
-        Match(wm_class='Arandr'),
-        Match(wm_class='feh'),
-        Match(wm_class='xfce4-terminal'),
-        Match(wm_class='alacritty'),
+        Match(wm_class="confirmreset"),
+        Match(wm_class="makebranch"),
+        Match(wm_class="maketag"),
+        Match(wm_class="ssh-askpass"),
+        Match(title="branchdialog"),
+        Match(title="pinentry"),
+        Match(wm_class="confirm"),
+        Match(wm_class="dialog"),
+        Match(wm_class="download"),
+        Match(wm_class="error"),
+        Match(wm_class="file_progress"),
+        Match(wm_class="notification"),
+        Match(wm_class="splash"),
+        Match(wm_class="toolbar"),
+        Match(wm_class="Arandr"),
+        Match(wm_class="feh"),
+        Match(wm_class="xfce4-terminal"),
+        Match(wm_class="alacritty"),
     ],
     fullscreen_border_width=0,
-    border_width=0
+    border_width=0,
 )
+
 
 @hook.subscribe.client_new
 def set_floating(window):
-    if window.window.get_wm_transient_for() or window.window.get_wm_type() in ["notification", "toolbar", "splash", "dialog"]:
+    if window.window.get_wm_transient_for() or window.window.get_wm_type() in [
+        "notification",
+        "toolbar",
+        "splash",
+        "dialog",
+    ]:
         window.floating = True
+
 
 @hook.subscribe.startup_once
 def autostart():
-    home = os.path.expanduser('~')
-    subprocess.call([home + '/.vsetup'])
+    home = os.path.expanduser("~")
+    subprocess.call([home + "/.vsetup"])
+
 
 # Configuration
 focus_on_window_activation = "smart"
