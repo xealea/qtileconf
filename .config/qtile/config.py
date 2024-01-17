@@ -188,7 +188,7 @@ screens = [
                 #               ),
 		widget.Spacer(
 		    background="#161616",
-		    length=18,
+		    length=14,
 		),
                 widget.GroupBox(
 		    use_mouse_wheel=True,
@@ -210,8 +210,8 @@ screens = [
                 ),
 		widget.Sep(
 		    foreground="#f2f4f8",
-		    linewidth=6,
-		    size_percent=40,
+		    linewidth=4,
+		    size_percent=50,
 		),
 		widget.Spacer(
                     background="#161616",
@@ -286,16 +286,28 @@ screens = [
                 # 		    mouse_callbacks={'Button1': lambda: qtile.cmd_spawn("pasystray")}
                 #               ),
                 #               widget.Volume(fontsize=14),
+		widget.Systray(
+		    padding=10,
+		    fontsize=10,
+		    foreground="#f2f4f8",
+		),
                 widget.TextBox(
                     text=f" {clock_icon} ",
 		    fontsize=14,
-	            foreground="#f2f4f8",
+		    background="#f2f4f8",
+                    foreground="#161616",
                 ),
-                widget.Clock(format="%I:%M %p", fontsize=14, foreground="#f2f4f8"),
+                widget.Clock(
+		    format="%I:%M %p",
+		    fontsize=14,
+	            background="#f2f4f8",
+                    foreground="#161616",
+		),
                 widget.TextBox(
                     text=f" {battery_icon} ",
                     fontsize=14,
-                    foreground="#f2f4f8",
+                    background="#f2f4f8",
+                    foreground="#161616",
                     mouse_callbacks={
                         "Button1": lambda: qtile.cmd_spawn(
                             "xfce4-power-manager-settings"
@@ -306,34 +318,41 @@ screens = [
                     battery=0,
                     format="{percent:2.0%} |",
                     fontsize=14,
-                    foreground="#f2f4f8",
+                    background="#f2f4f8",
+                    foreground="#161616",
                     mouse_callbacks={
                         "Button1": lambda: qtile.cmd_spawn(
                             "xfce4-power-manager-settings"
                         )
                     },
                 ),
+		widget.Sep(
+		    foreground="#f2f4f8",
+		    linewidth=4,
+		    size_percent=50,
+		),
                 widget.Battery(
                     battery=1,
                     format="{percent:2.0%}",
                     fontsize=14,
-                    foreground="#f2f4f8",
+                    background="#f2f4f8",
+                    foreground="#161616",
                     mouse_callbacks={
                         "Button1": lambda: qtile.cmd_spawn(
                             "xfce4-power-manager-settings"
                         )
                     },
                 ),
-                widget.Systray(padding=10, fontsize=10, foreground="#f2f4f8"),
                 widget.TextBox(
                     text=f" {powermenu_icon} ",
                     padding=10,
                     fontsize=14,
-                    foreground="#f2f4f8",
+                    background="#f2f4f8",
+                    foreground="#161616",
                     mouse_callbacks={"Button1": lambda: qtile.cmd_spawn("powermenu")},
                 ),
             ],
-            50,  # Set height of the bar
+            40,  # Set height of the bar
             background="#161616",  # Set the background color
             margin=[0, 0, 0, 0],  # Set the left, top, right, and bottom margins
         ),
