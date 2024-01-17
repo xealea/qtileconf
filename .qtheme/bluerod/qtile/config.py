@@ -187,11 +187,11 @@ screens = [
                 #                   foreground="#f2f4f8"
                 #               ),
 		widget.Spacer(
-		    background="#100c0f",
+		    background="#090810",
 		    length=14,
 		),
 		widget.Spacer(
-                    background="#100c0f",
+                    background="#090810",
                     length=14,
                 ),
                 widget.GroupBox(
@@ -209,15 +209,15 @@ screens = [
                     padding_y=6,
                 ),
 		widget.Spacer(
-                    background="#100c0f",
+                    background="#090810",
                     length=14,
                 ),
 		widget.Spacer(
-                    background="#100c0f",
+                    background="#090810",
                     length=7,
                 ),
 		widget.Sep(
-		    foreground="#D73C58",
+		    foreground="#d8d1db",
 		    linewidth=2,
 		    size_percent=35,
 		),
