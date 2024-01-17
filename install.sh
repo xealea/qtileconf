@@ -2,12 +2,6 @@
 
 set -e
 
-# Check for Root Privileges
-if ! sudo -v; then
-    echo "Please run the script with sudo."
-    exit 1
-fi
-
 # Function to check if a directory or file exists
 check_existence() {
 	if [ -e "$1" ]; then
