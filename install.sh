@@ -26,12 +26,15 @@ else
     echo "Package installation for this distribution is not supported in this script."
 fi
 
-# Audio setup
-if check_existence "$pipewire_conf_dir/20-pipewire-pulse.conf"; then
-    echo "Audio setup already exists. Skipping."
-else
-    sudo mkdir -p "$pipewire_conf_dir" && sudo ln -s "$pipewire_conf_link" "$pipewire_conf_dir/"
-    echo "Audio setup completed."
+# Skip audio setup for Arch Linux
+if command -v pacman &>/dev/null && grep -qi 'arch' /etc/os-release; then
+    # Audio setup
+    if check_existence "$pipewire_conf_dir/20-pipewire-pulse.conf"; then
+        echo "Audio setup already exists. Skipping."
+    else
+        sudo mkdir -p "$pipewire_conf_dir" && sudo ln -s "$pipewire_conf_link" "$pipewire_conf_dir/"
+        echo "Audio setup completed."
+    fi
 fi
 
 # Clone the repository if it doesn't already exist
