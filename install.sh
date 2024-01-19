@@ -15,6 +15,11 @@ check_existence() {
     [ -e "$1" ]
 }
 
+# Function to check if a symbolic link exists
+check_symlink() {
+    [ -L "$1" ]
+}
+
 # Package installation based on the distribution
 if command -v xbps-install &>/dev/null; then
     sudo xbps-install -Sy pulseaudio bluez bluez-alsa blueman bluez rofi pamixer NetworkManager alacritty git curl neovim xfce4-settings qtile xorg-minimal xorg-input-drivers xorg-fonts xorg-video-drivers xorg-server xorg xsettingsd dconf-editor dconf rsync vsv wget aria2 dunst python python3 feh fehQlibs gtk+ gtk+3 gtk4 nano xinit xsetroot dbus dbus-elogind dbus-elogind-libs dbus-elogind-x11 dbus-glib dbus-libs dbus-x11 elogind gcc gcc-multilib thunar-volman thunar-archive-plugin thunar-media-tags-plugin pipewire pavucontrol starship psutils acpi acpica-utils acpid dhcpcd-gtk ImageMagick pfetch htop exa openssh openssl xdg-user-dirs xdg-user-dirs-gtk picom gnupg2 mpv nwg-launchers nwg-look linux-firmware-intel intel-gmmlib intel-gpu-tools intel-media-driver intel-ucode intel-video-accel vulkan-loader android-file-transfer-linux android-tools android-udev-rules libvirt libvirt-glib libvirt-python3 gvfs gvfs-afc gvfs-afp gvfs-cdda gvfs-goa gvfs-gphoto2 gvfs-mtp gvfs-smb udiskie udisks2 brightnessctl xdotool apparmor libselinux rpm rpmextract lxappearance lxappearance-obconf xfce4-power-manager xfce-polkit polkit-elogind maim viewnior nodeenv nodejs node_exporter xdg-desktop-portal xdg-desktop-portal-kde xdg-desktop-portal-wlr xdg-desktop-portal-gnome xdg-desktop-portal-gtk xdg-user-dirs xdg-user-dirs-gtk xdg-utils gedit zip unzip tar 7zip 7zip-unrar bzip2 zstd lz4 lz4jsoncat xz libXft-devel libXinerama-devel make virt-manager virt-manager-tools fish-shell pasystray network-manager-applet void-repo-nonfree void-repo-multilib void-repo-multilib-nonfree
@@ -29,11 +34,11 @@ fi
 # Skip audio setup for Arch Linux
 if command -v pacman &>/dev/null && grep -qi 'arch' /etc/os-release; then
     # Audio setup
-    if check_existence "$pipewire_conf_dir/20-pipewire-pulse.conf"; then
-        echo "Audio setup already exists. Skipping."
-    else
+    if ! check_symlink "$pipewire_conf_dir/20-pipewire-pulse.conf"; then
         sudo mkdir -p "$pipewire_conf_dir" && sudo ln -s "$pipewire_conf_link" "$pipewire_conf_dir/"
         echo "Audio setup completed."
+    else
+        echo "Audio setup already exists. Skipping."
     fi
 fi
 
