@@ -1,0 +1,55 @@
+#!/bin/bash
+
+# Check if the correct number of arguments is provided
+if [ $# -lt 2 ]; then
+    echo "Usage: $0 <gcc or clang> <source_file.cpp or source_file.c>"
+    exit 1
+fi
+
+# Extract the compiler choice and file name
+selected_compiler="$1"
+file_name=$(basename "$2")
+file_base_name="${file_name%.*}"
+
+# Check if the selected compiler is either gcc or clang
+if [ "$selected_compiler" != "gcc" ] && [ "$selected_compiler" != "clang" ]; then
+    echo "Invalid compiler choice. Please use 'gcc' or 'clang'."
+    exit 1
+fi
+
+# Check the file extension
+extension="${file_name##*.}"
+
+# Choose the compiler based on the extension
+if [ "$extension" == "cpp" ]; then
+    if [ "$selected_compiler" == "gcc" ]; then
+        compiler="g++"
+    elif [ "$selected_compiler" == "clang" ]; then
+        compiler="clang++"
+    else
+        echo "Unsupported file extension: $extension"
+        exit 1
+    fi
+elif [ "$extension" == "c" ]; then
+    if [ "$selected_compiler" == "gcc" ]; then
+        compiler="gcc"
+    elif [ "$selected_compiler" == "clang" ]; then
+        compiler="clang"
+    else
+        echo "Unsupported file extension: $extension"
+        exit 1
+    fi
+else
+    echo "Unsupported file extension: $extension"
+    exit 1
+fi
+
+# Compile the code
+$compiler -o "$file_base_name" "$file_name"
+
+# Check if compilation was successful
+if [ $? -eq 0 ]; then
+    echo "Compilation successful. Executable: ./$file_base_name"
+else
+    echo "Compilation failed."
+fi
