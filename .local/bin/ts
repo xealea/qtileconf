@@ -1,0 +1,44 @@
+#!/bin/bash
+
+# Function to perform translation using DeepL API
+translate() {
+    # API Key for DeepL (replace 'YOUR_API_KEY' with your actual API key)
+    API_KEY="YOUR_API_KEY"
+
+    # Text to translate (passed as argument)
+    TEXT="$1"
+
+    # Target language (Indonesian)
+    TARGET_LANG="ID"
+
+    # API Endpoint
+    ENDPOINT="https://api.deepl.com/v2/translate"
+
+    # Send translation request to DeepL API
+    response=$(curl -s -X POST \
+    --data-urlencode "auth_key=$API_KEY" \
+    --data-urlencode "text=$TEXT" \
+    --data-urlencode "target_lang=$TARGET_LANG" \
+    $ENDPOINT)
+
+    # Parse the translated text from the response
+    translation=$(echo "$response" | jq -r '.translations[0].text')
+
+    # Output the translated text
+    echo "Translated Text [ID] : $translation"
+}
+
+# Check if jq (JSON processor) is installed
+if ! command -v jq &> /dev/null; then
+    echo "This script requires 'jq' to be installed. Please install it using 'sudo apt install jq' (for Debian/Ubuntu) or equivalent."
+    exit 1
+fi
+
+# Check if there's an argument provided
+if [ $# -eq 0 ]; then
+    echo "Usage: $0 <text_to_translate>"
+    exit 1
+fi
+
+# Call the translate function with the provided text
+translate "$1"
